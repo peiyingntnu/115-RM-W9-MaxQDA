@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>W9 學習單</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --ground:#F4F6FA; --paper:#FFFFFF; --ink:#1F2E4A; --title:#17365D; --mute:#5E6E85; --line:#DCE3EE;
+  --zebra:#F5F7FB; --acc:#0E7C74; --acc-soft:#E1F3F1; --navy:#1F3864;
+  --paste:#EFF4FB; --paste-line:#C9D7EC; --warn:#FFF3DF; --warn-line:#F0C98A; --warn-ink:#7A4A00;
+  --goal:#1E6B4F; --ok:#1E6B4F; --ok-bg:#E4F1EA; --bad:#A02020; --bad-bg:#FAE9E9;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D131D; --paper:#141C28; --ink:#D6DFEC; --title:#EEF3FA; --mute:#95A5BA; --line:#2A3647;
+    --zebra:#172131; --acc:#5CC9BD; --acc-soft:#16302E; --navy:#9DBBE6;
+    --paste:#16233A; --paste-line:#2E4468; --warn:#34290F; --warn-line:#6B5220; --warn-ink:#F3D493;
+    --goal:#7FD3AA; --ok:#7FD3AA; --ok-bg:#16302E; --bad:#F2A0A0; --bad-bg:#3A1C1C;
+  color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D131D; --paper:#141C28; --ink:#D6DFEC; --title:#EEF3FA; --mute:#95A5BA; --line:#2A3647;
+  --zebra:#172131; --acc:#5CC9BD; --acc-soft:#16302E; --navy:#9DBBE6;
+  --paste:#16233A; --paste-line:#2E4468; --warn:#34290F; --warn-line:#6B5220; --warn-ink:#F3D493;
+  --goal:#7FD3AA; --ok:#7FD3AA; --ok-bg:#16302E; --bad:#F2A0A0; --bad-bg:#3A1C1C;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:64px}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,sans-serif;
+  font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--acc)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #F2B705;outline-offset:2px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--ground) 92%,transparent);
+  backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.topin{max-width:1180px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.crumb{font-size:14px;color:var(--mute)}
+.sp{flex:1}
+.top button,.top .lk{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:3px 11px;font-size:14px;
+  text-decoration:none;color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:24px 60px;display:grid;
+  grid-template-columns:250px minmax(0,1fr);gap:32px;align-items:start}
+.side{position:sticky;top:70px;max-height:calc(100dvh - 90px);overflow:auto}
+.tocbox summary{font-weight:700;color:var(--title);cursor:pointer;margin-bottom:6px}
+.toc{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.5}
+.toc li{margin:0}
+.toc a{display:block;color:var(--mute);text-decoration:none;padding:4px 10px;border-left:2px solid transparent}
+.toc a:hover{color:var(--ink)}
+.toc a.on{color:var(--acc);border-left-color:var(--acc);font-weight:700}
+.toc .t1 a{color:var(--ink);font-weight:700;margin-top:8px}
+.toc .t2 a{padding-left:22px;font-size:13px}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:36px clamp(18px,4vw,52px) 52px;min-width:0}
+.dh{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:8px}
+.eyebrow{font-size:13px;letter-spacing:.06em;color:var(--acc);font-weight:700}
+.dh h1{margin:6px 0 8px;font-size:clamp(24px,3.4vw,32px);line-height:1.3;color:var(--title);font-weight:900;text-wrap:balance}
+.subl{margin:0;color:var(--mute);font-size:14px}
+.h1{font-size:22px;color:var(--title);margin:42px 0 12px;padding-top:14px;border-top:3px solid var(--navy);font-weight:900}
+.h2{font-size:18px;color:var(--title);margin:28px 0 8px;display:flex;align-items:center;gap:10px;font-weight:700;text-wrap:balance}
+.qtag{background:var(--q);color:#fff;font-size:13px;font-weight:900;border-radius:999px;padding:1px 10px;flex:none}
+p{margin:8px 0;max-width:68ch}
+.note{font-size:14px;color:var(--mute)}
+.goal{background:var(--acc-soft);border-radius:10px;padding:10px 14px;color:var(--goal);max-width:none}
+.goal b{margin-right:10px}
+.lst{margin:8px 0;padding-left:1.4em;max-width:72ch}
+.lst li{margin:4px 0}
+.lst .lv2{list-style:circle;margin-left:1.4em;color:var(--ink)}
+.lst li b{color:var(--title)}
+.dim{color:var(--mute)}
+.paste{border:1px solid var(--paste-line);background:var(--paste);border-radius:12px;margin:14px 0;overflow:hidden}
+.ph{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--paste-line);font-size:13px;font-weight:700;color:var(--navy)}
+.ph span{flex:1}
+.copy{border:1px solid var(--paste-line);background:var(--paper);border-radius:7px;padding:2px 12px;font-size:13px}
+.copy.done{color:var(--acc);border-color:var(--acc)}
+.pb{padding:10px 16px 12px;font-size:15px}
+.pb p{margin:4px 0;max-width:none}
+.warn{background:var(--warn);border:1px solid var(--warn-line);border-radius:12px;padding:10px 16px;margin:14px 0;color:var(--warn-ink)}
+.warn p{max-width:none}
+.wh{font-weight:700}
+.tw{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.55;min-width:560px}
+th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-weight:700}
+:root[data-theme="dark"] th{color:#0D131D}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) th{color:#0D131D}}
+td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+.blank{display:block;min-height:2.6em}
+.cap{font-weight:700;color:var(--title)}
+.fold{border:1px dashed var(--acc);border-radius:12px;margin:18px 0;padding:0 16px}
+.fold summary{cursor:pointer;padding:10px 0;font-weight:700;color:var(--acc)}
+.fold[open]{padding-bottom:10px}
+.triple{list-style:none;margin:14px 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.trow{display:grid;grid-template-columns:44px 1fr 1.9fr 1.2fr;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper)}
+.tno{background:var(--acc-soft);color:var(--acc);font-weight:900;font-size:15px;display:flex;align-items:flex-start;justify-content:center;padding-top:14px}
+.tc{padding:10px 14px;border-left:1px solid var(--line);min-width:0}
+.tc p{margin:4px 0;max-width:none;font-size:15px}
+.tl{display:block;font-size:12px;letter-spacing:.06em;color:var(--mute);font-weight:700;margin-bottom:2px}
+.tc.ai{background:var(--zebra)}
+.tin{margin:4px 0 0}
+.tin.paste{margin:4px 0 0}
+.tin .ph{padding:5px 10px}
+.tin .pb{padding:6px 12px 8px;font-size:14.5px}
+.tin.self{border:1px dashed var(--line);border-radius:10px;padding:6px 10px}
+.tin.self .pb{padding:4px 0 0}
+.verb{background:var(--navy);color:var(--paper);border-radius:6px;padding:1px 9px;font-size:13px;font-weight:700;flex:none}
+.noai{margin-left:8px;font-size:12px;color:var(--warn-ink);background:var(--warn);border-radius:999px;padding:1px 9px}
+.ph .verb{flex:none}
+.ph .verb+span{flex:1}
+.cmd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:2px 0 6px}
+.cmd .tl{margin:0}
+.cmd code{font-family:inherit;font-weight:700;background:var(--acc-soft);color:var(--acc);border-radius:8px;padding:2px 10px;font-size:15px}
+.copy1{border:1px solid var(--line);background:var(--paper);border-radius:7px;padding:1px 10px;font-size:13px}
+.copy1.done{color:var(--acc);border-color:var(--acc)}
+.or{font-size:12px;color:var(--mute)}
+@media (max-width:1180px) and (min-width:761px){
+  .trow{grid-template-columns:44px 1fr 1fr}
+  .tno{grid-row:1/3}
+  .tc.need{grid-column:2;grid-row:1}
+  .tc.ai{grid-column:3;grid-row:1}
+  .tc.inp{grid-column:2/4;grid-row:2;border-top:1px solid var(--line)}
+}
+@media (max-width:760px){
+  .trow{grid-template-columns:1fr}
+  .tno{justify-content:flex-start;padding:8px 14px}
+  .tc{border-left:0;border-top:1px solid var(--line)}
+}
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr;gap:14px}
+  .side{position:static;max-height:none}
+  .tocbox:not([open]){margin-bottom:0}
+}
+@media print{
+  .top,.side{display:none} .wrap{display:block;padding:0} .doc{border:0;padding:0}
+  details.fold{border:0} details.fold>*{display:block}
+  .copy{display:none}
+}
+
+/* ===== 學習單：彈性填寫欄位（2026-09-22 追加） ===== */
+.saver{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--acc-soft);
+  border:1px solid var(--acc);border-radius:12px;padding:9px 14px;margin:14px 0;font-size:.86rem;color:var(--ink)}
+.saver .sdot{width:9px;height:9px;border-radius:50%;background:var(--acc);flex:none}
+.saver.off{background:var(--warn);border-color:var(--warn-line);color:var(--warn-ink)}
+.saver.off .sdot{background:var(--warn-line)}
+.saver button{margin-left:auto;font:inherit;padding:4px 12px;border:1px solid var(--line);
+  border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer}
+.saver button:disabled{opacity:.45;cursor:not-allowed}
+.fld{margin:14px 0}
+.fh{margin:0 0 6px;font-weight:700;color:var(--title);font-size:.95rem;display:flex;
+  gap:8px;align-items:baseline;flex-wrap:wrap}
+.fhint{font-weight:400;font-size:.84rem;color:var(--mute)}
+.fin{display:block;width:100%;box-sizing:border-box;font:inherit;line-height:1.75;
+  color:var(--ink);background:var(--paste);border:1px solid var(--paste-line);border-radius:10px;
+  padding:10px 13px;resize:none;overflow:hidden;min-height:3.2em}
+.fin:focus{outline:2px solid var(--acc);outline-offset:1px;background:var(--paper)}
+.fin::placeholder{color:var(--mute);opacity:.65}
+.chk .cl{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.chk .cl li{margin:0}
+.chk label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;background:var(--zebra);
+  border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+.chk input{margin:.28em 0 0;width:17px;height:17px;flex:none;accent-color:var(--acc)}
+.chk input:checked+span{color:var(--mute);text-decoration:line-through}
+.chk i{display:block;font-style:normal;font-size:.85rem;color:var(--mute);margin-top:2px;text-decoration:none}
+table.rt thead th{word-break:keep-all;font-size:.82rem;line-height:1.45}
+table.rt td.rc{padding:0;text-align:center}
+table.rt .rb{width:100%;min-height:42px;font:inherit;font-size:1.12rem;font-weight:700;border:0;
+  background:none;color:var(--mute);cursor:pointer}
+table.rt .rb[data-v="v"]{color:var(--ok);background:var(--ok-bg)}
+table.rt .rb[data-v="△"]{color:var(--warn-ink);background:var(--warn)}
+table.rt .rb[data-v="×"]{color:var(--bad);background:var(--bad-bg)}
+table.rt tbody th{background:var(--zebra);color:var(--title);text-align:left;white-space:nowrap}
+.rk{font-weight:400;color:var(--mute);font-size:.84rem;margin:0 0 6px}
+.cardwrap{margin:14px 0}
+.drawb{font:inherit;font-weight:700;padding:9px 18px;border-radius:999px;border:1px solid var(--acc);
+  background:var(--acc);color:#fff;cursor:pointer}
+.drawout{margin-left:10px;font-weight:700;color:var(--title)}
+.cards{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px;
+  grid-template-columns:repeat(auto-fit,minmax(248px,1fr))}
+.card{margin:0;border:1px solid var(--line);border-left:5px solid var(--c);border-radius:12px;
+  padding:12px 15px;background:var(--paper);transition:box-shadow .2s,transform .2s;
+  display:flex;flex-direction:column}
+.card.hit{box-shadow:0 0 0 3px var(--c);transform:translateY(-2px)}
+.card .cno{margin:0;font-size:1.5rem;font-weight:900;color:var(--c);line-height:1}
+.card .ct{margin:2px 0 2px;font-weight:700;color:var(--title)}
+.card .cn{margin:0 0 8px;font-size:.84rem;color:var(--mute)}
+.card .cl{margin:0 0 4px;font-size:.8rem;font-weight:700;color:var(--c);letter-spacing:.04em}
+.card ul{margin:0;padding-left:1.1em;font-size:.89rem}
+.card ul li{margin:3px 0}
+.cdone{display:flex;gap:8px;align-items:center;margin-top:auto;padding-top:9px;
+  border-top:1px dashed var(--line);font-size:.85rem;cursor:pointer;color:var(--mute)}
+.cdone input{width:16px;height:16px;accent-color:var(--acc)}
+.rep{margin:4px 0 14px}
+table.rtb td{padding:0;vertical-align:top}
+table.rtb td textarea{display:block;width:100%;box-sizing:border-box;font:inherit;font-size:.92rem;
+  line-height:1.65;border:0;background:none;color:var(--ink);padding:8px 10px;resize:none;
+  overflow:hidden;min-height:2.6em}
+table.rtb td textarea:focus{outline:2px solid var(--acc);outline-offset:-2px;background:var(--paper)}
+table.rtb .rmh,table.rtb .rmc{width:34px;text-align:center}
+table.rtb .rm{font:inherit;border:0;background:none;color:var(--mute);cursor:pointer;
+  font-size:1.05rem;line-height:1;padding:6px}
+table.rtb .rm:hover{color:var(--bad)}
+.addr{font:inherit;font-size:.88rem;margin-top:8px;padding:6px 14px;border-radius:999px;
+  border:1px dashed var(--acc);background:none;color:var(--acc);cursor:pointer}
+
+
+.pl{margin:10px 0}
+.inl{color:var(--acc);font-weight:700;text-decoration:none;border-bottom:2px solid var(--acc-soft)}
+.inl:hover{border-bottom-color:var(--acc)}
+/* 評量表：橫向捲動時左欄跟著留在畫面上，才知道自己在填哪一列 */
+table.rt tbody th{position:sticky;left:0;z-index:1;box-shadow:1px 0 0 var(--line)}
+/* 可增減表格：窄螢幕改為一列一張卡，欄名變成欄位上方的標籤（手機打字才不用左右捲） */
+@media (max-width:700px){
+  .rep .tw{overflow:visible}
+  .rep table.rtb,.rep table.rtb tbody,.rep table.rtb tr,.rep table.rtb td{display:block;width:auto;
+    min-width:0}   /* 蓋掉基礎 table{min-width:560px}，否則堆疊後仍會撐出橫向捲動 */
+  .rep table.rtb thead{display:none}
+  .rep table.rtb tr{position:relative;border:1px solid var(--line);border-radius:10px;
+    background:var(--zebra);padding:8px 10px 6px;margin:0 0 10px}
+  .rep table.rtb td{border:0;padding:0 0 7px}
+  .rep table.rtb td::before{content:attr(data-l);display:block;font-size:.78rem;font-weight:700;
+    color:var(--mute);margin:0 0 2px}
+  .rep table.rtb td textarea{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+  .rep table.rtb td.rmc{position:absolute;top:4px;right:4px;width:auto;padding:0}
+  .rep table.rtb td.rmc::before{content:none}
+}
+@media print{
+  .saver,.drawb,.drawout,.addr,.rm,.rmh,.rmc{display:none!important}
+  .fin,table.rtb td textarea{background:none;border-color:#999;
+    background-image:repeating-linear-gradient(transparent,transparent 1.74em,#CBD2DE 1.74em,#CBD2DE calc(1.74em + 1px))}
+  .fin{min-height:5.3em}
+  .card{break-inside:avoid;border-color:#999}
+  .card.hit{box-shadow:none}
+  table.rt .rb{color:#333}
+}
+
+:root{--m-ind:#0E7C74;--m-grp:#8A53C9;--m-duo:#C2570C;--m-all:#4A6FA5;--m-demo:#B07A00;--m-brk:#7A8699}
+.mode{display:inline-flex;align-items:center;gap:4px;font-size:.78rem;font-weight:700;padding:2px 10px;border-radius:999px;
+  border:1px solid currentColor;margin:0 6px 6px 0;background:color-mix(in srgb,currentColor 12%,var(--paper))}
+.mode.ind{color:var(--m-ind)}.mode.grp{color:var(--m-grp)}.mode.duo{color:var(--m-duo)}.mode.all{color:var(--m-all)}
+.mode.demo{color:var(--m-demo)}.mode.brk{color:var(--m-brk)}
+.mode.ai{color:#A02020;background:color-mix(in srgb,#A02020 10%,var(--paper))}
+.mode.red{color:var(--warn-ink);background:var(--warn);border-color:var(--warn-line)}
+.chain{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch;margin:10px 0 18px}
+.chain .cn{flex:1 1 130px;border:1px solid var(--line);border-radius:12px;padding:8px 10px;background:var(--paper);font-size:.9rem;line-height:1.5}
+.chain .cn b{display:block;color:var(--title)}
+.chain .cn.c1{border-top:4px solid #4A6FA5}.chain .cn.c2{border-top:4px solid #8A53C9}.chain .cn.c3{border-top:4px solid #0E7C74}
+.chain .ar{align-self:center;color:var(--mute);font-weight:700}
+.flow{position:relative;margin:12px 0 20px;padding-left:4px}
+.flow .half{font-weight:900;color:var(--title);margin:18px 0 8px;font-size:1.05rem}
+.fn{display:grid;grid-template-columns:76px 1fr;gap:0 12px;position:relative;padding-bottom:12px}
+.fn::before{content:"";position:absolute;left:84px;top:12px;bottom:-4px;width:2px;background:var(--line)}
+.fn:last-child::before{display:none}
+.fn .tm{font-size:.82rem;color:var(--mute);text-align:right;padding-top:10px;line-height:1.35}
+.fn .tm b{display:block;color:var(--ink);font-size:.95rem}
+.fn .cd{border:1px solid var(--line);border-left:5px solid var(--mc,var(--m-all));border-radius:12px;background:var(--paper);padding:8px 12px;position:relative;margin-left:14px}
+.fn .cd::before{content:"";position:absolute;left:-21px;top:16px;width:12px;height:12px;border-radius:50%;background:var(--mc,var(--m-all));border:2px solid var(--ground)}
+.fn.ind{--mc:var(--m-ind)}.fn.grp{--mc:var(--m-grp)}.fn.duo{--mc:var(--m-duo)}.fn.all{--mc:var(--m-all)}.fn.demo{--mc:var(--m-demo)}.fn.brk{--mc:var(--m-brk)}
+.fn .cd h4{margin:0 0 4px;font-size:1rem;color:var(--title)}
+.fn .cd a.go{display:inline-block;margin-top:4px;font-size:.85rem;font-weight:700}
+.fn .cd p{margin:3px 0;font-size:.9rem;color:var(--ink);line-height:1.6}
+.fn .cd p span{font-weight:700;color:var(--mute)}
+.fn.brk .cd{background:transparent;border-style:dashed}
+.legend{display:flex;flex-wrap:wrap;gap:2px;margin:6px 0 4px}
+.sec9{border-top:3px solid var(--line);margin-top:26px;padding-top:6px}
+.grpbox{border:2px dashed var(--m-grp);border-radius:14px;padding:10px 14px 4px;margin:14px 0;background:color-mix(in srgb,var(--m-grp) 6%,var(--paper))}
+.indbox{border:2px solid var(--m-ind);border-radius:14px;padding:10px 14px 4px;margin:14px 0;background:color-mix(in srgb,var(--m-ind) 5%,var(--paper))}
+.pho{margin:10px 0 16px}
+.pho .pbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pho label.pb1{display:inline-block;padding:6px 14px;border-radius:10px;border:1px solid var(--acc);color:var(--acc);font-weight:700;cursor:pointer;background:var(--paper)}
+.pho label.pb1 input{display:none}
+.pho .pmsg{font-size:.85rem;color:var(--mute)}
+.pho .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
+.pho .pi{position:relative;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--zebra)}
+.pho .pi img{display:block;width:100%;height:auto}
+.pho .pi button{position:absolute;top:4px;right:4px;border:0;border-radius:50%;width:26px;height:26px;background:rgba(0,0,0,.65);color:#fff}
+.xbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border:2px solid var(--acc);border-radius:14px;padding:12px 16px;background:var(--acc-soft);margin:16px 0}
+.xbar button{padding:8px 18px;border-radius:10px;border:0;background:var(--acc);color:#fff;font-weight:700}
+@media (max-width:560px){.fn{grid-template-columns:58px 1fr}.fn::before{left:66px}}
+@media print{.pho .pbar,.xbar{display:none!important}.fn{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="top"><div class="topin"><span class="crumb">學生用｜W9 學習單</span>
+<span class="sp"></span><a class="lk" href="readings.html">📚 讀本整理</a><a class="lk" href="maxqda.html">🧰 MAXQDA SOP</a><button type="button" id="theme" aria-label="切換深淺色">◐</button>
+<button type="button" id="print">列印</button></div></div>
+<div class="wrap">
+  <aside class="side"><details class="tocbox"><summary>目錄</summary><ol class="toc"><li class="t1"><a href="#s1">0. 今天的路線</a></li><li class="t2"><a href="#s2">第三章不是獨立的一章</a></li><li class="t1"><a href="#s3">A1 我的題目站在哪裡</a></li><li class="t1"><a href="#s4">A2 聽講時標記</a></li><li class="t1"><a href="#s5">A3 學位論文第三章解剖</a></li><li class="t1"><a href="#s6">A4 先畫圖，再請 AI 檢視</a></li><li class="t2"><a href="#s7">研究設計矩陣（一個研究問題一列；課後作業核心）</a></li><li class="t1"><a href="#s8">A5 我中了哪一病？</a></li><li class="t1"><a href="#s9">休息 10 分鐘：確認 MAXQDA 能開、自己的 W4 逐字稿在筆電裡</a></li><li class="t1"><a href="#s10">B2 MAXQDA 操作卡（看一步、做一步）</a></li><li class="t1"><a href="#s11">B3 編我自己的 W4 逐字稿</a></li><li class="t1"><a href="#s12">B4 兩兩比碼（跨案比較）</a></li><li class="t1"><a href="#s13">課後</a></li></ol></details></aside>
+  <main class="doc">
+    <header class="dh"><span class="eyebrow">115-1 教育與社會科學研究法｜第 9 週</span><h1>W9 學習單：論文第三章 ＋ MAXQDA</h1><p class="subl">11/3 14:10–16:30｜👤 綠框＝你自己完成；👥 紫虛線框＝小組討論後由一位記錄者填（或拍照附上）</p></header>
+<div class="saver"><span class="sdot"></span><span id="sstat">填寫內容與照片只存在這個瀏覽器，不會上傳、老師看不到。要交的時候請按最底下的「匯出我的成果」。</span><button type="button" id="clearall">清除本頁填寫</button></div>
+<div class="fld"><p class="fh">姓名／組別</p><textarea class="fin" data-k="who" rows="1" placeholder="在這裡寫…"></textarea></div>
+<div class="fld chk"><p class="fh">📌 課前 10 分鐘（不收、不計分）</p><ul class="cl"><li><label><input type="checkbox" data-k="c2"><span>重看自己第一章的研究問題與第二章整理的文獻缺口<i>A1 要用</i></span></label></li><li><label><input type="checkbox" data-k="c3"><span>把自己 W4 的訪談逐字稿存到筆電，確認 PDF 能用滑鼠反白選字<i>掃描檔／圖片轉的 PDF 不能編碼，請先轉成 Word</i></span></label></li><li><label><input type="checkbox" data-k="c4"><span>安裝 MAXQDA 試用版並確認打得開<i>試用約 14 天；課堂上助教可協助</i></span></label></li></ul></div>
+<h2 id="s1" class="h1">0. 今天的路線</h2>
+<div class="legend"><span class="mode ind">👤 個人</span><span class="mode grp">👥 小組</span><span class="mode duo">🤝 兩兩</span><span class="mode all">🧑‍🏫 全班</span><span class="mode demo">🖥️ 教師示範</span></div><div class="flow"><div class="legend"><span class="mode ai">🤖 AI 進場（人先做）</span><span class="mode red">⚠ 資料紅線</span></div><div class="half">上半場｜論文第三章（連動前兩章）</div><div class="fn all"><div class="tm"><b>14:10</b>10 分</div><div class="cd"><h4>A1 開場：第三章在金線的哪裡</h4><span class="mode all">🧑‍🏫 全班</span><p>對照自己的期末題目，想兩句話：①我的研究問題是哪一型（描述／關係／因果／詮釋／評鑑）？②第二章讀到的文獻缺口是什麼？</p><a class="go" href="#a1">→ 前往這一段的欄位</a></div></div><div class="fn all"><div class="tm"><b>14:20</b>15 分</div><div class="cd"><h4>A2 講授：量化 vs 質性第三章骨架對照</h4><span class="mode all">🧑‍🏫 全班</span><p>邊聽邊標記：自己的第三章會落在哪一軌、哪幾節最沒把握。</p></div></div><div class="fn grp"><div class="tm"><b>14:35</b>15 分</div><div class="cd"><h4>A3 小組：學位論文第三章解剖</h4><span class="mode grp">👥 小組</span><p>五組各拿一篇，用解剖五問＋「回扣一二章」第六問，找出一處「寫得最好」與一處「寫得不足」。</p><a class="go" href="#a3">→ 前往這一段的欄位</a></div></div><div class="fn ind"><div class="tm"><b>14:50</b>20 分</div><div class="cd"><h4>A4 個人：先畫架構與流程圖，再請 AI 檢視回饋</h4><span class="mode ind">👤 個人</span><span class="mode ai">🤖 人先畫 10 分，AI 才檢視</span><p>照六步手繪研究架構圖＋研究流程圖（10 分）；拍照或文字轉述請 AI 檢視（7 分）；記一處 AI 說得對、一處說錯或空泛，當場修圖一處（3 分）。</p><a class="go" href="#a4">→ 前往這一段的欄位</a></div></div><div class="fn all"><div class="tm"><b>15:10</b>5 分</div><div class="cd"><h4>A5 收束：第三章常見四病</h4><span class="mode all">🧑‍🏫 全班</span><p>對照自己剛寫的段落自評：中了哪一病？</p><a class="go" href="#a5">→ 前往這一段的欄位</a></div></div><div class="fn brk"><div class="tm"><b>15:15</b>10 分</div><div class="cd"><h4>休息（順手開機、開 MAXQDA）</h4><span class="mode brk">☕ 休息</span><p>確認 MAXQDA 可開啟、自己 W4 的逐字稿檔已在筆電裡。</p></div></div><div class="half">下半場｜MAXQDA</div><div class="fn all"><div class="tm"><b>15:25</b>10 分</div><div class="cd"><h4>B1 QDA 軟體是什麼／不是什麼＋資料紅線</h4><span class="mode all">🧑‍🏫 全班</span><span class="mode red">⚠ 本機版；雲端 AI 功能不得放可識別資料</span><p>理解：軟體幫你「管理」編碼，不替你「分析」。</p></div></div><div class="fn all"><div class="tm"><b>15:35</b>15 分</div><div class="cd"><h4>B2 看一步、做一步：虛構範例稿上跟做四個動作</h4><span class="mode all">🧑‍🏫 全班</span><p>照著做一遍四個動作（同一份稿，同一個畫面，卡住立刻舉杯）；對照學習單「MAXQDA 操作卡」勾完成。</p><a class="go" href="#b2">→ 前往這一段的欄位</a></div></div><div class="fn ind"><div class="tm"><b>15:50</b>25 分</div><div class="cd"><h4>B3 上手：編「自己的」W4 訪談逐字稿</h4><span class="mode ind">👤 個人</span><span class="mode red">⚠ 本機版；雲端 AI 功能不得放可識別資料</span><p>任務①建專案、匯入自己 W4 的逐字稿（5 分）②開放編碼至少 10 段（10 分）③把碼整理成 2–3 組（5 分）④對最有感的一段寫一則 memo（5 分）。</p><a class="go" href="#b3">→ 前往這一段的欄位</a></div></div><div class="fn duo"><div class="tm"><b>16:15</b>15 分</div><div class="cd"><h4>B4 兩兩比碼（跨案比較）＋收束＋Exit ticket</h4><span class="mode duo">🤝 兩兩</span><p>兩兩交換看對方的碼表：兩份稿都出現的現象，你們取的碼名一樣嗎？Exit ticket 一句話：第三章「資料分析」一節，你會怎麼交代 MAXQDA？</p><a class="go" href="#b4">→ 前往這一段的欄位</a></div></div></div>
+<h3 id="s2" class="h2">第三章不是獨立的一章</h3>
+<div class="chain"><div class="cn c1"><b>第一章</b>問題意識<br>研究問題（問題類型）</div><div class="ar">→</div><div class="cn c2"><b>第二章</b>文獻：概念・既有做法<br>缺口</div><div class="ar">→</div><div class="cn c3"><b>第三章</b>取徑 → 對象 → 工具 → 程序 → 分析 → 品質倫理</div></div><p class="cap">往右是「決定」，往左是「回扣」：第三章每一節的理由，都要在前兩章找得到。</p>
+<div class="sec9"></div><span id="a1"></span>
+<h2 id="s3" class="h1">A1 我的題目站在哪裡</h2>
+<div class="indbox"><span class="mode ind">👤 個人完成</span>
+<div class="fld"><p class="fh">① 我的研究問題（一句話）<span class="fhint">用一個問句寫。</span></p><textarea class="fin" data-k="a1q" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">② 這個問題是哪一型？<span class="fhint">描述／關係／因果／詮釋／評鑑，選一個並說明為什麼。</span></p><textarea class="fin" data-k="a1t" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">③ 第二章讀到的文獻缺口（一句話）<span class="fhint">寫不出來也沒關係，標「？」，那就是今天要找的東西。</span></p><textarea class="fin" data-k="a1g" rows="2" placeholder="在這裡寫…"></textarea></div>
+</div>
+<h2 id="s4" class="h1">A2 聽講時標記</h2>
+<div class="indbox"><span class="mode ind">👤 個人完成</span>
+<div class="fld chk"><p class="fh">我會落在哪一軌？</p><ul class="cl"><li><label><input type="checkbox" data-k="c8"><span>我的第三章比較像：量化</span></label></li><li><label><input type="checkbox" data-k="c9"><span>我的第三章比較像：質性</span></label></li><li><label><input type="checkbox" data-k="c10"><span>我的第三章比較像：質性中的個案研究</span></label></li></ul></div>
+<div class="fld chk"><p class="fh">哪幾節我最沒把握？（可複選）</p><ul class="cl"><li><label><input type="checkbox" data-k="c11"><span>取向與設計</span></label></li><li><label><input type="checkbox" data-k="c12"><span>研究對象</span></label></li><li><label><input type="checkbox" data-k="c13"><span>研究工具</span></label></li><li><label><input type="checkbox" data-k="c14"><span>實施程序</span></label></li><li><label><input type="checkbox" data-k="c15"><span>資料分析</span></label></li><li><label><input type="checkbox" data-k="c16"><span>品質把關</span></label></li><li><label><input type="checkbox" data-k="c17"><span>研究倫理</span></label></li></ul></div>
+</div>
+<span id="a3"></span>
+<h2 id="s5" class="h1">A3 學位論文第三章解剖</h2>
+<div class="grpbox"><span class="mode grp">👥 小組討論後填入</span>
+<div class="fld"><p class="fh">組別／拿到的論文（題目、作者、年份）</p><textarea class="fin" data-k="a3p" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">① 方法選擇理由寫在哪？有回扣研究問題嗎？</p><textarea class="fin" data-k="a3_1" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">② 對象怎麼交代？看得出「為什麼是這些人」嗎？</p><textarea class="fin" data-k="a3_2" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">③ 工具或研究者角色交代了什麼？<span class="fhint">量化看信效度證據；質性看研究者位置與大綱來源。</span></p><textarea class="fin" data-k="a3_3" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">④ 分析步驟寫到多細？照著能重做嗎？</p><textarea class="fin" data-k="a3_4" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">⑤ 倫理與品質寫的是「本研究做了什麼」嗎？</p><textarea class="fin" data-k="a3_5" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">⑥ 回扣一二章：取徑、對象、工具能在前兩章找到理由嗎？<span class="fhint">往前翻第一、二章再回答。</span></p><textarea class="fin" data-k="a3_6" rows="3" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">寫得最好的一處／寫得不足的一處</p><textarea class="fin" data-k="a3_best" rows="3" placeholder="在這裡寫…"></textarea></div>
+<div class="pho" data-k="ph_a3" data-l="拍下小組討論的結果（白板、便利貼、紙本標註皆可）"><p class="fh">拍下小組討論的結果（白板、便利貼、紙本標註皆可）</p><div class="pbar"><label class="pb1">📷 拍照／選照片<input type="file" accept="image/*" multiple></label><span class="pmsg">照片會縮小後存在這支手機，不會上傳。</span></div><div class="pg"></div></div>
+</div>
+<span id="a4"></span>
+<h2 id="s6" class="h1">A4 先畫圖，再請 AI 檢視</h2>
+<div class="indbox"><span class="mode ind">👤 個人完成（前 10 分鐘禁用 AI）</span>
+<p class="note">六步：①研究問題寫在紙最上方 ②需要哪些概念（從第二章來）③概念間的關係（量化畫箭頭標假設；質性畫虛線）④資料從哪裡來（誰、多少人、為什麼是他們）⑤資料怎麼變成答案 ⑥回頭檢查：每個框、箭頭對得上第一章問題與第二章缺口嗎？畫不出的標「？」。</p>
+<div class="pho" data-k="ph_a4a" data-l="我的研究架構圖（紙本拍照）"><p class="fh">我的研究架構圖（紙本拍照）</p><div class="pbar"><label class="pb1">📷 拍照／選照片<input type="file" accept="image/*" multiple></label><span class="pmsg">照片會縮小後存在這支手機，不會上傳。</span></div><div class="pg"></div></div>
+<div class="pho" data-k="ph_a4b" data-l="我的研究流程圖（紙本拍照）"><p class="fh">我的研究流程圖（紙本拍照）</p><div class="pbar"><label class="pb1">📷 拍照／選照片<input type="file" accept="image/*" multiple></label><span class="pmsg">照片會縮小後存在這支手機，不會上傳。</span></div><div class="pg"></div></div>
+<div class="paste"><div class="ph"><span>📋 畫完才用：AI 檢視 prompt</span><button type="button" class="copy">複製</button></div><div class="pb"><p>以下是我的研究問題，以及我畫的研究架構圖與研究流程圖（照片，或逐框逐箭頭的文字轉述）。</p><p>請扮演方法論審查委員，檢視這兩張圖：</p><p>① 哪個框或箭頭與研究問題對不上？</p><p>② 哪個箭頭（關係或步驟）我沒有給出理由？</p><p>③ 以我的問題類型來看，流程缺了哪個必要環節？</p><p>③-2 我選的取徑、對象、資料蒐集方式，能不能回答研究問題與文獻缺口？斷在哪一環？</p><p>④ 最後提出兩個我必須回答的追問。</p><p>不要替我重畫，也不要直接給我一張「正確的圖」。</p><p>（研究問題：＿＿＿｜第二章整理出的文獻缺口，一句話：＿＿＿）</p></div></div>
+<div class="fld"><p class="fh">AI 說得對的一處</p><textarea class="fin" data-k="a4ok" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">AI 說錯或空泛的一處（你怎麼判斷的？）</p><textarea class="fin" data-k="a4bad" rows="2" placeholder="在這裡寫…"></textarea></div>
+<div class="fld"><p class="fh">AI 給我的兩個追問，與我的回答</p><textarea class="fin" data-k="a4q" rows="3" placeholder="在這裡寫…"></textarea></div>
+<div class="pho" data-k="ph_a4c" data-l="紅筆修圖後的照片（至少改一處）"><p class="fh">紅筆修圖後的照片（至少改一處）</p><div class="pbar"><label class="pb1">📷 拍照／選照片<input type="file" accept="image/*" multiple></label><span class="pmsg">照片會縮小後存在這支手機，不會上傳。</span></div><div class="pg"></div></div>
+</div>
+<h3 id="s7" class="h2">研究設計矩陣（一個研究問題一列；課後作業核心）</h3>
+<div class="indbox"><span class="mode ind">👤 個人完成｜可課後補完</span>
+<p class="fh">我的矩陣<span class="fhint">填不滿的格子就是「斷鏈」處；標「？」即可。</span></p><div class="rep" data-k="matrix" data-cols="6" data-start="3"><div class="tw"><table class="rtb"><thead><tr><th scope="col">研究問題（第一章）</th><th scope="col">依據的概念／文獻（第二章）</th><th scope="col">需要的資料</th><th scope="col">蒐集方式與對象</th><th scope="col">分析方式</th><th scope="col">回答的證據長什麼樣</th><th class="rmh"></th></tr></thead><tbody></tbody></table></div><button type="button" class="addr">＋ 再加一列</button></div>
+</div>
+<span id="a5"></span>
+<h2 id="s8" class="h1">A5 我中了哪一病？</h2>
+<div class="indbox"><span class="mode ind">👤 個人完成</span>
+<div class="fld chk"><p class="fh">勾出我目前的圖／草稿的毛病</p><ul class="cl"><li><label><input type="checkbox" data-k="c33"><span>型錄病<i>只堆定義，不給「為什麼是它」</i></span></label></li><li><label><input type="checkbox" data-k="c34"><span>錯配病<i>取樣與問題不符</i></span></label></li><li><label><input type="checkbox" data-k="c35"><span>一句帶過病<i>「以某軟體分析」就結束</i></span></label></li><li><label><input type="checkbox" data-k="c36"><span>抄原則病<i>倫理節只抄定義</i></span></label></li><li><label><input type="checkbox" data-k="c37"><span>斷鏈病<i>往前翻回不到第一章的問題與第二章的缺口</i></span></label></li></ul></div>
+<div class="fld"><p class="fh">我最先要修的一處</p><textarea class="fin" data-k="a5fix" rows="2" placeholder="在這裡寫…"></textarea></div>
+</div>
+<div class="sec9"></div>
+<h2 id="s9" class="h1">休息 10 分鐘：確認 MAXQDA 能開、自己的 W4 逐字稿在筆電裡</h2>
+<div class="warn"><p class="wh">⚠ 資料紅線</p><p>MAXQDA 本機版：資料留在自己電腦，可以放自己的逐字稿。</p><p>AI Assist／TeamCloud 等雲端功能：原始可識別資料一律不得使用。</p><p>同學的逐字稿只在課堂互看，不外流、不上傳外部 AI。</p></div>
+<span id="b2"></span>
+<h2 id="s10" class="h1">B2 MAXQDA 操作卡（看一步、做一步）</h2>
+<div class="indbox"><span class="mode ind">👤 個人跟做｜用老師給的範例稿</span>
+<p class="note">選單與按鈕名稱依 MAXQDA 版本略有差異，以現場示範為準。先認識四個視窗：文件系統（放資料）、代碼系統（放碼）、文件瀏覽器（在這裡編）、檢索段落（把同碼的段落撈出來）。</p>
+<div class="fld chk"><p class="fh">四個動作（做完一個勾一個；不計分）</p><ul class="cl"><li><label><input type="checkbox" data-k="c39"><span>動作 1　匯入並開啟<i>匯入文件（Word／可選字的 PDF）→ 在「文件系統」雙擊，內容出現在「文件瀏覽器」</i></span></label></li><li><label><input type="checkbox" data-k="c40"><span>動作 2　建碼並編碼<i>在「代碼系統」新增代碼；在文件瀏覽器反白一段話，拖到代碼上。碼名盡量用受訪者的原話（in-vivo）</i></span></label></li><li><label><input type="checkbox" data-k="c41"><span>動作 3　改碼併碼＋寫 memo<i>代碼可改名、拖曳歸組、合併；在一段文字旁新增 memo，寫「為什麼這段讓我有感」</i></span></label></li><li><label><input type="checkbox" data-k="c42"><span>動作 4　啟用後檢索<i>把要看的文件和代碼「啟用」（點它們的圖示），「檢索段落」才會列出所有同碼段落</i></span></label></li></ul></div>
+<details class="fold"><summary>卡關速查（先查這裡，再舉黃／紅杯）</summary><div class="fin">
+<div class="tw"><table><colgroup><col style="width:32.3%"><col style="width:67.7%"></colgroup><thead><tr><th scope="col">狀況</th><th scope="col">先試這個</th></tr></thead><tbody><tr><td>「檢索段落」一片空白</td><td>文件或代碼沒有「啟用」。確認兩者的圖示都已點亮。</td></tr><tr><td>PDF 不能反白選字</td><td>它是掃描／圖片檔。請改用 Word 版逐字稿，或先用範例稿跟做。</td></tr><tr><td>不小心拖錯碼</td><td>用復原（⌘Z／Ctrl+Z），或把該段從代碼上移除再重編。</td></tr><tr><td>碼越建越多、不知怎麼整理</td><td>先不管；B3 任務③再把相近的碼拖到同一組、併成 2–3 組。</td></tr><tr><td>編碼不知道取什麼名</td><td>用一個名詞片語描述「這段在講什麼」；或直接用受訪者的原話。</td></tr><tr><td>軟體打不開／試用過期</td><td>兩人一機，或用範例稿；W13 不需要現場操作。</td></tr></tbody></table></div>
+</div></details>
+</div>
+<span id="b3"></span>
+<h2 id="s11" class="h1">B3 編我自己的 W4 逐字稿</h2>
+<div class="indbox"><span class="mode ind">👤 個人完成</span>
+<div class="fld chk"><p class="fh">任務卡</p><ul class="cl"><li><label><input type="checkbox" data-k="c43"><span>① 建專案、匯入逐字稿</span></label></li><li><label><input type="checkbox" data-k="c44"><span>② 開放編碼至少 10 段</span></label></li><li><label><input type="checkbox" data-k="c45"><span>③ 把碼整理成 2–3 組</span></label></li><li><label><input type="checkbox" data-k="c46"><span>④ 對最有感的一段寫一則 memo</span></label></li></ul></div>
+<p class="fh">我的碼（碼名盡量用受訪者自己的話）</p><div class="rep" data-k="codes" data-cols="3" data-start="5"><div class="tw"><table class="rtb"><thead><tr><th scope="col">碼名</th><th scope="col">對應的逐字稿片語</th><th scope="col">歸入哪一組</th><th class="rmh"></th></tr></thead><tbody></tbody></table></div><button type="button" class="addr">＋ 再加一列</button></div>
+<div class="fld"><p class="fh">我的 memo<span class="fhint">這一段為什麼讓我有感？我猜它在說什麼？</span></p><textarea class="fin" data-k="b3memo" rows="4" placeholder="在這裡寫…"></textarea></div>
+<div class="pho" data-k="ph_b3" data-l="代碼系統／編碼段落的截圖"><p class="fh">代碼系統／編碼段落的截圖</p><div class="pbar"><label class="pb1">📷 拍照／選照片<input type="file" accept="image/*" multiple></label><span class="pmsg">照片會縮小後存在這支手機，不會上傳。</span></div><div class="pg"></div></div>
+</div>
+<span id="b4"></span>
+<h2 id="s12" class="h1">B4 兩兩比碼（跨案比較）</h2>
+<div class="grpbox"><span class="mode grp">👥 兩人討論後填入</span>
+<div class="fld"><p class="fh">搭檔是誰？</p><textarea class="fin" data-k="b4who" rows="1" placeholder="在這裡寫…"></textarea></div>
+<p class="fh">兩份稿都出現的現象，我們各取了什麼碼名？</p><div class="rep" data-k="b4t" data-cols="4" data-start="3"><div class="tw"><table class="rtb"><thead><tr><th scope="col">現象</th><th scope="col">我的碼名</th><th scope="col">對方的碼名</th><th scope="col">一樣嗎？為什麼不同？</th><th class="rmh"></th></tr></thead><tbody></tbody></table></div><button type="button" class="addr">＋ 再加一列</button></div>
+<div class="fld"><p class="fh">討論：如果交給 AI 編碼，編出來的是誰的觀點？</p><textarea class="fin" data-k="b4ai" rows="3" placeholder="在這裡寫…"></textarea></div>
+<div class="pho" data-k="ph_b4" data-l="兩人的比碼結果（拍照）"><p class="fh">兩人的比碼結果（拍照）</p><div class="pbar"><label class="pb1">📷 拍照／選照片<input type="file" accept="image/*" multiple></label><span class="pmsg">照片會縮小後存在這支手機，不會上傳。</span></div><div class="pg"></div></div>
+</div>
+<div class="indbox"><span class="mode ind">👤 Exit ticket（個人）</span>
+<div class="fld"><p class="fh">第三章「資料分析」一節，我會怎麼交代 MAXQDA？（一句話）</p><textarea class="fin" data-k="exit" rows="2" placeholder="在這裡寫…"></textarea></div>
+</div>
+<h2 id="s13" class="h1">課後</h2>
+<ol class="lst"><li><b>矩陣完成：</b>補完上面的研究設計矩陣，確認每一列與第一、二章對得上。</li><li><b>寫成文字：</b>把架構圖與流程圖修整後寫成方法選擇理由一段＋「資料分析」一節草稿，W12 帶來討論。</li><li><b>MAXQDA 選做：</b>編到 20 段、2 則 memo；試用期約 11/17 到期，之前截圖或匯出代碼系統留存，W13 帶來討論。</li></ol>
+<p class="note">繳交方式與期限依 Moodle 公告。</p>
+<div class="xbar"><button type="button" id="exportbtn">⬇ 匯出我的成果（含照片）</button><span>下載一個 html 檔，內含你的文字、表格與照片；用瀏覽器開啟確認內容後，上傳到 Moodle。</span></div>
+  </main>
+</div>
+<script>
+(function(){
+  var root=document.documentElement;
+  try{var t=localStorage.getItem('w3-theme');if(t)root.setAttribute('data-theme',t)}catch(e){}
+  document.getElementById('theme').onclick=function(){
+    var dark=root.getAttribute('data-theme')==='dark'||(!root.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);
+    var nt=dark?'light':'dark';root.setAttribute('data-theme',nt);try{localStorage.setItem('w3-theme',nt)}catch(e){}
+  };
+  document.getElementById('print').onclick=function(){
+    [].forEach.call(document.querySelectorAll('details'),function(d){d.open=true});window.print();
+  };
+  // 寬螢幕展開目錄（手機維持收起）；展開後版面會變，若網址帶 #錨點就重新對齊
+  if(!matchMedia('(max-width:900px)').matches){var tb=document.querySelector('.tocbox');if(tb)tb.open=true}
+  if(location.hash){var el=document.getElementById(location.hash.slice(1));if(el)el.scrollIntoView()}
+  // 複製 prompt
+  [].forEach.call(document.querySelectorAll('.paste'),function(box){
+    var b=box.querySelector('.copy');
+    b.onclick=function(){
+      var txt=[].map.call(box.querySelectorAll('.pb p'),function(p){return p.textContent}).join('\n');
+      function ok(){b.textContent='已複製';b.classList.add('done');setTimeout(function(){b.textContent='複製';b.classList.remove('done')},1600)}
+      function fallback(){var r=document.createRange();r.selectNodeContents(box.querySelector('.pb'));
+        var s=getSelection();s.removeAllRanges();s.addRange(r);
+        try{document.execCommand('copy');ok()}catch(e){b.textContent='已選取，請按 ⌘C'}}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fallback)}else{fallback()}
+    };
+  });
+  // 複製單一指令
+  [].forEach.call(document.querySelectorAll('.copy1'),function(b){b.onclick=function(){
+    var txt=b.getAttribute('data-t');
+    function ok(){b.textContent='已複製';b.classList.add('done');setTimeout(function(){b.textContent='複製';b.classList.remove('done')},1400)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,function(){b.textContent='請手動選取'})}else{b.textContent='請手動選取'}
+  }});
+  // 目錄高亮
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
+      links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id)})})},{rootMargin:'-20% 0px -70% 0px'});
+    links.forEach(function(a){var el=document.getElementById(a.getAttribute('href').slice(1));if(el)io.observe(el)});
+  }
+
+  // ===== 學習單：彈性填寫欄位（2026-09-22 追加）=====
+  // localStorage 安全存取層：瀏覽器封鎖網站資料時整段不得拋錯（沿用 build_web_v8 的作法）
+  var KEY='w09-sheet', LS=(function(){
+    var ok=false;try{localStorage.setItem('__t','1');localStorage.removeItem('__t');ok=true}catch(e){}
+    return {ok:ok,
+      get:function(){if(!ok)return{};try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}},
+      set:function(o){if(!ok)return;try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}},
+      del:function(){if(!ok)return;try{localStorage.removeItem(KEY)}catch(e){}}};
+  })();
+  var DB=LS.get(), tmr=null;
+  function save(){clearTimeout(tmr);tmr=setTimeout(function(){LS.set(DB);flash()},250)}
+  var stat=document.getElementById('sstat');
+  function flash(){if(!stat||!LS.ok)return;var o=stat.textContent;stat.textContent='已儲存';
+    clearTimeout(flash.t);flash.t=setTimeout(function(){stat.textContent=o},1100)}
+  var saver=document.querySelector('.saver');
+  if(saver&&!LS.ok){saver.classList.add('off');
+    if(stat)stat.textContent='這個瀏覽器封鎖了網站資料，填寫不會被記住（其他功能不受影響）。列印或另存前請先確認內容還在。';
+    var cb=document.getElementById('clearall');if(cb)cb.disabled=true}
+
+  function grow(el){el.style.height='auto';el.style.height=(el.scrollHeight+2)+'px'}
+  function growAll(){[].forEach.call(document.querySelectorAll('textarea'),grow)}
+
+  // 文字欄位：還原 → 自動長高 → 輸入即存
+  [].forEach.call(document.querySelectorAll('textarea.fin'),function(el){
+    var k=el.getAttribute('data-k');if(DB[k])el.value=DB[k];grow(el);
+    el.addEventListener('input',function(){grow(el);DB[k]=el.value;if(!el.value)delete DB[k];save()});
+  });
+  // 勾選框
+  [].forEach.call(document.querySelectorAll('input[type=checkbox][data-k]'),function(el){
+    var k=el.getAttribute('data-k');if(DB[k])el.checked=true;
+    el.addEventListener('change',function(){if(el.checked){DB[k]=1}else{delete DB[k]}save()});
+  });
+  // 評量格：點一下循環 v → △ → × → 空白
+  var CYC=['v','△','×'];
+  [].forEach.call(document.querySelectorAll('.rb'),function(b){
+    var k=b.getAttribute('data-k');
+    function paint(v){if(v){b.textContent=v;b.setAttribute('data-v',v)}else{b.textContent='·';b.removeAttribute('data-v')}}
+    paint(DB[k]);
+    b.onclick=function(){var i=CYC.indexOf(DB[k]||'');var nv=CYC[i+1]||'';
+      if(nv){DB[k]=nv}else{delete DB[k]}paint(nv);save()};
+  });
+  // 可增減列數的表格
+  [].forEach.call(document.querySelectorAll('.rep'),function(rep){
+    var k=rep.getAttribute('data-k'), nc=+rep.getAttribute('data-cols');
+    var tb=rep.querySelector('tbody');
+    var heads=[].map.call(rep.querySelectorAll('thead th'),function(th){
+      return th.textContent.replace(/"/g,'&quot;')}).slice(0,nc);
+    function cells(row,vals){
+      var h='';for(var c=0;c<nc;c++){h+='<td data-l="'+heads[c]+'"><textarea rows="1" data-c="'+c+'">'+
+        ((vals&&vals[c]?vals[c]:'').replace(/[&<>]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]}))+'</textarea></td>'}
+      return h+'<td class="rmc"><button type="button" class="rm" aria-label="刪除這一列">✕</button></td>';
+    }
+    function collect(){
+      DB[k]=[].map.call(tb.rows,function(tr){return [].map.call(tr.querySelectorAll('textarea'),function(x){return x.value})});
+      if(!DB[k].some(function(r){return r.some(function(v){return v})}))delete DB[k];
+      save();
+    }
+    function addRow(vals){
+      var tr=tb.insertRow(-1);tr.innerHTML=cells(tr,vals);
+      [].forEach.call(tr.querySelectorAll('textarea'),function(x){grow(x);
+        x.addEventListener('input',function(){grow(x);collect()})});
+      tr.querySelector('.rm').onclick=function(){
+        if(tb.rows.length<=1){[].forEach.call(tr.querySelectorAll('textarea'),function(x){x.value='';grow(x)})}
+        else{tr.parentNode.removeChild(tr)}collect()};
+      return tr;
+    }
+    var saved=DB[k];
+    if(saved&&saved.length){saved.forEach(function(r){addRow(r)})}
+    else{for(var i=0;i<(+rep.getAttribute('data-start')||3);i++)addRow(null)}
+    rep.querySelector('.addr').onclick=function(){var tr=addRow(null);var f=tr.querySelector('textarea');if(f)f.focus()};
+  });
+  // 抽狀況卡
+  var draw=document.getElementById('draw');
+  if(draw){draw.onclick=function(){
+    var cs=[].slice.call(document.querySelectorAll('.card'));if(!cs.length)return;
+    var i=Math.floor(Math.random()*cs.length);
+    cs.forEach(function(c,j){c.classList.toggle('hit',j===i)});
+    var out=document.getElementById('drawout');
+    if(out)out.textContent='抽到 '+cs[i].querySelector('.cno').textContent+'　'+cs[i].querySelector('.ct').textContent;
+    cs[i].scrollIntoView({block:'nearest',behavior:'smooth'});
+  }}
+  // 清除
+  var clr=document.getElementById('clearall');
+  if(clr)clr.onclick=function(){
+    if(!confirm('清除這一頁所有填寫內容？此動作無法復原。'))return;
+    DB={};LS.del();
+    [].forEach.call(document.querySelectorAll('textarea'),function(x){x.value='';grow(x)});
+    [].forEach.call(document.querySelectorAll('input[type=checkbox][data-k]'),function(x){x.checked=false});
+    [].forEach.call(document.querySelectorAll('.rb'),function(b){b.textContent='·';b.removeAttribute('data-v')});
+    if(stat)stat.textContent='已清除';
+  };
+  // 字型載入後行高會變，重算一次高度；列印前也重算
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(growAll);
+  addEventListener('load',growAll);addEventListener('beforeprint',growAll);
+
+  // ===== W9：照片附加（壓縮後存 localStorage）與成果匯出 =====
+  function shrink(file,cb){
+    var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){
+      var M=1000,s=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement('canvas');
+      c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+      cb(c.toDataURL('image/jpeg',0.65))};im.onerror=function(){cb(null)};im.src=fr.result};
+    fr.onerror=function(){cb(null)};fr.readAsDataURL(file)}
+  function quotaOK(){if(!LS.ok)return true;try{localStorage.setItem(KEY,JSON.stringify(DB));return true}catch(e){return false}}
+  [].forEach.call(document.querySelectorAll('.pho'),function(box){
+    var k=box.getAttribute('data-k'),g=box.querySelector('.pg'),msg=box.querySelector('.pmsg'),inp=box.querySelector('input');
+    function paint(){g.innerHTML='';(DB[k]||[]).forEach(function(u,i){
+      var d=document.createElement('div');d.className='pi';
+      d.innerHTML='<img alt="已附加的照片 '+(i+1)+'"><button type="button" aria-label="移除這張照片">✕</button>';
+      d.querySelector('img').src=u;
+      d.querySelector('button').onclick=function(){DB[k].splice(i,1);if(!DB[k].length)delete DB[k];save();paint()};
+      g.appendChild(d)})}
+    box._paint=paint;paint();
+    inp.onchange=function(){var fs=[].slice.call(inp.files||[]);inp.value='';
+      fs.forEach(function(f){shrink(f,function(u){
+        if(!u){msg.textContent='這張圖讀不出來，請換一張。';return}
+        (DB[k]=DB[k]||[]).push(u);
+        if(!quotaOK()){DB[k].pop();if(!DB[k].length)delete DB[k];msg.textContent='瀏覽器空間不足，這張沒有被記住。請先按「匯出我的成果」再清掉舊照片。';return}
+        msg.textContent='已附加（只存在這支手機／這台電腦）';save();paint()})})};
+  });
+  var clr2=document.getElementById('clearall');
+  if(clr2)clr2.addEventListener('click',function(){
+    if(Object.keys(DB).length)return;
+    [].forEach.call(document.querySelectorAll('.pho'),function(b){b._paint&&b._paint()});
+    [].forEach.call(document.querySelectorAll('.rep'),function(r){var t=r.querySelector('tbody');if(t)[].forEach.call(t.querySelectorAll('textarea'),function(x){x.value='';grow(x)})});
+  });
+  function X(s){return String(s).replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]})}
+  var ex=document.getElementById('exportbtn');
+  if(ex)ex.onclick=function(){
+    var out='',main=document.querySelector('main.doc');
+    [].forEach.call(main.children,function(n){
+      if(/^H[12]$/.test(n.tagName)){out+='<h'+n.tagName[1]+'>'+X(n.textContent)+'</h'+n.tagName[1]+'>';return}
+      var all=n.querySelectorAll?[n].concat([].slice.call(n.querySelectorAll('.fld,.rep,.pho,.mode.xm'))):[];
+      all.forEach(function(e){
+        if(!e.classList)return;
+        var lab=e.querySelector('.fh');lab=lab?X(lab.childNodes[0].textContent):'';
+        if(e.classList.contains('rep')&&e.getAttribute('data-k')){
+          var rows=(DB[e.getAttribute('data-k')]||[]);if(!rows.length)return;
+          var th=[].map.call(e.querySelectorAll('thead th'),function(t){return X(t.textContent)}).filter(Boolean);
+          out+='<p><b>'+X(e.previousElementSibling&&e.previousElementSibling.classList.contains('fh')?e.previousElementSibling.childNodes[0].textContent:'')+'</b></p><table><tr>'+th.map(function(t){return '<th>'+t+'</th>'}).join('')+'</tr>'+
+            rows.map(function(r){return '<tr>'+r.map(function(v){return '<td>'+X(v).replace(/\n/g,'<br>')+'</td>'}).join('')+'</tr>'}).join('')+'</table>';
+        }else if(e.classList.contains('pho')){
+          var ps=DB[e.getAttribute('data-k')]||[];if(!ps.length)return;
+          out+='<p><b>📷 '+X(e.getAttribute('data-l')||'')+'</b></p>'+ps.map(function(u){return '<img src="'+u+'" style="max-width:100%;margin:4px 0;border:1px solid #ccc">'}).join('');
+        }else if(e.classList.contains('chk')){
+          var cs=[].filter.call(e.querySelectorAll('input:checked'),function(){return true}).map(function(c){return '<li>'+X(c.parentNode.textContent)+'</li>'});
+          if(cs.length)out+='<p><b>'+lab+'</b></p><ul>'+cs.join('')+'</ul>';
+        }else if(e.classList.contains('fld')){
+          var ta=e.querySelector('textarea');if(ta&&ta.value.trim())out+='<p><b>'+lab+'</b><br>'+X(ta.value).replace(/\n/g,'<br>')+'</p>';
+        }
+      });
+    });
+    var h='<!doctype html><meta charset="utf-8"><title>W9 學習單成果</title><style>body{font:15px/1.7 "PingFang TC",sans-serif;max-width:820px;margin:20px auto;padding:0 16px}table{border-collapse:collapse;width:100%}td,th{border:1px solid #999;padding:4px 8px;vertical-align:top}th{background:#eee}h1,h2{color:#17365D}</style><h1>W9 學習單成果（匯出於 '+new Date().toLocaleString()+'）</h1>'+out;
+    var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([h],{type:'text/html'}));
+    a.download='W9-學習單成果.html';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500);
+  };
+})();
+</script>
+</body>
+</html>

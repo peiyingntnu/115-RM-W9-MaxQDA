@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>研究設計與資料分析讀本整理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --ground:#F4F6FA; --paper:#FFFFFF; --ink:#1F2E4A; --title:#17365D; --mute:#5E6E85; --line:#DCE3EE;
+  --zebra:#F5F7FB; --acc:#0E7C74; --acc-soft:#E1F3F1; --navy:#1F3864;
+  --paste:#EFF4FB; --paste-line:#C9D7EC; --warn:#FFF3DF; --warn-line:#F0C98A; --warn-ink:#7A4A00;
+  --goal:#1E6B4F; --ok:#1E6B4F; --ok-bg:#E4F1EA; --bad:#A02020; --bad-bg:#FAE9E9;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0D131D; --paper:#141C28; --ink:#D6DFEC; --title:#EEF3FA; --mute:#95A5BA; --line:#2A3647;
+    --zebra:#172131; --acc:#5CC9BD; --acc-soft:#16302E; --navy:#9DBBE6;
+    --paste:#16233A; --paste-line:#2E4468; --warn:#34290F; --warn-line:#6B5220; --warn-ink:#F3D493;
+    --goal:#7FD3AA; --ok:#7FD3AA; --ok-bg:#16302E; --bad:#F2A0A0; --bad-bg:#3A1C1C;
+  color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0D131D; --paper:#141C28; --ink:#D6DFEC; --title:#EEF3FA; --mute:#95A5BA; --line:#2A3647;
+  --zebra:#172131; --acc:#5CC9BD; --acc-soft:#16302E; --navy:#9DBBE6;
+  --paste:#16233A; --paste-line:#2E4468; --warn:#34290F; --warn-line:#6B5220; --warn-ink:#F3D493;
+  --goal:#7FD3AA; --ok:#7FD3AA; --ok-bg:#16302E; --bad:#F2A0A0; --bad-bg:#3A1C1C;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:64px}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,sans-serif;
+  font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}
+a{color:var(--acc)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #F2B705;outline-offset:2px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--ground) 92%,transparent);
+  backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.topin{max-width:1180px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.crumb{font-size:14px;color:var(--mute)}
+.sp{flex:1}
+.top button,.top .lk{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:3px 11px;font-size:14px;
+  text-decoration:none;color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:24px 60px;display:grid;
+  grid-template-columns:250px minmax(0,1fr);gap:32px;align-items:start}
+.side{position:sticky;top:70px;max-height:calc(100dvh - 90px);overflow:auto}
+.tocbox summary{font-weight:700;color:var(--title);cursor:pointer;margin-bottom:6px}
+.toc{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.5}
+.toc li{margin:0}
+.toc a{display:block;color:var(--mute);text-decoration:none;padding:4px 10px;border-left:2px solid transparent}
+.toc a:hover{color:var(--ink)}
+.toc a.on{color:var(--acc);border-left-color:var(--acc);font-weight:700}
+.toc .t1 a{color:var(--ink);font-weight:700;margin-top:8px}
+.toc .t2 a{padding-left:22px;font-size:13px}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:36px clamp(18px,4vw,52px) 52px;min-width:0}
+.dh{border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:8px}
+.eyebrow{font-size:13px;letter-spacing:.06em;color:var(--acc);font-weight:700}
+.dh h1{margin:6px 0 8px;font-size:clamp(24px,3.4vw,32px);line-height:1.3;color:var(--title);font-weight:900;text-wrap:balance}
+.subl{margin:0;color:var(--mute);font-size:14px}
+.h1{font-size:22px;color:var(--title);margin:42px 0 12px;padding-top:14px;border-top:3px solid var(--navy);font-weight:900}
+.h2{font-size:18px;color:var(--title);margin:28px 0 8px;display:flex;align-items:center;gap:10px;font-weight:700;text-wrap:balance}
+.qtag{background:var(--q);color:#fff;font-size:13px;font-weight:900;border-radius:999px;padding:1px 10px;flex:none}
+p{margin:8px 0;max-width:68ch}
+.note{font-size:14px;color:var(--mute)}
+.goal{background:var(--acc-soft);border-radius:10px;padding:10px 14px;color:var(--goal);max-width:none}
+.goal b{margin-right:10px}
+.lst{margin:8px 0;padding-left:1.4em;max-width:72ch}
+.lst li{margin:4px 0}
+.lst .lv2{list-style:circle;margin-left:1.4em;color:var(--ink)}
+.lst li b{color:var(--title)}
+.dim{color:var(--mute)}
+.paste{border:1px solid var(--paste-line);background:var(--paste);border-radius:12px;margin:14px 0;overflow:hidden}
+.ph{display:flex;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--paste-line);font-size:13px;font-weight:700;color:var(--navy)}
+.ph span{flex:1}
+.copy{border:1px solid var(--paste-line);background:var(--paper);border-radius:7px;padding:2px 12px;font-size:13px}
+.copy.done{color:var(--acc);border-color:var(--acc)}
+.pb{padding:10px 16px 12px;font-size:15px}
+.pb p{margin:4px 0;max-width:none}
+.warn{background:var(--warn);border:1px solid var(--warn-line);border-radius:12px;padding:10px 16px;margin:14px 0;color:var(--warn-ink)}
+.warn p{max-width:none}
+.wh{font-weight:700}
+.tw{overflow-x:auto;margin:12px 0;border:1px solid var(--line);border-radius:10px}
+table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.55;min-width:560px}
+th{background:var(--navy);color:#fff;text-align:left;padding:8px 10px;font-weight:700}
+:root[data-theme="dark"] th{color:#0D131D}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) th{color:#0D131D}}
+td{padding:7px 10px;border-top:1px solid var(--line);vertical-align:top}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+.blank{display:block;min-height:2.6em}
+.cap{font-weight:700;color:var(--title)}
+.fold{border:1px dashed var(--acc);border-radius:12px;margin:18px 0;padding:0 16px}
+.fold summary{cursor:pointer;padding:10px 0;font-weight:700;color:var(--acc)}
+.fold[open]{padding-bottom:10px}
+.triple{list-style:none;margin:14px 0;padding:0;display:flex;flex-direction:column;gap:12px}
+.trow{display:grid;grid-template-columns:44px 1fr 1.9fr 1.2fr;gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--paper)}
+.tno{background:var(--acc-soft);color:var(--acc);font-weight:900;font-size:15px;display:flex;align-items:flex-start;justify-content:center;padding-top:14px}
+.tc{padding:10px 14px;border-left:1px solid var(--line);min-width:0}
+.tc p{margin:4px 0;max-width:none;font-size:15px}
+.tl{display:block;font-size:12px;letter-spacing:.06em;color:var(--mute);font-weight:700;margin-bottom:2px}
+.tc.ai{background:var(--zebra)}
+.tin{margin:4px 0 0}
+.tin.paste{margin:4px 0 0}
+.tin .ph{padding:5px 10px}
+.tin .pb{padding:6px 12px 8px;font-size:14.5px}
+.tin.self{border:1px dashed var(--line);border-radius:10px;padding:6px 10px}
+.tin.self .pb{padding:4px 0 0}
+.verb{background:var(--navy);color:var(--paper);border-radius:6px;padding:1px 9px;font-size:13px;font-weight:700;flex:none}
+.noai{margin-left:8px;font-size:12px;color:var(--warn-ink);background:var(--warn);border-radius:999px;padding:1px 9px}
+.ph .verb{flex:none}
+.ph .verb+span{flex:1}
+.cmd{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:2px 0 6px}
+.cmd .tl{margin:0}
+.cmd code{font-family:inherit;font-weight:700;background:var(--acc-soft);color:var(--acc);border-radius:8px;padding:2px 10px;font-size:15px}
+.copy1{border:1px solid var(--line);background:var(--paper);border-radius:7px;padding:1px 10px;font-size:13px}
+.copy1.done{color:var(--acc);border-color:var(--acc)}
+.or{font-size:12px;color:var(--mute)}
+@media (max-width:1180px) and (min-width:761px){
+  .trow{grid-template-columns:44px 1fr 1fr}
+  .tno{grid-row:1/3}
+  .tc.need{grid-column:2;grid-row:1}
+  .tc.ai{grid-column:3;grid-row:1}
+  .tc.inp{grid-column:2/4;grid-row:2;border-top:1px solid var(--line)}
+}
+@media (max-width:760px){
+  .trow{grid-template-columns:1fr}
+  .tno{justify-content:flex-start;padding:8px 14px}
+  .tc{border-left:0;border-top:1px solid var(--line)}
+}
+@media (max-width:900px){
+  .wrap{grid-template-columns:1fr;gap:14px}
+  .side{position:static;max-height:none}
+  .tocbox:not([open]){margin-bottom:0}
+}
+@media print{
+  .top,.side{display:none} .wrap{display:block;padding:0} .doc{border:0;padding:0}
+  details.fold{border:0} details.fold>*{display:block}
+  .copy{display:none}
+}
+
+/* ===== 學習單：彈性填寫欄位（2026-09-22 追加） ===== */
+.saver{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--acc-soft);
+  border:1px solid var(--acc);border-radius:12px;padding:9px 14px;margin:14px 0;font-size:.86rem;color:var(--ink)}
+.saver .sdot{width:9px;height:9px;border-radius:50%;background:var(--acc);flex:none}
+.saver.off{background:var(--warn);border-color:var(--warn-line);color:var(--warn-ink)}
+.saver.off .sdot{background:var(--warn-line)}
+.saver button{margin-left:auto;font:inherit;padding:4px 12px;border:1px solid var(--line);
+  border-radius:999px;background:var(--paper);color:var(--ink);cursor:pointer}
+.saver button:disabled{opacity:.45;cursor:not-allowed}
+.fld{margin:14px 0}
+.fh{margin:0 0 6px;font-weight:700;color:var(--title);font-size:.95rem;display:flex;
+  gap:8px;align-items:baseline;flex-wrap:wrap}
+.fhint{font-weight:400;font-size:.84rem;color:var(--mute)}
+.fin{display:block;width:100%;box-sizing:border-box;font:inherit;line-height:1.75;
+  color:var(--ink);background:var(--paste);border:1px solid var(--paste-line);border-radius:10px;
+  padding:10px 13px;resize:none;overflow:hidden;min-height:3.2em}
+.fin:focus{outline:2px solid var(--acc);outline-offset:1px;background:var(--paper)}
+.fin::placeholder{color:var(--mute);opacity:.65}
+.chk .cl{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.chk .cl li{margin:0}
+.chk label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;background:var(--zebra);
+  border:1px solid var(--line);border-radius:10px;padding:9px 13px}
+.chk input{margin:.28em 0 0;width:17px;height:17px;flex:none;accent-color:var(--acc)}
+.chk input:checked+span{color:var(--mute);text-decoration:line-through}
+.chk i{display:block;font-style:normal;font-size:.85rem;color:var(--mute);margin-top:2px;text-decoration:none}
+table.rt thead th{word-break:keep-all;font-size:.82rem;line-height:1.45}
+table.rt td.rc{padding:0;text-align:center}
+table.rt .rb{width:100%;min-height:42px;font:inherit;font-size:1.12rem;font-weight:700;border:0;
+  background:none;color:var(--mute);cursor:pointer}
+table.rt .rb[data-v="v"]{color:var(--ok);background:var(--ok-bg)}
+table.rt .rb[data-v="△"]{color:var(--warn-ink);background:var(--warn)}
+table.rt .rb[data-v="×"]{color:var(--bad);background:var(--bad-bg)}
+table.rt tbody th{background:var(--zebra);color:var(--title);text-align:left;white-space:nowrap}
+.rk{font-weight:400;color:var(--mute);font-size:.84rem;margin:0 0 6px}
+.cardwrap{margin:14px 0}
+.drawb{font:inherit;font-weight:700;padding:9px 18px;border-radius:999px;border:1px solid var(--acc);
+  background:var(--acc);color:#fff;cursor:pointer}
+.drawout{margin-left:10px;font-weight:700;color:var(--title)}
+.cards{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px;
+  grid-template-columns:repeat(auto-fit,minmax(248px,1fr))}
+.card{margin:0;border:1px solid var(--line);border-left:5px solid var(--c);border-radius:12px;
+  padding:12px 15px;background:var(--paper);transition:box-shadow .2s,transform .2s;
+  display:flex;flex-direction:column}
+.card.hit{box-shadow:0 0 0 3px var(--c);transform:translateY(-2px)}
+.card .cno{margin:0;font-size:1.5rem;font-weight:900;color:var(--c);line-height:1}
+.card .ct{margin:2px 0 2px;font-weight:700;color:var(--title)}
+.card .cn{margin:0 0 8px;font-size:.84rem;color:var(--mute)}
+.card .cl{margin:0 0 4px;font-size:.8rem;font-weight:700;color:var(--c);letter-spacing:.04em}
+.card ul{margin:0;padding-left:1.1em;font-size:.89rem}
+.card ul li{margin:3px 0}
+.cdone{display:flex;gap:8px;align-items:center;margin-top:auto;padding-top:9px;
+  border-top:1px dashed var(--line);font-size:.85rem;cursor:pointer;color:var(--mute)}
+.cdone input{width:16px;height:16px;accent-color:var(--acc)}
+.rep{margin:4px 0 14px}
+table.rtb td{padding:0;vertical-align:top}
+table.rtb td textarea{display:block;width:100%;box-sizing:border-box;font:inherit;font-size:.92rem;
+  line-height:1.65;border:0;background:none;color:var(--ink);padding:8px 10px;resize:none;
+  overflow:hidden;min-height:2.6em}
+table.rtb td textarea:focus{outline:2px solid var(--acc);outline-offset:-2px;background:var(--paper)}
+table.rtb .rmh,table.rtb .rmc{width:34px;text-align:center}
+table.rtb .rm{font:inherit;border:0;background:none;color:var(--mute);cursor:pointer;
+  font-size:1.05rem;line-height:1;padding:6px}
+table.rtb .rm:hover{color:var(--bad)}
+.addr{font:inherit;font-size:.88rem;margin-top:8px;padding:6px 14px;border-radius:999px;
+  border:1px dashed var(--acc);background:none;color:var(--acc);cursor:pointer}
+
+
+.pl{margin:10px 0}
+.inl{color:var(--acc);font-weight:700;text-decoration:none;border-bottom:2px solid var(--acc-soft)}
+.inl:hover{border-bottom-color:var(--acc)}
+/* 評量表：橫向捲動時左欄跟著留在畫面上，才知道自己在填哪一列 */
+table.rt tbody th{position:sticky;left:0;z-index:1;box-shadow:1px 0 0 var(--line)}
+/* 可增減表格：窄螢幕改為一列一張卡，欄名變成欄位上方的標籤（手機打字才不用左右捲） */
+@media (max-width:700px){
+  .rep .tw{overflow:visible}
+  .rep table.rtb,.rep table.rtb tbody,.rep table.rtb tr,.rep table.rtb td{display:block;width:auto;
+    min-width:0}   /* 蓋掉基礎 table{min-width:560px}，否則堆疊後仍會撐出橫向捲動 */
+  .rep table.rtb thead{display:none}
+  .rep table.rtb tr{position:relative;border:1px solid var(--line);border-radius:10px;
+    background:var(--zebra);padding:8px 10px 6px;margin:0 0 10px}
+  .rep table.rtb td{border:0;padding:0 0 7px}
+  .rep table.rtb td::before{content:attr(data-l);display:block;font-size:.78rem;font-weight:700;
+    color:var(--mute);margin:0 0 2px}
+  .rep table.rtb td textarea{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:7px 9px}
+  .rep table.rtb td.rmc{position:absolute;top:4px;right:4px;width:auto;padding:0}
+  .rep table.rtb td.rmc::before{content:none}
+}
+@media print{
+  .saver,.drawb,.drawout,.addr,.rm,.rmh,.rmc{display:none!important}
+  .fin,table.rtb td textarea{background:none;border-color:#999;
+    background-image:repeating-linear-gradient(transparent,transparent 1.74em,#CBD2DE 1.74em,#CBD2DE calc(1.74em + 1px))}
+  .fin{min-height:5.3em}
+  .card{break-inside:avoid;border-color:#999}
+  .card.hit{box-shadow:none}
+  table.rt .rb{color:#333}
+}
+</style>
+</head>
+<body>
+<div class="top"><div class="topin"><span class="crumb">學生用｜讀本整理</span>
+<span class="sp"></span><a class="lk" href="index.html">🧩 W9 學習單</a><a class="lk" href="maxqda.html">🧰 MAXQDA SOP</a><button type="button" id="theme" aria-label="切換深淺色">◐</button>
+<button type="button" id="print">列印</button></div></div>
+<div class="wrap">
+  <aside class="side"><details class="tocbox"><summary>目錄</summary><ol class="toc"><li class="t1"><a href="#s1">零、先看這一頁：五份讀本怎麼讀</a></li><li class="t2"><a href="#s2">讀本 × 第三章：每一節去哪裡找根據</a></li><li class="t1"><a href="#s3">一、Babbie 第 4 章　研究設計（pp. 133–185）</a></li><li class="t2"><a href="#s4">閱讀地圖</a></li><li class="t2"><a href="#s5">1. 研究的三個目的（pp. 136–140）</a></li><li class="t2"><a href="#s6">2. 個案解釋與通則解釋（pp. 140–146）</a></li><li class="t2"><a href="#s7">3. 分析單元（pp. 146–153）★</a></li><li class="t2"><a href="#s8">4. 區位謬誤與化約論（pp. 153–157）★</a></li><li class="t2"><a href="#s9">5. 時間面向（pp. 157–166）</a></li><li class="t2"><a href="#s10">6. 如何設計研究計畫（pp. 167–177）★★</a></li><li class="t2"><a href="#s11">7. 研究計畫書的要素（pp. 177–180）★★</a></li><li class="t2"><a href="#s12">Babbie 第 4 章：讀完該能回答的問題</a></li><li class="t1"><a href="#s13">二、Neuman 第 6 章　研究設計的策略（pp. 223–266）</a></li><li class="t2"><a href="#s14">閱讀地圖</a></li><li class="t2"><a href="#s15">1. 三角檢證（pp. 224–226）</a></li><li class="t2"><a href="#s16">2. 質化與量化的根本差異（pp. 226–238；表 6.1 p. 238）</a></li><li class="t2"><a href="#s17">3. 質化設計的關鍵概念（pp. 238–243）</a></li><li class="t2"><a href="#s18">4. 解釋時的五種錯誤（表 6.2 p. 259；圖 6.5 p. 260）★★</a></li><li class="t2"><a href="#s19">5. 從研究問題到假設（pp. 259–261）</a></li><li class="t1"><a href="#s20">三、兩章對照：同一個概念，兩本書怎麼說</a></li><li class="t1"><a href="#s21">四、質性軌：Neuman 第 15 章　質化資料分析（pp. 669–716）</a></li><li class="t1"><a href="#s22">五、量化軌：Neuman 第 12 章　量化資料分析（pp. 503–548）</a></li><li class="t1"><a href="#s23">六、個案軌：Yin（2009）Ch.5　Analyzing Case Study Evidence</a></li><li class="t1"><a href="#s24">七、常見誤解與自我檢核</a></li><li class="t2"><a href="#s25">讀完後，用自己的研究回答</a></li></ol></details></aside>
+  <main class="doc">
+    <header class="dh"><span class="eyebrow">115-1 教育與社會科學研究法｜研究設計與資料分析</span><h1>研究設計與資料分析：讀本整理</h1><p class="subl">Babbie 第 4 章　研究設計｜Neuman 第 6 章　研究設計的策略｜質性 Neuman 第 15 章｜量化 Neuman 第 12 章｜個案 Yin（2009）Ch.5</p></header>
+<p class="note">本整理以轉述為主，不取代原書；頁碼皆為中譯本書頁。各節的「教育情境例」與「對第三章的用處」是本課的延伸，不是原書內容。</p>
+<h2 id="s1" class="h1">零、先看這一頁：五份讀本怎麼讀</h2>
+<div class="tw"><table><colgroup><col style="width:34.2%"><col style="width:13.2%"><col style="width:13.2%"><col style="width:39.5%"></colgroup><thead><tr><th scope="col">讀本</th><th scope="col">頁碼</th><th scope="col">誰要讀</th><th scope="col">讀它要解決的問題</th></tr></thead><tbody><tr><td>Babbie《社會科學研究方法》第 4 章 研究設計</td><td>pp. 133–185</td><td>全員</td><td>研究目的、因果判準、分析單元、時間面向、研究計畫書要素——第三章「骨架」從哪裡來</td></tr><tr><td>Neuman《當代社會研究法》第 6 章 研究設計的策略</td><td>pp. 223–266</td><td>全員</td><td>三角檢證、質化與量化設計的根本差異、解釋時的五種錯誤、從研究問題到假設</td></tr><tr><td>Neuman 第 15 章 質化資料分析</td><td>pp. 669–716</td><td>質性軌（主）</td><td>三階段編碼、分析備忘錄、七種分析策略——第三章「資料分析」一節怎麼寫</td></tr><tr><td>Neuman 第 12 章 量化資料分析</td><td>pp. 503–548</td><td>量化軌（主）</td><td>單變項、雙變項、詳析模型、推論統計——每個假設要對應什麼分析</td></tr><tr><td>Yin（2009）Case Study Research, Ch.5 Analyzing Case Study Evidence</td><td>原書第 5 章</td><td>個案軌（主）</td><td>四項一般策略、五種分析技術、對立解釋——個案研究的分析計畫</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>讀的順序：</b><span class="">先讀兩章「研究設計」（Babbie 4 → Neuman 6），再依自己的取向讀一章「資料分析」為主、另兩章翻閱即可。</span></li><li class="lv1"><b>章次提醒：</b><span class="">Neuman 中譯本第 14 章是「歷史比較研究」（英文國際版未收），所以英文 Ch.14 質化分析＝中譯本第 15 章。請勿翻錯章。</span></li><li class="lv1"><b>Babbie 的頁碼：</b><span class="">本課的 Babbie 第 4 章 PDF 第 1 頁＝書頁 133（PDF 頁＋132＝書頁），引用時請寫書頁。</span></li><li class="lv1"><b>Yin 的頁碼：</b><span class="">本課資料夾未收錄 Yin 原書，本整理第五部分依既有講義整理、未對照原書頁碼；引用前請以原書核對。</span></li></ul>
+<h3 id="s2" class="h2">讀本 × 第三章：每一節去哪裡找根據</h3>
+<p>這張表把讀本對到論文第三章的各節。寫第三章時，每一節都要能回答「為什麼這樣做」，而答案的理論依據在這裡；回扣第一、二章的方式見 W9「連動鏈」。</p>
+<div class="tw"><table><colgroup><col style="width:21.1%"><col style="width:30.3%"><col style="width:48.7%"></colgroup><thead><tr><th scope="col">第三章這一節</th><th scope="col">要交代什麼</th><th scope="col">讀本依據（中譯本頁碼）</th></tr></thead><tbody><tr><td>研究取向與設計</td><td>研究目的（探索／描述／解釋）、為何質性或量化、時間設計</td><td>Babbie 4 研究的三個目的 pp. 136–138、時間面向 pp. 157–166；Neuman 6 表 6.1 p. 238、質化／量化取向 pp. 226–238</td></tr><tr><td>研究架構與假設</td><td>概念與變項、關係與假設、排除替代解釋</td><td>Babbie 4 通則因果三判準 pp. 141–144、圖 4-7 p. 169；Neuman 6 從研究問題到假設 pp. 259–261</td></tr><tr><td>研究對象（參與者）</td><td>分析單元、母體與抽樣、為什麼是這些人</td><td>Babbie 4 分析單元 pp. 146–153、母體與抽樣 p. 173；個案軌另見 Yin（W11 讀的 Ch.2 設計五要素）</td></tr><tr><td>研究工具</td><td>概念化與操作化；研究者即工具</td><td>Babbie 4 概念化 pp. 171–172、操作化 pp. 172–173（細節見 Babbie 第 5 章）</td></tr><tr><td>資料蒐集與實施程序</td><td>方法、時程、單一或多種方法</td><td>Babbie 4 選擇研究方法 p. 172、混合的方法 pp. 167–168；Neuman 6 三角檢證 pp. 224–226</td></tr><tr><td>資料分析</td><td>每個研究問題對應什麼分析</td><td>質性 Neuman 15 pp. 673–703；量化 Neuman 12 pp. 507–545；個案 Yin Ch.5</td></tr><tr><td>研究品質與推論範圍</td><td>效度與信實度、推論能到哪裡</td><td>Babbie 4 區位謬誤與化約論 pp. 153–157；Neuman 6 五種錯誤 表 6.2 p. 259／圖 6.5 p. 260、三級詮釋 p. 242</td></tr><tr><td>研究倫理與進度</td><td>受試者保護、IRB、時程</td><td>Babbie 4 研究計畫書要素 pp. 177–180、研究設計的倫理 pp. 180–181</td></tr></tbody></table></div>
+<h2 id="s3" class="h1">一、Babbie 第 4 章　研究設計（pp. 133–185）</h2>
+<p>一句話：研究設計就是在觀察之前，先決定「研究什麼人或事、什麼時候、用什麼方法、為了什麼目的」。本章最後的「如何設計研究計畫」與「研究計畫書要素」，幾乎就是一份第三章的目錄。</p>
+<h3 id="s4" class="h2">閱讀地圖</h3>
+<div class="tw"><table><colgroup><col style="width:26.3%"><col style="width:11.8%"><col style="width:14.5%"><col style="width:47.4%"></colgroup><thead><tr><th scope="col">節</th><th scope="col">頁碼</th><th scope="col">優先度</th><th scope="col">一句話重點</th></tr></thead><tbody><tr><td>導言</td><td>134–136</td><td>略讀</td><td>先說清楚想發現什麼，方法常就解決一半；同一題目可質可量</td></tr><tr><td>研究的三個目的</td><td>136–140</td><td>必讀</td><td>探索、描述、解釋；探索的弱點是缺代表性</td></tr><tr><td>個案解釋</td><td>140</td><td>必讀（質性）</td><td>對單一事件求完整理解；當事人觀點與比較情境</td></tr><tr><td>通則解釋的邏輯</td><td>141–145</td><td>必讀</td><td>因果三判準；假性關係；三個「假判準」</td></tr><tr><td>必要與充分原因</td><td>145–146</td><td>略讀</td><td>圖 4-2、4-3 兩張四格圖要看</td></tr><tr><td>分析單元</td><td>146–153</td><td>必讀 ★</td><td>個人、團體、組織、社會互動、社會文物；觀察單元≠分析單元</td></tr><tr><td>區位謬誤與化約論</td><td>153–157</td><td>必讀 ★</td><td>高推低、低階概念解釋複雜現象；也別犯個體謬誤</td></tr><tr><td>時間面向</td><td>157–166</td><td>必讀</td><td>橫斷 vs. 縱貫；趨勢／世代／固定樣本；圖 4-6；近似縱貫</td></tr><tr><td>研究策略範例</td><td>166–167</td><td>略讀</td><td>十個研究摘要，練習辨識目的、單元、時間</td></tr><tr><td>混合的方法</td><td>167–168</td><td>必讀（短）</td><td>單一方法有侷限，混合方法愈來愈常見</td></tr><tr><td>如何設計研究計畫</td><td>168–177</td><td>必讀 ★★</td><td>圖 4-7 研究過程；十個步驟；評估興趣、能力、資源</td></tr><tr><td>研究計畫書</td><td>177–180</td><td>必讀 ★★</td><td>九項要素＝第三章的檢核清單</td></tr><tr><td>研究設計的倫理</td><td>180–181</td><td>略讀（必寫）</td><td>好處須抵償參與者付出；送倫理審查</td></tr><tr><td>本章重點、詞彙、複習題</td><td>181–185</td><td>複習用</td><td>分析單元小測驗可自我檢測</td></tr></tbody></table></div>
+<h3 id="s5" class="h2">1. 研究的三個目的（pp. 136–140）</h3>
+<div class="tw"><table><colgroup><col style="width:19.7%"><col style="width:23.7%"><col style="width:25.0%"><col style="width:31.6%"></colgroup><thead><tr><th scope="col">目的</th><th scope="col">回答什麼</th><th scope="col">書中例子</th><th scope="col">教育情境例</th></tr></thead><tbody><tr><td>探索（exploration）</td><td>熟悉一個新現象：有哪些人、哪些議題</td><td>抗稅運動、大學畢業規定</td><td>訪談少數教師，了解雙語教學現場有哪些問題</td></tr><tr><td>描述（description）</td><td>是什麼、在哪裡、何時、如何</td><td>人口普查、犯罪率</td><td>調查全縣國中生每週使用 AI 工具的比率</td></tr><tr><td>解釋（explanation）</td><td>為什麼：找出造成變異的變項</td><td>大麻合法化態度的性別與政治取向差異</td><td>家庭背景與使用 AI 輔助學習頻率的關聯與原因</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>探索的三種用途：</b><span class="">滿足好奇、檢驗大規模研究的可行性、發展後續研究的方法；常用文獻、訪談、焦點團體（p. 137）。</span></li><li class="lv1"><b>探索的弱點：</b><span class="">很難給出決定性答案，因為研究對象未必有代表性——可寫進研究限制（p. 137）。</span></li><li class="lv1"><b>專欄「讓社會研究能夠進行」（pp. 139–140）：</b><span class="">一位研究生到摩洛哥做田野，發現美式的進度表與分工清單不合當地文化，改先花兩週建立信任。提醒：設計要隨田野脈絡調整。</span></li><li class="lv1"><b>對第三章的用處：</b><span class="">開頭先說「本研究以探索／描述／解釋為主」，並回扣第一章的研究目的。碩士論文常三者混在一起，要明講主次。</span></li></ul>
+<h3 id="s6" class="h2">2. 個案解釋與通則解釋（pp. 140–146）</h3>
+<ul class="lst"><li class="lv1"><b>個案解釋（p. 140）：</b><span class="">對單一或少數事件求完整的因果理解（例：某校為何爆發學生抗爭）。沒有統計檢定能告訴你何時算完整。兩個做法：重視但不盲從當事人的解釋（立場不同的人都同意的因素更可信）；與不同地點或不同時間的類似情境比較。</span></li><li class="lv1"><b>通則解釋（p. 141）：</b><span class="">用少數自變項解釋一類現象的大部分變異；是機率性的，容許例外。</span></li></ul>
+<div class="tw"><table><colgroup><col style="width:22.4%"><col style="width:30.3%"><col style="width:47.4%"></colgroup><thead><tr><th scope="col">通則因果的三項判準</th><th scope="col">意思</th><th scope="col">教育情境檢查（補習時數與段考成績）</th></tr></thead><tbody><tr><td>1. 相關</td><td>兩變項在經驗上有關聯（p. 141）</td><td>真的有相關嗎？要以資料而非想當然</td></tr><tr><td>2. 時序</td><td>原因先於結果（pp. 141–142）</td><td>補習在前、成績在後？還是成績差才去補習？</td></tr><tr><td>3. 非假性關係</td><td>關聯不能被第三變項解釋（pp. 142–143）</td><td>家庭收入或學習動機是否才是真正原因？</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>圖 4-1（p. 143）：</b><span class="">鞋子大小與數學能力有相關，真正的原因是年齡——看到相關，先找第三變項。</span></li><li class="lv1"><b>三個「假判準」（p. 144）：</b><span class="">因果不必是完全的；有例外不推翻因果；即使只適用少數個案也可成立（只要比例較高）。</span></li><li class="lv1"><b>必要與充分原因（pp. 145–146）：</b><span class="">必要原因＝沒有它就不會有結果，但有它不保證（圖 4-2 女性與懷孕）；充分原因＝有它就一定有結果，但不是唯一途徑（圖 4-3 缺考與不及格）。教育例：教師證是任教公立學校的必要條件，但還要通過甄試。</span></li><li class="lv1"><b>對第三章的用處：</b><span class="">量化軌寫假設與控制變項時直接用三判準；質性軌可據此說明「本研究不做因果推論」的理由與限制。</span></li></ul>
+<h3 id="s7" class="h2">3. 分析單元（pp. 146–153）★</h3>
+<p>分析單元是「被研究的人、事或物」。要分清楚兩件事：分析單元不等於你想概推的集合體（研究大學生的態度，單元仍是個人）；也不一定等於觀察單元（訪問先生和太太，分析的是夫妻）。</p>
+<div class="tw"><table><colgroup><col style="width:17.1%"><col style="width:32.9%"><col style="width:50.0%"></colgroup><thead><tr><th scope="col">類型</th><th scope="col">書中例子</th><th scope="col">教育情境例</th></tr></thead><tbody><tr><td>個人</td><td>學生、選民、單親家長</td><td>學生的學習動機問卷</td></tr><tr><td>團體</td><td>幫派、家庭</td><td>班級、教師專業社群</td></tr><tr><td>組織</td><td>企業、大學科系</td><td>學校（各校平均升學率與資源）</td></tr><tr><td>社會互動</td><td>電話、爭執、線上討論</td><td>課堂中的師生問答、共備會議的一次討論</td></tr><tr><td>社會文物</td><td>書籍、婚禮、法院案件</td><td>教科書的每一課、學校的課程計畫書</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>怎麼判斷（專欄 p. 153）：</b><span class="">看變項陳述的主詞：「家戶平均收入四萬元」的單元是家戶；想像這筆資料是怎麼記錄出來的。</span></li><li class="lv1"><b>圖 4-4（p. 151）：</b><span class="">同一批人，以個人、家庭、家戶為單元，寫出的百分比完全不同。</span></li><li class="lv1"><b>章首與 p. 180 的「你的想法？」：</b><span class="">報紙說 52% 教師是兼任，教務長說約七成學分由專任教授——兩者都對，一個以「教師人數」為單元，一個以「學分數」為單元。這是教育場域最好用的例子。</span></li><li class="lv1"><b>對第三章的用處：</b><span class="">「研究對象」一節要寫明分析單元。常見錯誤是寫「以學校為對象」，資料卻是學生問卷。</span></li></ul>
+<h3 id="s8" class="h2">4. 區位謬誤與化約論（pp. 153–157）★</h3>
+<div class="tw"><table><colgroup><col style="width:22.4%"><col style="width:23.7%"><col style="width:25.0%"><col style="width:28.9%"></colgroup><thead><tr><th scope="col">錯誤</th><th scope="col">意思</th><th scope="col">書中例子</th><th scope="col">教育情境例</th></tr></thead><tbody><tr><td>區位謬誤（ecological fallacy）</td><td>用團體層級的資料推論個人（p. 154）</td><td>年輕選民多的選區支持某候選人，推論年輕人支持她</td><td>學生平均成績高的學校補習比例也高，推論「補習的學生成績較好」</td></tr><tr><td>個體謬誤（individualistic fallacy）</td><td>用個別例外否定整體模式（pp. 154–155）</td><td>認識一位富有的民主黨人</td><td>「我認識一個沒補習也考上的」就否定整體趨勢</td></tr><tr><td>化約論（reductionism）</td><td>用過窄、過低階的概念解釋複雜現象（p. 156）</td><td>只看球員個人能力預測球隊勝負</td><td>只用學生動機解釋各校成效差異，忽略課程、師資、制度與資源</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>專欄「紅色家庭與藍色家庭」（pp. 155–156）：</b><span class="">以州為單元的資料，不能推論共和黨家庭有較多家庭問題；要以家庭或個人為單元另做研究。</span></li><li class="lv1"><b>作者的務實提醒：</b><span class="">最合適的資料常不存在，只能做區位分析時，結論要寫成暫時性的，並註明風險。</span></li><li class="lv1"><b>與 Neuman 第 6 章的關係：</b><span class="">同一組概念在 Neuman 表 6.2（p. 259）擴充為五種錯誤；兩書可對照讀（見第三部分）。</span></li></ul>
+<h3 id="s9" class="h2">5. 時間面向（pp. 157–166）</h3>
+<div class="tw"><table><colgroup><col style="width:22.4%"><col style="width:28.9%"><col style="width:22.4%"><col style="width:26.3%"></colgroup><thead><tr><th scope="col">設計</th><th scope="col">做法</th><th scope="col">能回答</th><th scope="col">教育情境例</th></tr></thead><tbody><tr><td>橫斷研究（cross-sectional）</td><td>單一時間點觀察（p. 158）</td><td>當下的樣貌；解釋過程有限制</td><td>某年全國國中生閱讀素養調查</td></tr><tr><td>趨勢研究（trend）</td><td>不同時間抽不同的人，追蹤一般母體（p. 159）</td><td>整體的淨變化</td><td>每年抽不同的國小四年級看閱讀興趣</td></tr><tr><td>世代研究（cohort）</td><td>追蹤同一世代，每次抽不同的人（pp. 160–162）</td><td>同一世代的變化</td><td>追蹤 2015 年入學這一屆</td></tr><tr><td>固定樣本複訪（panel）</td><td>同一批人在多個時間點（pp. 162–163）</td><td>個人層次的轉變（誰從 A 變成 B）</td><td>同一批新進教師第 1 到第 3 年的教學信念</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>圖 4-6（p. 164）：</b><span class="">四種設計各能做什麼的對照表——只有固定樣本能看到個人層次的轉變，其他只能看淨變化。</span></li><li class="lv1"><b>世代分析的提醒（p. 162）：</b><span class="">橫斷資料看似老人較不支持教育經費，以世代分析卻發現同一世代的支持比例逐年上升——年齡差異可能其實是世代差異。</span></li><li class="lv1"><b>樣本組流失（panel mortality，p. 163）：</b><span class="">追蹤研究最大的問題；流失的人可能恰好是最關鍵的（例如最倦怠而離職的教師）。</span></li><li class="lv1"><b>近似縱貫（pp. 164–166）：</b><span class="">只有一次資料時，可用三種方式推論過程：變項的邏輯時序、年齡組比較（小心是世代差異）、請受訪者回憶（有記錯與美化的風險，可用其他資料交叉驗證）。對資源有限的碩士論文最實用。</span></li><li class="lv1"><b>對第三章的用處：</b><span class="">寫明資料在何時、蒐集幾次，以及「為什麼一次就夠／為什麼要追蹤」；限制一節交代時間對推論的影響。</span></li></ul>
+<h3 id="s10" class="h2">6. 如何設計研究計畫（pp. 167–177）★★</h3>
+<p>圖 4-7（p. 169）是整章的核心：起點可以是興趣、觀念或理論，再分三支——概念化→操作化、選擇研究方法、母體與抽樣——匯合到觀察→資料處理→分析→應用，分析與應用再回饋到起點。作者強調這是「傳統的圖像」，實際研究不會這麼按部就班。</p>
+<div class="tw"><table><colgroup><col style="width:18.4%"><col style="width:10.5%"><col style="width:47.4%"><col style="width:23.7%"></colgroup><thead><tr><th scope="col">步驟</th><th scope="col">頁碼</th><th scope="col">要決定什麼</th><th scope="col">對應第三章</th></tr></thead><tbody><tr><td>開始</td><td>171</td><td>研究目的屬探索、描述或解釋；先列報告大綱</td><td>研究取向</td></tr><tr><td>概念化</td><td>171–172</td><td>澄清關鍵概念的意義（量化事先定義；質性可在研究中發現）</td><td>名詞釋義、概念性定義</td></tr><tr><td>選擇研究方法</td><td>172</td><td>各方法優缺點；最好的設計常用一種以上方法</td><td>研究方法與設計</td></tr><tr><td>操作化</td><td>172–173</td><td>如何實際測量變項</td><td>研究工具、操作型定義</td></tr><tr><td>母體與抽樣</td><td>173</td><td>想對誰下結論、觀察誰；母體要界定到具體邊界</td><td>研究對象</td></tr><tr><td>觀察</td><td>174</td><td>蒐集經驗資料</td><td>資料蒐集</td></tr><tr><td>資料處理</td><td>174</td><td>把原始資料轉成可分析的形式（編碼、轉檔）</td><td>資料整理</td></tr><tr><td>分析</td><td>174–175</td><td>先描述、再看次團體、再解釋；結果回饋到起點</td><td>資料分析</td></tr><tr><td>應用</td><td>175</td><td>報告發現、討論意涵、未來研究建議</td><td>（第五章）</td></tr><tr><td>研究設計回顧</td><td>175–177</td><td>評估自己的興趣、能力、資源；回顧文獻、可考慮複製研究；三角測量</td><td>可行性、限制</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>最務實的一句：</b><span class="">設計一個完美卻做不完的研究沒有意義（pp. 175–177）。先評估自己會不會統計、能不能接觸到研究對象、時間夠不夠。</span></li><li class="lv1"><b>混合的方法（pp. 167–168）：</b><span class="">單一方法有侷限，例如家戶說不清用電細節，改向能源供應者取得帳單資料對照。教育例：教師問卷（廣度）＋課堂觀察與訪談（深度），或用學習成就資料驗證教師自述。</span></li></ul>
+<h3 id="s11" class="h2">7. 研究計畫書的要素（pp. 177–180）★★</h3>
+<div class="tw"><table><colgroup><col style="width:19.7%"><col style="width:52.6%"><col style="width:27.6%"></colgroup><thead><tr><th scope="col">要素</th><th scope="col">要回答的問題</th><th scope="col">對應第三章</th></tr></thead><tbody><tr><td>問題或目的</td><td>確切要研究什麼？為什麼值得研究？對實務或理論有何貢獻？</td><td>（第一章；第三章開頭回扣）</td></tr><tr><td>文獻回顧</td><td>前人做過什麼、結果是否一致、有哪些缺口你能補？</td><td>（第二章；第三章的設計理由）</td></tr><tr><td>研究對象</td><td>對象是誰、如何接觸、是否抽樣、會不會造成傷害？</td><td>研究對象</td></tr><tr><td>測量</td><td>主要變項是什麼、如何定義與測量？工具可放附錄</td><td>研究工具</td></tr><tr><td>資料蒐集方法</td><td>實驗、調查、田野、次級資料，或多種方法？</td><td>資料蒐集與實施程序</td></tr><tr><td>分析</td><td>用什麼分析、目的與邏輯為何、怎麼知道已適當解釋？</td><td>資料分析</td></tr><tr><td>研究進度表</td><td>各階段時程（沒人要求也要有）</td><td>研究進度</td></tr><tr><td>預算</td><td>經費用在哪裡；自付也要估</td><td>（申請計畫時）</td></tr><tr><td>研究倫理審查</td><td>是否需送 IRB；如何保護參與者</td><td>研究倫理</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>研究設計的倫理（pp. 180–181）：</b><span class="">研究的好處要能抵償參與者付出的時間與精力；設計要符合第 3 章的倫理準則，並建議送倫理審查。教育例：以未成年學生為對象，要考慮家長同意、匿名，以及不影響成績與師生關係。</span></li></ul>
+<h3 id="s12" class="h2">Babbie 第 4 章：讀完該能回答的問題</h3>
+<ol class="lst"><li><b>探索、描述、解釋各回答什麼問題？</b>用你自己的題目說明你的研究以哪一個為主。</li><li><b>通則因果的三項判準是什麼？</b>用「補習時數與成績」說明如何檢查假性關係；為什麼有例外不能推翻因果主張？</li><li><b>你的研究的分析單元是什麼？</b>如果把「學校」誤當成「學生」，結論會出什麼錯？</li><li><b>區位謬誤與化約論各是什麼？</b>各舉一個教育研究可能犯的例子，並說明怎麼避免。</li><li><b>趨勢、世代、固定樣本三者有何不同？</b>只有一次資料時，可以怎麼推論過程？風險是什麼？</li><li><b>對照研究計畫書九項要素，</b>你目前的第三章缺了哪幾項？</li></ol>
+<h2 id="s13" class="h1">二、Neuman 第 6 章　研究設計的策略（pp. 223–266）</h2>
+<p>一句話：本章把第 4 章的方法論落實成設計決策，同時處理質化與量化——全書的樞紐章。詳細整理見 W07 講義；以下是與第三章最相關的重點。</p>
+<h3 id="s14" class="h2">閱讀地圖</h3>
+<div class="tw"><table><colgroup><col style="width:30.3%"><col style="width:17.1%"><col style="width:52.6%"></colgroup><thead><tr><th scope="col">節</th><th scope="col">頁碼</th><th scope="col">一句話重點</th></tr></thead><tbody><tr><td>三角檢證法</td><td>pp. 224–226</td><td>四種類型（資訊箱 6.1）；圖 6.1</td></tr><tr><td>研究的質化以及量化取向</td><td>pp. 226–238</td><td>重建邏輯 vs. 實務中的邏輯；線性 vs. 非線性；表 6.1 ★</td></tr><tr><td>質化設計議題</td><td>pp. 238–243</td><td>脈絡、紮根理論、拼湊、個案與過程、三級詮釋</td></tr><tr><td>量化設計議題</td><td>pp. 243–261</td><td>變項語言、因果理論與假設、表 6.2／圖 6.5 五種錯誤 ★、從研究問題到假設</td></tr><tr><td>結論</td><td>pp. 261–262</td><td><span class="blank"></span></td></tr></tbody></table></div>
+<h3 id="s15" class="h2">1. 三角檢證（pp. 224–226）</h3>
+<div class="tw"><table><colgroup><col style="width:26.3%"><col style="width:73.7%"></colgroup><thead><tr><th scope="col">類型</th><th scope="col">做法</th></tr></thead><tbody><tr><td>測量的三角檢證</td><td>同一概念建立多種測量指標</td></tr><tr><td>觀察者的三角檢證</td><td>請背景不同的人獨立觀察、記錄</td></tr><tr><td>理論的三角檢證</td><td>比較不同理論如何解釋同一現象</td></tr><tr><td>方法的三角檢證</td><td>混合多種資料蒐集方法</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>常見誤用：</b><span class="">「用了訪談＋觀察＋文件」不等於做了三角檢證；重點是不同角度的結果對照後產生什麼，包括不一致之處。混合取向也會增加複雜度與時間，碩士論文要衡量可行性（p. 224）。</span></li></ul>
+<h3 id="s16" class="h2">2. 質化與量化的根本差異（pp. 226–238；表 6.1 p. 238）</h3>
+<div class="tw"><table><colgroup><col style="width:17.1%"><col style="width:41.4%"><col style="width:41.4%"></colgroup><thead><tr><th scope="col"></th><th scope="col">量化</th><th scope="col">質化</th></tr></thead><tbody><tr><td>邏輯</td><td>重建邏輯：把過程整理成標準化的樣子</td><td>實務中的邏輯：研究實際進行時的樣貌</td></tr><tr><td>路徑</td><td>線性，一步接一步</td><td>非線性：迴圈、來回、螺旋（圖 6.2）</td></tr><tr><td>價值立場</td><td>客觀</td><td>誠信：把立場說出來</td></tr><tr><td>研究問題</td><td>事先規畫</td><td>容許意料之外的問題出現（不等於不準備）</td></tr><tr><td>資料與分析</td><td>精確測量的數字；統計、表格</td><td>文件、觀察、謄寫稿的文字與意象；提取主題</td></tr></tbody></table></div>
+<h3 id="s17" class="h2">3. 質化設計的關鍵概念（pp. 238–243）</h3>
+<ul class="lst"><li class="lv1"><b>脈絡是關鍵（p. 240）：</b><span class="">同一行為在不同脈絡下意義不同；量化常把脈絡當雜訊移除。</span></li><li class="lv1"><b>拼湊（bricolage，p. 240）：</b><span class="">視情況運用手邊各種技巧、材料與方法。</span></li><li class="lv1"><b>個案與過程（p. 242）：</b><span class="">少數個案、複雜解釋，以逐步展開的情節呈現。</span></li></ul>
+<div class="tw"><table><colgroup><col style="width:23.7%"><col style="width:36.8%"><col style="width:39.5%"></colgroup><thead><tr><th scope="col">三級詮釋（p. 242）★</th><th scope="col">誰的觀點</th><th scope="col">寫論文時的意義</th></tr></thead><tbody><tr><td>第一級</td><td>研究對象自己的理由與動機</td><td>只到這裡＝把受訪者的話整理一遍</td></tr><tr><td>第二級</td><td>研究者重建、找出隱藏的一致性</td><td>分析真正開始的地方</td></tr><tr><td>第三級</td><td>讀者的再詮釋</td><td>撰寫時要預想讀者會怎麼讀</td></tr></tbody></table></div>
+<h3 id="s18" class="h2">4. 解釋時的五種錯誤（表 6.2 p. 259；圖 6.5 p. 260）★★</h3>
+<div class="tw"><table><colgroup><col style="width:25.0%"><col style="width:30.3%"><col style="width:44.7%"></colgroup><thead><tr><th scope="col">錯誤</th><th scope="col">內涵</th><th scope="col">教育研究中的例子</th></tr></thead><tbody><tr><td>套套邏輯（tautology）</td><td>定義上為真，循環推論</td><td>「有效能的學校領導提升學校效能」</td></tr><tr><td>目的論（teleology）</td><td>以意圖或功能需求為因，違反時序</td><td>「因為社會需要人才，所以出現了學校制度」</td></tr><tr><td>生態謬誤（ecological fallacy）</td><td>用高層次資料推論個人</td><td>「原住民比例高的學校平均分數低」推論到個別學生</td></tr><tr><td>化約論（reductionism）</td><td>用低層次證據推論高層次現象</td><td>「幾位老師抗拒」推論「整個體制抗拒改革」</td></tr><tr><td>虛假關係（spurious）</td><td>兩變項有關聯但無因果，真因是第三變項</td><td>補習與成績（家庭背景）</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>不只量化會犯：</b><span class="">質性研究也會套套邏輯——「學校文化封閉所以改革推不動，改革推不動證明文化封閉」。</span></li></ul>
+<h3 id="s19" class="h2">5. 從研究問題到假設（pp. 259–261）</h3>
+<p>好的研究問題本身已內含假設。步驟：判斷自變項（邏輯上先發生者）→ 寫出方向性的假設 → 必要時加上條件限定。同一研究問題可以生出多個假設。</p>
+<h2 id="s20" class="h1">三、兩章對照：同一個概念，兩本書怎麼說</h2>
+<div class="tw"><table><colgroup><col style="width:19.7%"><col style="width:27.6%"><col style="width:27.6%"><col style="width:25.0%"></colgroup><thead><tr><th scope="col">概念</th><th scope="col">Babbie 第 4 章</th><th scope="col">Neuman 第 6 章</th><th scope="col">讀法建議</th></tr></thead><tbody><tr><td>質化 vs. 量化</td><td>導言 pp. 134–135：同一題目可質可量</td><td>表 6.1 p. 238：七組根本差異</td><td>先讀 Babbie 的例子，再用 Neuman 表 6.1 定位</td></tr><tr><td>因果與假性關係</td><td>三判準 pp. 141–143；圖 4-1</td><td>虛假關係（表 6.2 p. 259）</td><td>Babbie 講判準、Neuman 講錯誤，合起來是一組檢核</td></tr><tr><td>區位謬誤與化約論</td><td>pp. 153–157，含個體謬誤</td><td>圖 6.5 p. 260：箭頭方向相反</td><td>Babbie 例子較生活化，Neuman 圖示較清楚</td></tr><tr><td>三角檢證</td><td>研究設計回顧 p. 177（三角測量）；混合方法 pp. 167–168</td><td>四種類型 pp. 224–226</td><td>以 Neuman 的四類為準，Babbie 補混合方法實例</td></tr><tr><td>研究流程</td><td>圖 4-7 p. 169：傳統流程與回饋</td><td>線性 vs. 非線性路徑（圖 6.2）</td><td>量化用圖 4-7；質性要說明自己的循環</td></tr><tr><td>研究目的</td><td>探索／描述／解釋 pp. 136–138</td><td>（見 Neuman 第 2 章 pp. 53–57）</td><td>第三章開頭定位用</td></tr></tbody></table></div>
+<h2 id="s21" class="h1">四、質性軌：Neuman 第 15 章　質化資料分析（pp. 669–716）</h2>
+<p>一句話：分析是把資料變成論證，不是把資料變漂亮。詳細整理見 W13 講義。</p>
+<div class="tw"><table><colgroup><col style="width:28.9%"><col style="width:17.1%"><col style="width:53.9%"></colgroup><thead><tr><th scope="col">節</th><th scope="col">頁碼</th><th scope="col">一句話重點</th></tr></thead><tbody><tr><td>資料分析方法的比較</td><td>pp. 670–673</td><td>質化與量化分析的異同；純描述的風險</td></tr><tr><td>編碼以及概念形成</td><td>pp. 673–683</td><td>三階段編碼 ★★；資訊箱 15.1 編碼五部分；分析備忘錄（圖 15.1）★</td></tr><tr><td>質化資料的分析策略</td><td>pp. 683–703</td><td>七種策略；圖 15.4 總表</td></tr><tr><td>其他的技術</td><td>pp. 703–712</td><td>網絡分析、地圖、質化軟體（CAQDAS）</td></tr></tbody></table></div>
+<div class="tw"><table><colgroup><col style="width:21.1%"><col style="width:78.9%"></colgroup><thead><tr><th scope="col">三階段編碼</th><th scope="col">做什麼</th></tr></thead><tbody><tr><td>開放式編碼</td><td>慢讀資料，把資料濃縮成初步類別；對修改最初的碼保持開放</td></tr><tr><td>主軸式編碼</td><td>焦點從資料移到碼：問原因與結果、條件與互動、策略與過程</td></tr><tr><td>選擇性編碼</td><td>主要主題確定後，選出能支持主題的資料並比較</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>一個好碼的五部分（資訊箱 15.1，p. 676）：</b><span class="">標籤、定義、辨識旗幟、排除條件、範例——可直接當編碼簿格式。</span></li><li class="lv1"><b>分析備忘錄（pp. 680–683）：</b><span class="">記錄為什麼這樣編、概念怎麼演變；是資料與理論之間的橋樑。</span></li><li class="lv1"><b>七種分析策略（pp. 683–703）：</b><span class="">理想型、漸次接近、舉例法、領域分析、分析比較、敘事分析、反面個案法。碩士論文最常用漸次接近＋舉例法；舉例法的風險是「先有空盒子再找資料塞」。</span></li><li class="lv1"><b>與 W9 MAXQDA 的連結：</b><span class="">軟體幫你管理編碼與備忘錄，不替你分析；第三章要寫出編碼步驟，而不是只寫「以 MAXQDA 分析」。</span></li></ul>
+<h2 id="s22" class="h1">五、量化軌：Neuman 第 12 章　量化資料分析（pp. 503–548）</h2>
+<p>一句話：有統計不等於有解釋；每個表都要回答一個研究問題。詳細整理見 W13 講義。</p>
+<div class="tw"><table><colgroup><col style="width:28.9%"><col style="width:17.1%"><col style="width:53.9%"></colgroup><thead><tr><th scope="col">節</th><th scope="col">頁碼</th><th scope="col">一句話重點</th></tr></thead><tbody><tr><td>資料處理</td><td>pp. 504–507</td><td>編碼簿（圖 12.1）、資料清理</td></tr><tr><td>單變項的結果分析</td><td>pp. 507–517</td><td>次數分配、集中趨勢三量數、變異量數、z 分數</td></tr><tr><td>雙變項的結果分析</td><td>pp. 517–532</td><td>交叉表（百分比方向決定能說什麼）、散布圖、關聯量數</td></tr><tr><td>超過兩個變項</td><td>pp. 532–540</td><td>控制變項與詳析模型 ★★——虛假關係的統計解法</td></tr><tr><td>推論統計</td><td>pp. 540–545</td><td>顯著水準；第一／第二類型錯誤 ★</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>與 Babbie 第 4 章的連結：</b><span class="">詳析模型就是在檢驗「非假性關係」這一項判準：把替代解釋變成控制變項，看原本的關係是否還在。</span></li><li class="lv1"><b>為什麼是 .05：</b><span class="">既是學界約定，也是兩類錯誤的權衡；統計顯著不等於實務重要。</span></li><li class="lv1"><b>對第三章的用處：</b><span class="">「資料分析」一節要逐一對應：哪個研究問題或假設，用哪個統計方法，看哪個數值。</span></li></ul>
+<h2 id="s23" class="h1">六、個案軌：Yin（2009）Ch.5　Analyzing Case Study Evidence</h2>
+<div class="warn"><p class="wh">⚠ 未對照原書</p><p>本課資料夾未收錄 Yin 原書，以下依既有講義（W13）整理，未核對頁碼與用詞；引用或寫進論文前，請以原書（第 4 版）核對。</p></div>
+<ul class="lst"><li class="lv1"><b>四項一般分析策略：</b><span class="">依賴理論命題、發展個案描述、同時運用質性與量化資料、檢驗對立解釋。沒有策略就開始分析，是個案研究最常見的卡關處。</span></li></ul>
+<div class="tw"><table><colgroup><col style="width:21.1%"><col style="width:78.9%"></colgroup><thead><tr><th scope="col">五種分析技術</th><th scope="col">核心操作</th></tr></thead><tbody><tr><td>模式比對</td><td>把實徵資料的模式與預測的模式比對；吻合則強化內在效度</td></tr><tr><td>建立解釋</td><td>初始命題→與個案比對→修正→再比對（與 Neuman 的漸次接近同構）</td></tr><tr><td>時間序列分析</td><td>追蹤事件隨時間的變化，與理論預測的軌跡比對</td></tr><tr><td>邏輯模式</td><td>投入→活動→產出→結果的因果鏈逐節檢驗（政策與方案評估常用）</td></tr><tr><td>跨個案綜合</td><td>多重個案時，把每個個案當獨立研究再綜合，不是把資料倒在一起</td></tr></tbody></table></div>
+<ul class="lst"><li class="lv1"><b>與兩章研究設計的連結：</b><span class="">Babbie 的「個案解釋」（p. 140）與「比較情境」，就是 Yin 對立解釋與跨個案綜合的簡版；Neuman 的三角檢證則對應 Yin 的多重證據來源（W11 讀的 Ch.2 四項效度檢驗）。</span></li></ul>
+<h2 id="s24" class="h1">七、常見誤解與自我檢核</h2>
+<div class="tw"><table><colgroup><col style="width:40.8%"><col style="width:59.2%"></colgroup><thead><tr><th scope="col">學生常見的誤解</th><th scope="col">讀本怎麼說</th></tr></thead><tbody><tr><td>「研究對象是學校」，資料卻是學生問卷</td><td>分析單元要一致（Babbie pp. 146–153）</td></tr><tr><td>看到相關就寫成影響</td><td>因果三判準與假性關係（Babbie pp. 141–143；Neuman 表 6.2）</td></tr><tr><td>用了三種方法＝三角檢證</td><td>要看結果對照，差異處最有價值（Neuman p. 224）</td></tr><tr><td>質性研究不需要事先規畫</td><td>容許意料之外的問題，不等於不準備（Neuman 表 6.1）</td></tr><tr><td>只有一次資料就不能談過程</td><td>近似縱貫的三種推論方式，但要說明風險（Babbie pp. 164–166）</td></tr><tr><td>編碼＝貼標籤分類</td><td>編碼有五個部分，主軸編碼問的是關係（Neuman pp. 674–680）</td></tr><tr><td>p &lt; .05 就是有意義</td><td>統計顯著不等於實務重要（Neuman pp. 540–545）</td></tr><tr><td>個案越多越好、越像抽樣</td><td>多重個案是複製邏輯，不是加樣本（Yin，見 W07 講義）</td></tr></tbody></table></div>
+<h3 id="s25" class="h2">讀完後，用自己的研究回答</h3>
+<ol class="lst"><li><b>我的研究目的屬探索、描述或解釋？</b>依據 Babbie pp. 136–138，用一句話寫出來。</li><li><b>我的分析單元與研究對象一致嗎？</b>寫出「我的資料是什麼單位、結論要推到什麼單位」。</li><li><b>我的時間設計是什麼？</b>單次或多次？若要談過程，我用哪一種推論方式？</li><li><b>我的研究最可能犯哪一種解釋錯誤？</b>從 Neuman 表 6.2 五種錯誤中挑一個，寫下我的防範方式。</li><li><b>我的資料分析一節能對應每個研究問題嗎？</b>依自己的軌，從第四、五或六部分找出要用的分析方法。</li><li><b>對照 Babbie 研究計畫書九項要素，</b>我的第三章還缺哪幾項？</li></ol>
+  </main>
+</div>
+<script>
+(function(){
+  var root=document.documentElement;
+  try{var t=localStorage.getItem('w3-theme');if(t)root.setAttribute('data-theme',t)}catch(e){}
+  document.getElementById('theme').onclick=function(){
+    var dark=root.getAttribute('data-theme')==='dark'||(!root.getAttribute('data-theme')&&matchMedia('(prefers-color-scheme: dark)').matches);
+    var nt=dark?'light':'dark';root.setAttribute('data-theme',nt);try{localStorage.setItem('w3-theme',nt)}catch(e){}
+  };
+  document.getElementById('print').onclick=function(){
+    [].forEach.call(document.querySelectorAll('details'),function(d){d.open=true});window.print();
+  };
+  // 寬螢幕展開目錄（手機維持收起）；展開後版面會變，若網址帶 #錨點就重新對齊
+  if(!matchMedia('(max-width:900px)').matches){var tb=document.querySelector('.tocbox');if(tb)tb.open=true}
+  if(location.hash){var el=document.getElementById(location.hash.slice(1));if(el)el.scrollIntoView()}
+  // 複製 prompt
+  [].forEach.call(document.querySelectorAll('.paste'),function(box){
+    var b=box.querySelector('.copy');
+    b.onclick=function(){
+      var txt=[].map.call(box.querySelectorAll('.pb p'),function(p){return p.textContent}).join('\n');
+      function ok(){b.textContent='已複製';b.classList.add('done');setTimeout(function(){b.textContent='複製';b.classList.remove('done')},1600)}
+      function fallback(){var r=document.createRange();r.selectNodeContents(box.querySelector('.pb'));
+        var s=getSelection();s.removeAllRanges();s.addRange(r);
+        try{document.execCommand('copy');ok()}catch(e){b.textContent='已選取，請按 ⌘C'}}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fallback)}else{fallback()}
+    };
+  });
+  // 複製單一指令
+  [].forEach.call(document.querySelectorAll('.copy1'),function(b){b.onclick=function(){
+    var txt=b.getAttribute('data-t');
+    function ok(){b.textContent='已複製';b.classList.add('done');setTimeout(function(){b.textContent='複製';b.classList.remove('done')},1400)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,function(){b.textContent='請手動選取'})}else{b.textContent='請手動選取'}
+  }});
+  // 目錄高亮
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(en){if(!en.isIntersecting)return;
+      links.forEach(function(a){a.classList.toggle('on',a.getAttribute('href')==='#'+en.target.id)})})},{rootMargin:'-20% 0px -70% 0px'});
+    links.forEach(function(a){var el=document.getElementById(a.getAttribute('href').slice(1));if(el)io.observe(el)});
+  }
+
+  // ===== 學習單：彈性填寫欄位（2026-09-22 追加）=====
+  // localStorage 安全存取層：瀏覽器封鎖網站資料時整段不得拋錯（沿用 build_web_v8 的作法）
+  var KEY='readings-design', LS=(function(){
+    var ok=false;try{localStorage.setItem('__t','1');localStorage.removeItem('__t');ok=true}catch(e){}
+    return {ok:ok,
+      get:function(){if(!ok)return{};try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}},
+      set:function(o){if(!ok)return;try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}},
+      del:function(){if(!ok)return;try{localStorage.removeItem(KEY)}catch(e){}}};
+  })();
+  var DB=LS.get(), tmr=null;
+  function save(){clearTimeout(tmr);tmr=setTimeout(function(){LS.set(DB);flash()},250)}
+  var stat=document.getElementById('sstat');
+  function flash(){if(!stat||!LS.ok)return;var o=stat.textContent;stat.textContent='已儲存';
+    clearTimeout(flash.t);flash.t=setTimeout(function(){stat.textContent=o},1100)}
+  var saver=document.querySelector('.saver');
+  if(saver&&!LS.ok){saver.classList.add('off');
+    if(stat)stat.textContent='這個瀏覽器封鎖了網站資料，填寫不會被記住（其他功能不受影響）。列印或另存前請先確認內容還在。';
+    var cb=document.getElementById('clearall');if(cb)cb.disabled=true}
+
+  function grow(el){el.style.height='auto';el.style.height=(el.scrollHeight+2)+'px'}
+  function growAll(){[].forEach.call(document.querySelectorAll('textarea'),grow)}
+
+  // 文字欄位：還原 → 自動長高 → 輸入即存
+  [].forEach.call(document.querySelectorAll('textarea.fin'),function(el){
+    var k=el.getAttribute('data-k');if(DB[k])el.value=DB[k];grow(el);
+    el.addEventListener('input',function(){grow(el);DB[k]=el.value;if(!el.value)delete DB[k];save()});
+  });
+  // 勾選框
+  [].forEach.call(document.querySelectorAll('input[type=checkbox][data-k]'),function(el){
+    var k=el.getAttribute('data-k');if(DB[k])el.checked=true;
+    el.addEventListener('change',function(){if(el.checked){DB[k]=1}else{delete DB[k]}save()});
+  });
+  // 評量格：點一下循環 v → △ → × → 空白
+  var CYC=['v','△','×'];
+  [].forEach.call(document.querySelectorAll('.rb'),function(b){
+    var k=b.getAttribute('data-k');
+    function paint(v){if(v){b.textContent=v;b.setAttribute('data-v',v)}else{b.textContent='·';b.removeAttribute('data-v')}}
+    paint(DB[k]);
+    b.onclick=function(){var i=CYC.indexOf(DB[k]||'');var nv=CYC[i+1]||'';
+      if(nv){DB[k]=nv}else{delete DB[k]}paint(nv);save()};
+  });
+  // 可增減列數的表格
+  [].forEach.call(document.querySelectorAll('.rep'),function(rep){
+    var k=rep.getAttribute('data-k'), nc=+rep.getAttribute('data-cols');
+    var tb=rep.querySelector('tbody');
+    var heads=[].map.call(rep.querySelectorAll('thead th'),function(th){
+      return th.textContent.replace(/"/g,'&quot;')}).slice(0,nc);
+    function cells(row,vals){
+      var h='';for(var c=0;c<nc;c++){h+='<td data-l="'+heads[c]+'"><textarea rows="1" data-c="'+c+'">'+
+        ((vals&&vals[c]?vals[c]:'').replace(/[&<>]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[m]}))+'</textarea></td>'}
+      return h+'<td class="rmc"><button type="button" class="rm" aria-label="刪除這一列">✕</button></td>';
+    }
+    function collect(){
+      DB[k]=[].map.call(tb.rows,function(tr){return [].map.call(tr.querySelectorAll('textarea'),function(x){return x.value})});
+      if(!DB[k].some(function(r){return r.some(function(v){return v})}))delete DB[k];
+      save();
+    }
+    function addRow(vals){
+      var tr=tb.insertRow(-1);tr.innerHTML=cells(tr,vals);
+      [].forEach.call(tr.querySelectorAll('textarea'),function(x){grow(x);
+        x.addEventListener('input',function(){grow(x);collect()})});
+      tr.querySelector('.rm').onclick=function(){
+        if(tb.rows.length<=1){[].forEach.call(tr.querySelectorAll('textarea'),function(x){x.value='';grow(x)})}
+        else{tr.parentNode.removeChild(tr)}collect()};
+      return tr;
+    }
+    var saved=DB[k];
+    if(saved&&saved.length){saved.forEach(function(r){addRow(r)})}
+    else{for(var i=0;i<(+rep.getAttribute('data-start')||3);i++)addRow(null)}
+    rep.querySelector('.addr').onclick=function(){var tr=addRow(null);var f=tr.querySelector('textarea');if(f)f.focus()};
+  });
+  // 抽狀況卡
+  var draw=document.getElementById('draw');
+  if(draw){draw.onclick=function(){
+    var cs=[].slice.call(document.querySelectorAll('.card'));if(!cs.length)return;
+    var i=Math.floor(Math.random()*cs.length);
+    cs.forEach(function(c,j){c.classList.toggle('hit',j===i)});
+    var out=document.getElementById('drawout');
+    if(out)out.textContent='抽到 '+cs[i].querySelector('.cno').textContent+'　'+cs[i].querySelector('.ct').textContent;
+    cs[i].scrollIntoView({block:'nearest',behavior:'smooth'});
+  }}
+  // 清除
+  var clr=document.getElementById('clearall');
+  if(clr)clr.onclick=function(){
+    if(!confirm('清除這一頁所有填寫內容？此動作無法復原。'))return;
+    DB={};LS.del();
+    [].forEach.call(document.querySelectorAll('textarea'),function(x){x.value='';grow(x)});
+    [].forEach.call(document.querySelectorAll('input[type=checkbox][data-k]'),function(x){x.checked=false});
+    [].forEach.call(document.querySelectorAll('.rb'),function(b){b.textContent='·';b.removeAttribute('data-v')});
+    if(stat)stat.textContent='已清除';
+  };
+  // 字型載入後行高會變，重算一次高度；列印前也重算
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(growAll);
+  addEventListener('load',growAll);addEventListener('beforeprint',growAll);
+})();
+</script>
+</body>
+</html>

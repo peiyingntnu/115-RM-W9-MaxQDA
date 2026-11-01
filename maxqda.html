@@ -1,0 +1,926 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="第一次使用 MAXQDA 的逐步引導：安裝、匯入逐字稿、開放編碼、整理代碼、memo、檢索與備份。每一步有檢查點與卡關處理。國立臺灣師範大學 115-1 教育與社會科學研究法。">
+<title>MAXQDA 新手上路｜115-1 教育與社會科學研究法</title>
+<style>
+:root{
+  --r-xl:22px;--r-lg:18px;--r:13px;--r-s:9px;
+  --sans:"PingFang TC","Noto Sans TC","Microsoft JhengHei",-apple-system,system-ui,sans-serif;
+  --bg:#f6f7f9;--panel:#fff;--panel2:#fbfcfd;--ink:#1f2430;--muted:#5f6b7a;--line:#e6e9ef;
+  --teal:#0e9891;--teal-deep:#0e7c74;--teal-soft:#e8f4f3;--teal-line:#c9e4e1;
+  --purple:#8a53c9;--purple-soft:#f3edfb;--purple-line:#e0d0f2;
+  --navy:#1b3a6b;
+  --blue:#2f74c0;--blue-soft:#e9f1fb;--blue-line:#c8ddf4;
+  --green:#3f8f4f;--green-soft:#eaf5ec;--green-line:#c7e3cd;
+  --rose:#c4517a;--rose-soft:#fbecf1;--rose-line:#f2ccd9;
+  --amber:#b07a12;--amber-soft:#fdf4e3;--amber-line:#eeddb4;
+  --shadow:0 1px 3px rgba(20,30,45,.06),0 6px 18px rgba(20,30,45,.05);
+}
+:root[data-theme="dark"], html.dark{
+  --bg:#0f1319;--panel:#171c25;--panel2:#1b212c;--ink:#e8ebf1;--muted:#9aa6b6;--line:#28303c;
+  --teal:#37c2b6;--teal-deep:#37c2b6;--teal-soft:#12312f;--teal-line:#1d4a46;
+  --purple:#b78bec;--purple-soft:#2a2038;--purple-line:#3d2f52;
+  --navy:#9db9e6;
+  --blue:#6ba6e8;--blue-soft:#152436;--blue-line:#22384f;
+  --green:#6cc07c;--green-soft:#132a19;--green-line:#22412a;
+  --rose:#e585a8;--rose-soft:#311a23;--rose-line:#4a2735;
+  --amber:#e0ab4a;--amber-soft:#2e2413;--amber-line:#463719;
+  --shadow:0 1px 3px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.75;font-size:16px;
+  -webkit-font-smoothing:antialiased}
+a{color:var(--teal-deep)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+
+/* 抬頭 */
+.mast{background:var(--panel);border-bottom:1px solid var(--line)}
+.mast .inner{max-width:1120px;margin:0 auto;padding:14px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.mast img{width:58px;height:58px;object-fit:contain;border-radius:10px;background:#fff;padding:3px;flex:none}
+.mast .uni{font-size:.82rem;color:var(--muted)}
+.mast .course{font-size:1rem;font-weight:800}
+.mast .staff{font-size:.78rem;color:var(--muted)}
+.mast .spacer{flex:1}
+.themebtn{border:1px solid var(--line);background:var(--panel2);color:var(--ink);font-family:inherit;
+  border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer}
+.themebtn:hover{border-color:var(--teal-line)}
+
+/* Hero */
+header.hero{background:linear-gradient(135deg,#0e7c74 0%,#12a79c 55%,#7a4fb6 140%);color:#fff;padding:34px 0 28px}
+header.hero .badge{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.34);
+  border-radius:999px;padding:2px 13px;font-size:.76rem;letter-spacing:.1em;margin-bottom:10px}
+header.hero h1{font-size:1.6rem;letter-spacing:.03em;margin-bottom:6px}
+header.hero p{opacity:.94;font-size:.93rem;max-width:860px}
+.herostats{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.hstat{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.26);border-radius:12px;
+  padding:8px 14px;min-width:96px}
+.hstat b{display:block;font-size:1.25rem;line-height:1.3}
+.hstat span{font-size:.74rem;opacity:.9;letter-spacing:.06em}
+
+/* Nav */
+nav.tabs{position:sticky;top:0;z-index:60;background:var(--panel);border-bottom:1px solid var(--line);
+  box-shadow:0 1px 8px rgba(20,30,45,.05)}
+nav.tabs .inner{max-width:1120px;margin:0 auto;display:flex;gap:2px;padding:0 10px;overflow-x:auto;
+  scrollbar-width:none}
+nav.tabs .inner::-webkit-scrollbar{display:none}
+nav.tabs button{border:0;background:none;font-family:inherit;font-size:.9rem;padding:13px 13px;cursor:pointer;
+  color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs button.on{color:var(--teal-deep);border-bottom-color:var(--teal);font-weight:700}
+
+main{max-width:1120px;margin:0 auto;padding:24px 18px 90px}
+section{scroll-margin-top:66px}
+h2.sec{font-size:1.28rem;color:var(--navy);margin:36px 0 4px;letter-spacing:.02em}
+h2.sec:first-child{margin-top:6px}
+.secsub{font-size:.86rem;color:var(--muted);margin-bottom:14px}
+.glead{font-size:.87rem;color:var(--muted);margin:2px 0 6px;line-height:1.7}
+h3.sub{font-size:1rem;color:var(--teal-deep);margin:20px 0 8px;font-weight:800}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;
+  box-shadow:var(--shadow);margin-bottom:14px}
+.note{background:var(--teal-soft);border:1px solid var(--teal-line);border-radius:var(--r-lg);
+  padding:15px 18px;font-size:.9rem;margin-bottom:18px}
+.note strong{color:var(--teal-deep)}
+.warnbox{background:var(--amber-soft);border:1px solid var(--amber-line);border-radius:var(--r-lg);
+  padding:13px 17px;font-size:.86rem;margin:0 0 14px}
+.warnbox b{color:var(--amber)}
+.warnbox .tag{margin:0 2px}
+
+table{width:100%;border-collapse:collapse;font-size:.88rem;background:var(--panel);
+  border-radius:var(--r);overflow:hidden}
+th{background:var(--teal-soft);color:var(--teal-deep);text-align:left;padding:9px 12px;font-size:.83rem;
+  border-bottom:1px solid var(--teal-line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);margin-bottom:18px}
+
+/* 四面向 */
+.dimgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:14px}
+.dimcard{background:var(--panel);border:1px solid var(--line);border-top:4px solid;border-radius:var(--r-lg);
+  padding:16px 18px;box-shadow:var(--shadow)}
+.dimcard.engage{border-top-color:var(--blue)} .dimcard.engage h4{color:var(--blue)}
+.dimcard.create{border-top-color:var(--green)} .dimcard.create h4{color:var(--green)}
+.dimcard.manage{border-top-color:var(--purple)} .dimcard.manage h4{color:var(--purple)}
+.dimcard.shape{border-top-color:var(--rose)} .dimcard.shape h4{color:var(--rose)}
+.dimcard h4{font-size:1.02rem;margin-bottom:6px}
+.dimcard p{font-size:.87rem;margin-bottom:8px}
+.dimcard .use{font-size:.83rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+
+/* 篩選 */
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0 6px}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 14px;
+  font-size:.83rem;color:var(--ink);cursor:pointer;font-family:inherit}
+.chip:hover{border-color:var(--teal-line)}
+.chip.on{background:var(--teal-deep);border-color:var(--teal-deep);color:#fff;font-weight:700}
+.chip.engage.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip.create.on{background:var(--green);border-color:var(--green);color:#fff}
+.chip.manage.on{background:var(--purple);border-color:var(--purple);color:#fff}
+.chip.shape.on{background:var(--rose);border-color:var(--rose);color:#fff}
+.srch{flex:1;min-width:170px;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+  border-radius:999px;padding:7px 15px;font-family:inherit;font-size:.85rem}
+.srch:focus{outline:2px solid var(--teal-line);outline-offset:1px}
+.cnt{font-size:.8rem;color:var(--muted);margin:4px 0 14px}
+
+/* 週卡 */
+.wk{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);margin-bottom:12px;
+  overflow:hidden;box-shadow:var(--shadow)}
+.wk.hide{display:none}
+.wk summary{list-style:none;cursor:pointer;padding:13px 18px;display:flex;gap:12px;align-items:center;
+  flex-wrap:wrap;background:var(--panel2)}
+.wk summary::-webkit-details-marker{display:none}
+.wk summary:hover{background:var(--teal-soft)}
+.wkno{background:var(--navy);color:#fff;border-radius:9px;padding:4px 9px;font-size:.78rem;font-weight:800;
+  min-width:64px;text-align:center;line-height:1.35}
+:root[data-theme="dark"] .wkno{color:#0f1319}
+.wkti{flex:1;min-width:180px;font-weight:700;font-size:.98rem}
+.wkti small{display:block;font-weight:400;font-size:.78rem;color:var(--muted)}
+.pill{font-size:.73rem;font-weight:700;border-radius:999px;padding:2px 10px;border:1px solid}
+.pill.engage{background:var(--blue-soft);color:var(--blue);border-color:var(--blue-line)}
+.pill.create{background:var(--green-soft);color:var(--green);border-color:var(--green-line)}
+.pill.manage{background:var(--purple-soft);color:var(--purple);border-color:var(--purple-line)}
+.pill.shape{background:var(--rose-soft);color:var(--rose);border-color:var(--rose-line)}
+.tag{font-size:.72rem;border-radius:6px;padding:1px 8px;border:1px solid;white-space:nowrap}
+.tag.lec{background:var(--green-soft);color:var(--green);border-color:var(--green-line)}
+.tag.lec.shift{background:var(--amber-soft);color:var(--amber);border-color:var(--amber-line);
+  font-weight:700}
+.wkbody{padding:4px 18px 16px;border-top:1px solid var(--line)}
+.blk{margin-top:12px}
+.blk .lbl{display:block;font-size:.72rem;font-weight:800;letter-spacing:.12em;color:var(--muted);
+  margin-bottom:5px}
+.blk ul{list-style:none}
+.blk li{font-size:.88rem;padding:3px 0 3px 16px;position:relative}
+.blk li::before{content:"";position:absolute;left:2px;top:.82em;width:5px;height:5px;border-radius:50%;
+  background:var(--teal)}
+.readlist li::before{background:var(--navy)}
+.m-star{color:var(--rose);font-weight:800}
+.m-log{color:var(--amber);font-weight:800}
+.done{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:.82rem;color:var(--muted);
+  border-top:1px dashed var(--line);padding-top:10px}
+.done input{width:16px;height:16px;accent-color:var(--teal-deep);cursor:pointer}
+
+/* 進度環 */
+.prog{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--r-lg);padding:12px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.ring{width:44px;height:44px;border-radius:50%;flex:none;
+  background:conic-gradient(var(--teal) calc(var(--p)*1%), var(--line) 0);
+  display:grid;place-items:center}
+.ring i{width:34px;height:34px;border-radius:50%;background:var(--panel);display:grid;place-items:center;
+  font-style:normal;font-size:.72rem;font-weight:800;color:var(--teal-deep)}
+.prog .t{font-size:.86rem}
+.prog .t b{display:block;font-size:.92rem}
+.prog button{margin-left:auto;border:1px solid var(--line);background:var(--panel2);color:var(--muted);
+  border-radius:999px;padding:5px 13px;font-size:.78rem;font-family:inherit;cursor:pointer}
+
+/* 講義卡 */
+.lecgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.leccard{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--green);
+  border-radius:var(--r);padding:13px 15px;box-shadow:var(--shadow)}
+.leccard b{font-size:.9rem;display:block;margin-top:4px}
+.leccard .wkn{font-size:.72rem;font-weight:800;color:var(--green);letter-spacing:.08em}
+.leccard .wkmap{font-size:.7rem;border-radius:999px;padding:1px 8px;margin-left:6px;
+  border:1px solid var(--line);color:var(--muted);background:var(--panel2)}
+.leccard .wkmap.shift{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber);
+  font-weight:700}
+.leccard p{font-size:.8rem;color:var(--muted);margin-top:5px}
+.leccard code{font-size:.72rem;background:var(--panel2);border:1px solid var(--line);border-radius:5px;
+  padding:1px 5px;color:var(--muted);word-break:break-all;display:inline-block;margin-top:6px}
+
+/* 書 */
+.bk{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);padding:16px 18px;
+  box-shadow:var(--shadow);margin-bottom:12px;border-left:4px solid var(--navy)}
+.bk .no{font-size:.72rem;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+.bk b{display:block;font-size:.98rem;margin:2px 0 4px}
+.bk p{font-size:.85rem;color:var(--muted)}
+.colcols{columns:2 260px;column-gap:26px}
+.colcols li{font-size:.84rem;padding:3px 0 3px 15px;position:relative;list-style:none;
+  break-inside:avoid}
+.colcols li::before{content:"";position:absolute;left:2px;top:.8em;width:4px;height:4px;border-radius:50%;
+  background:var(--muted)}
+footer{border-top:1px solid var(--line);padding:22px 18px 40px;text-align:center;color:var(--muted);
+  font-size:.8rem;background:var(--panel)}
+@media(max-width:640px){
+  header.hero h1{font-size:1.3rem}
+  .wkti{min-width:130px}
+  .colcols{columns:1}
+}
+@media print{
+  nav.tabs,.filters,.themebtn,.prog button{display:none}
+  .wk{break-inside:avoid}
+  .wk .wkbody{display:block!important}
+}
+
+.tabsec{display:none}.tabsec.on{display:block}
+.mast a.lk{color:var(--ink);font-size:.8rem;text-decoration:none;border:1px solid var(--line);
+  border-radius:8px;padding:4px 10px;margin-right:6px;background:var(--panel)}
+.progbar{position:sticky;top:47px;z-index:55;background:var(--panel2);border-bottom:1px solid var(--line)}
+.progbar .inner{max-width:1120px;margin:0 auto;padding:8px 18px;display:flex;gap:14px;
+  align-items:center;flex-wrap:wrap;font-size:.83rem;color:var(--muted)}
+.progbar .spacer{flex:1}.progbar .pg b{color:var(--teal-deep);margin-left:4px}
+.bar{flex:1;min-width:120px;max-width:300px;height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--teal-deep);transition:width .3s}
+.pgnote{color:var(--amber);font-size:.78rem}
+.wl{margin:6px 0 0 18px}.wl li{margin-bottom:5px;font-size:.9rem;line-height:1.75}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.three .card{position:relative;padding-top:34px}
+.no3{position:absolute;top:10px;left:14px;width:22px;height:22px;border-radius:50%;background:var(--teal-deep);
+  color:#fff;font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+.three b{color:var(--teal-deep)}.three p{font-size:.9rem;margin-top:5px;line-height:1.75}
+.wins{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.win{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--purple);
+  border-radius:var(--r);padding:11px 14px}
+.win b{font-size:.9rem}.win p{font-size:.85rem;color:var(--muted);margin:4px 0}
+.win span{font-size:.74rem;background:var(--purple-soft);color:var(--purple);border-radius:99px;padding:1px 9px;font-weight:700}
+.flow{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px}
+.flow a{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--r);padding:9px 12px;text-decoration:none;color:var(--ink);font-size:.9rem}
+.flow a:hover{border-color:var(--teal-line)}
+.fn{width:24px;height:24px;border-radius:50%;background:var(--teal-soft);color:var(--teal-deep);
+  font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center;flex:none}
+.flow small,.phc{margin-left:auto;font-size:.74rem;color:var(--muted);font-weight:700}
+.flow a.fdone{background:var(--teal-soft);border-color:var(--teal-line)}
+.bigbtn,.nbtn{font-family:inherit;border:0;background:var(--teal-deep);color:#fff;font-weight:700;
+  border-radius:99px;padding:10px 24px;font-size:.95rem;cursor:pointer}
+.nbtn{padding:7px 18px;font-size:.85rem}
+.phnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.phnav a{font-size:.78rem;border:1px solid var(--line);border-radius:99px;padding:3px 11px;
+  color:var(--muted);text-decoration:none;background:var(--panel2)}
+.phnav a:hover{border-color:var(--teal-line);color:var(--teal-deep)}
+.phase{margin-bottom:26px;scroll-margin-top:110px}
+.phh{display:flex;align-items:center;gap:10px;font-size:1.08rem;color:var(--navy);margin-bottom:8px}
+.phno{width:28px;height:28px;border-radius:8px;background:var(--teal-deep);color:#fff;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex:none}
+.phintro{font-size:.9rem;color:var(--muted);margin-bottom:10px;line-height:1.75}
+details.step{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+  margin-bottom:8px;box-shadow:var(--shadow);scroll-margin-top:110px}
+details.step>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:11px 14px}
+details.step>summary::-webkit-details-marker{display:none}
+details.step[open]{border-color:var(--teal-line)}
+.sid{font-size:.76rem;font-weight:800;color:var(--teal-deep);background:var(--teal-soft);
+  border-radius:99px;padding:2px 9px;flex:none}
+.stt{font-weight:700;font-size:.95rem;flex:1}
+.sct{font-size:.76rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.sok{display:none;color:var(--green);font-weight:800}
+details.step.sdone{background:var(--teal-soft)}details.step.sdone .sok{display:inline}
+details.step.sdone .stt{opacity:.7}
+.sbody{padding:2px 16px 14px;border-top:1px dashed var(--line)}
+.acts{margin:12px 0 10px;list-style:decimal;padding-left:22px}
+.acts li{margin-bottom:7px;font-size:.92rem;line-height:1.75}
+.acts label,.chk label,.phdone label{display:flex;gap:9px;align-items:flex-start;cursor:pointer}
+.acts input,.chk input,.phdone input{margin-top:5px;width:16px;height:16px;accent-color:var(--teal-deep);flex:none}
+.acts li:has(input:checked) span{opacity:.55;text-decoration:line-through}
+.acts.plain li{list-style:decimal}
+.chk{background:var(--green-soft);border:1px solid var(--green-line);border-radius:var(--r-s);
+  padding:9px 12px;font-size:.9rem;margin-bottom:8px}
+.chk b{color:var(--green)}
+details.stuck{background:var(--amber-soft);border:1px solid var(--amber-line);border-radius:var(--r-s);
+  padding:8px 12px;margin-bottom:8px;font-size:.88rem}
+details.stuck summary{cursor:pointer;color:var(--amber);font-weight:700}
+details.stuck ul{margin:8px 0 2px 18px}details.stuck li{margin-bottom:5px;line-height:1.75}
+.tip{background:var(--blue-soft);border:1px solid var(--blue-line);border-radius:var(--r-s);
+  padding:8px 12px;font-size:.86rem;margin-bottom:8px;line-height:1.75}
+.snav{text-align:right}
+.fldbox{margin:10px 0}.fh{font-size:.88rem;font-weight:700;margin-bottom:4px}
+.fh span{font-weight:400;color:var(--muted);font-size:.8rem;margin-left:8px}
+.fin{width:100%;font-family:inherit;font-size:.92rem;color:var(--ink);background:var(--panel);
+  border:1px solid var(--line);border-radius:var(--r-s);padding:9px 11px;resize:none;overflow:hidden;line-height:1.7}
+.fin:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-soft)}
+.phdone{background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;margin-top:8px}
+.phdone b{font-size:.85rem;color:var(--navy)}.phdone ul{list-style:none;margin-top:6px}
+.phdone li{font-size:.88rem;margin-bottom:4px}
+.hitem{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--amber);
+  border-radius:var(--r);padding:11px 14px;margin-bottom:8px}
+.hitem.hide{display:none}.hitem b{font-size:.9rem}.hitem p{font-size:.88rem;margin:4px 0 6px;line-height:1.75}
+.hitem a{font-size:.8rem;color:var(--teal-deep)}
+.tmpl{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:12px;background:var(--panel)}
+.tmplh{display:flex;justify-content:space-between;align-items:center;background:var(--blue-soft);
+  border-bottom:1px solid var(--blue-line);padding:7px 13px;font-size:.82rem;color:var(--blue);font-weight:700}
+.tmpl pre{white-space:pre-wrap;font-family:inherit;font-size:.92rem;padding:14px 16px;line-height:1.9}
+.cpy{border:1px solid var(--blue-line);background:var(--panel);color:var(--blue);font-family:inherit;
+  font-size:.78rem;border-radius:99px;padding:4px 13px;cursor:pointer}
+.cpy.ok{background:var(--green-soft);color:var(--green)}
+footer{background:var(--panel);border-top:1px solid var(--line);color:var(--muted);font-size:.8rem;
+  text-align:center;padding:22px 18px;line-height:1.9}
+@media (max-width:640px){.progbar{position:static}header.hero h1{font-size:1.35rem}}
+@media print{.tabsec{display:block!important}nav.tabs,.progbar,.themebtn,.cpy,.nbtn,.bigbtn,#reset{display:none!important}
+  details.step>.sbody{display:block}details.stuck{display:block}}
+
+</style>
+</head>
+<body>
+
+<div class="mast"><div class="inner">
+  <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAFeAV4DASIAAhEBAxEB/8QAHAABAAIDAQEBAAAAAAAAAAAAAAYHBAUIAwEC/8QARhAAAQQBAgQDBQQIAgkDBQAAAQACAwQFBhEHEiExE0FRFCJhcYEVMpGhFiNCUmKxwdEXcggkQ1WCkpOi4TOywiU0NVOj/8QAGgEBAAMBAQEAAAAAAAAAAAAAAAEDBAIFBv/EACwRAQACAgAEBQUAAgMBAAAAAAABAgMRBBIhMRMiMkFRBRRhcZGB4SNiobH/2gAMAwEAAhEDEQA/AL/REQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERARa3KZzF4WAzZG9BWYOv6x4B/BV7l+OGDqF0eOqWLrx05jsxv4rumO9/TDi2Ste8rURc9XOOOopyfZalKs3y90vP5leWM1zxK1NO6LEvfOWffMMLGtb83FX/AGl9bnUKo4ikzqOropFzrldZ8TNMyNGWfLAJOjXSwsc0n4EdEqcb9TVyPaIqVlvmHRlp/JPtL63WYkniaROpdFIqixPHXGzuDMrjZ6x85ITzt/DoVYeE1ThNQxc+MyEM582c2zh8weqpvhvT1QtrkpbtLdIiKt2IiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIi0+otR4/TGJkyGRl5Y29GtH3pHeTR8VMRMzqETOuss+7dq4+pJauTxwQRjd0khAACpfV3GuaR8lPTUYZGN2m7KPePxY3y+Z/BQTWWusnq+5zWX+DSYf1NVp91vxPqVpLOGydKjBetULEFSwSIZXsLQ4r0MPDVrqb92LJxFrdKdn2axlNQ5NglktX707uVjTu9zifIBWHh+CeRlri3nslDjIdt3MGz3NHxO4A/FQzRmpn6S1LBlBF40QBjmZ5lh78vxCtTWOGqcS8I/P6azE881aP3qLpDyHYb7cn7L9vxVmW9qzER0j5c4qVtEzPWWCdM8JcMeW/m/bJW/eHtBkG4+DApBiOIvDnTVAUcTNJDWDi7ZlaQ7k+ZJG5XPW3L022I6EHuCimeHi0ea0y5+4mvpiHQ+V4jcPNS41+Nytp760hBc19eQbEHcHcDoo2NIcKsx7uN1F7LK77oNkNH4PAVOIQErw8Vjy2mCeI5vVEStPLcEcpDEbODyVfJQ7btY7ZjiPgerT+KrqzVyeByJhsR2KN2LyO7HD4g+nxCsXhviLWHxx1dls1YxeEiO7IWvI9pIPmPQnoAO6jXEHWf6aZyOzFA6GnWYY4Gu+84E9XO/sox2vzcs9Y+U5KUisWjpKR6U4z5TGOZWzjDfqdvGGwlaP5OV44XO43UGPZdxlpliB3mO7T6EdwVyficBls86duKoS2zXaHyCMdh/f4LJwWosxpDL+NTklglYdpoJAQ1wHk5q5y8NS/p6S6x57V9XZ10ii2jNbY7WWO8WsfCtRACes77zD6j1afIqUrzbVms6lui0WjcCIihIiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgwMtlamFxk+QuyNjrwNLnO/oPiuW9Zatu6wzTrljmbA0lteAdRG3f+ZU04n6ku6v1RHpjCMfZhrycpZF18WUdyfg3t+K2GieGcmm7k2odXivFBQb4sLOcPbuBvzu29PIeq34a1w15rd59mPLNstuWvZ46U0VitIYUas1oGiQAOrU3t35Ce27fN59PJbDP6k/T7hBmcj7I2F1O20siDuZzWtc3Yn47F3ZVtrjWVrWWadZfzR0YiW1YD+yP3j/EVsOHGq6mByNrGZYNdhcq3wbHN2jd1Acfh12P4qycVpjxLd3MZK75I7IQptwqzr8HrupGZOWtf/wBWmb5Enq0/Pfp9V4a70La0deEkZdYxFg717I67b/su+Px81E4ppK00diE7SwvbIw/xNO4V8zXJTp2lRETjv1SniThBgteZCuxnLBORYiA7Bru4+hUTVwcXYI83pnT2q6/Vr2CKRw/deNx/3DZU+ow25qRvuZ68t+gsvF4+TK5aljohu+1MyIAehPX8liKxuDGIF/WcmQlH6jGwmQk9g53QfgN11kty1mznFXmtEPbjJfbFl8Zpuq7aljKrTyDoOcjYb/ENH/cqzW41VlTmtWZXIk7iay4MP8LfdH5Beuk9KX9X5luPpDljbs6ecj3YW/39Auaax4427ybyZJiFm8LbT8FwszuaijYJo5pHtc8dHcrW7A/Dcr3dFp/jLhHWK7GY/UtaMFwPffbpv+8w+vcLS8R9RY/CYGDQen3fqK4AuSA77kHfl38yT1KrbD5e5gctBk8dL4dmB249HDzafUFU1xzfeSOk+y+2SKapPWPdl07eY0XqXxGB9TI05OWSM9iPMH1aQunNJaoqaswUWRqnld92aLzjf5hQPNabpcXdP4/P4iaGnk2/q5vF3I6feY7bruD2PooXg58vwl1rHXyzHClZHLKY3EskZv8Afb8W+ndcZIrmr8WhNN4rf9ZdIIvxHIyaJskbg5jwHNcOoIK/a89sEREBERAREQEREBERAREQEREBERAREQEREBERAREQFFOIOo/0X0hbuRu2svHgwf53ef0G5UrVA8cs06zqCpiI3u8KpF4j279C93b6gK7BTnyREqs1+SkyzeA1epJdzNuQh19oYxvN94MO5JHzPdfjjXrAz2m6Xpyfqotpbjge7v2Wf1K9uGdeDSegMtrO2z9bKxzYd/3GnZo+r1T1q1PfuT3bL3PsWJHSSOPm4lba0i+ab+0Mt7zTFFfl4oiLWxrP4fa1p2KB0bqnlnxVgeHXll/2ZPZhPp6HyUd11oW5ozJge9NjJz/q1n/4O/i/mokdtjv2V35B9irwAEepphJZla0VBJ1eASDGCfUNBO/os1/+O8Wr7+zXSfEpMW9mJoKelrLhpc0XbtMguw7+A5/7u/M1wHnse6xP8CMp/v6l/wBF391FNLaAzOoWMuh/sFIdRafu0kfwDufn2Xtq6hhsHUrw4rUdq/f8Qiciy4tDdvh0HX4rD9/g+6+2xX3aZ6xETMR+57Qt5JnHz5K9kl/wIyn+/qX/AEXf3W8ZQq8JuH+VbYyMNjLXy5sQYNiXFvK0Ab77Add1WOkm43JXp6+ezdulH4W8EosuaOfcd/LsttqPhvlKdf7Sxt12ZpAcwe15fIG/AbncfJRm+oYMfERw3EX5ZnWtxqJ/EW7FaeTnx1RjTWm8hqjLQ4zHM3kd1klI9yJvm539vNWlqjUON4Z6eGk9MPDsrI3e1a6FzCR1c7+I+Q8l94OvDtF5+DFGNme5nFpf36s/V/QHmVN2TYfbndbMhtGR3jGT7xfv13+K9DXiXmJ7R7Kt+HTcd5eZJLi5xc5ziS5xO5JPmV8RFoZZnafcJtWnTuqG07Em2PyJEb9z0ZJ+y769ip3x4kpfo7jonlvtxtc0Lf2uUNPN9Oyobr5HY9wR3BCurNEa/wCC0GX25sniushHfdnR/wCLfeWXLSK5a5GvFfmxzRvuDWpjltMuxdh+9nHEMbv3MR+7+HZWauX+FmaOG11S3ftBb/1eTr097t+a6gWPiqcuTfy0cPfmp+hERZ14iIgIiICIiAiIgIiICIiAiIgIiICIiAiIgIiIC5I1pfdltZ5W1vv4llzGfIHlA/JdWZGY18ZbnHeOF7x9ASuO3TH272g9f1viH/m3W7go9UsnFT2hb3FiUYLQGm9Nwe617WmQDz5Gj+bnbqn3QTsHM6CcN9TGQFf+a4icP3mvlpWsyeRgj5YYhC4lu/f7wDR81Fzx0syTkTacqPq+UZmPNt8+Xb8lZhtkiuoq4y1pM7myowQexX1XENacM9Q+7mdOOpSu6GRsI2H1YQfyX6HDrh9n2l+C1P7O49o3Std/2u2crfH16omFXgb9MxKHcNNJHVWqYxOzfH09prJ8nbH3WfX+SsDLPq641RZv3XhuldP8zGg9GTzDq93+UbALGzl3G8MdASYHC5GK1mbxIdMzbmHN0LyATtsOgC/eW0ll5OHOKwGFZEAWtktukfyEnbmI+O7j+S8D63x3h1pTn5PEnl5p6ctY62mPzrpH7bcGOIiY1vXVDsrqq7rzUlHB1p30MRYsMrxxsG24J25nevyW1zGi9OGjZZQN6OXBMDbu9bkN08/KS156dfLZaTGaYyWmOIWmYck2IPnuRuZ4T+YbBwVi5Opev29QstVs/Wpxl8jJZ7odBLyyDYNZy7tae42PZerwGPhseCI4PXhxG4mJj51M9fVP/vuq89tzkjqjsHDzDz4SfInTWqGSRSNY2o6ZniSh37Tem2wUWh1Ja0XqSWPDwX6tNhAnx+QeHOLvPfboD6EKw8i29fk1RFSke+V2VoCMNm2G2zSQ3rsPkoHqnE2tScVsxQxxifM+ZxaXv2bs1o36rvNjw34efupiaTvcT2iI11n+9/wi266nH3TB1qpjLNPiNp1jhSkPh5aq39xxAc7b95p2J/Fafi/pqKveg1Vjdn4/JAGVzOrRIR0d8nD81vtA6QzuDjyWOy8dd2NuxEFscvNs4jY9NvMFeGiMhQv4jLcOdRTtZ4L3xVZJXAHlB7AnzaeoXh/RuMp4mTh8eTnjHrU73uk9on81np+tL81OakTaNb/+/wC1MoSB3KuJvCPTGJZ4ue1azkH7MZZFuPqSfwXg7McJtOdKGLly9hvZ7gXAn5v2H5L6Tx4n0xMsPgTHqnSpBuRuGuI9QCVbfA68yxYzeBnPNBZg8XlP/K78nLFn4yPjk5cdpbF16w/2cgBJH0AC3WnOI+h3ZQZW7iPsfKtjMZkhYXMe0/5dvTzCryze1JiarMUUrbcWVDLHJhs5JF7wlpWSAfPdjv8AwuvcbaF7F1LY/wBvCyTp8QCuSdSXoMlqfK36vMa9m1JLGS3Y8pcSOi6c0BObOgsLKTuTWaPwJH9FVxkeSsuuGnzWiElREWBtEREBERAREQEREBERAREQEREBERAREQEREBERBrs710/kgO/ssn/tK48Pdy7NtwCzTngPaWNzPxGy43txGvemhcNjHKWuHyct/Az0sxcXG5h4AhfV0LrKxozD4vD185gon0rsRDbFeINdEQ1v7ux67+RUJGC4Stf7SdS3XRdxX67/AI8u/wCa0VzxMb1Kq3D691YEgLZ43TWazB3x2JuWB+/HGeX8VZLNbcN9Pf8A4TTD7sze0s7B3/zP5j+Swshxxz8w8PHUaVKMdGnlMjgP5fkk3yW9Nf6RjpX1W/iv8pg8pg7McOUoz05X7FnjAjfr3B89lZ0WjNfyQxvZqr3HNBb+uf2I+S2mPuji7w6uY+6YhnqJ52OADd3D7rgPIHsVqb8l/U3C+CxTlswZXDOMNqGKRzHe4OVwIHfpsfxXgfW82ePBivLEc3LabVi0RvtPXtEz0/jXhx1jc9Z946orqupqPS2axlrJ5b2y7HvNWl3L/CLSPX4rQ/a+UvZOWR2RnbNkJeSdweQ13O7ruPTc9ljx5Kc3K9q051/wSHCK290jXAfsnrvsVONK5b9ItSVaVfSWn2Na4SzzezuAhjady8nm6fBe1w+O+DBWuTUzEdZiNR39o9mWZi9/LOvw0GeZlNJT5HSTr0c0BljlmdG0glwG7dieo2WPpOjk8pqGKtib3sl1zHubOXkbADr1HXqrA4hZ2jHbrZ/HYLCZTF5AFnts0LnP8VhILXbEbdB0Va5DLvuZEXatWvi3hgaGUOaNvz7k7ldWi+XDatdRMx7xuN/mPf8ASbapeJmeizRoriDv01Z//Z/9lW1zF5Oxqa1jmtlyOSbM5r3QgvdI4HqfX6qwOH81rD6dyurctbsvrsiLKzJ5XODiPMA+p2A+q3Gmg3h7w/u6tycYOayh54o3/e94+4z/AORXgfSb8RTic+O81tFdV3WsV3bvMdPj3/LTlpW9az1j37+ypsjpnP40eJkcPfib+/JG4t/FarcdvP0VnY/jlqOvsL1KlcZ5kNLHfkdvyW0PETh/qDpn9LeBI7vIyNr/APubyuX0XPkr6q/xkmmO3a39U6n7W3c/BW9+j3CPInxq+fnqNPUx+MRt/wAzSfzUp0hlNCV85DpvTVFll743PltlnMNmjfq93VxP4KLcRqNxWSvD9esueF1PwzBHDrDb9f1J/wDcVzxrqOKDXecihDWxttv2a0bAdV0poeuamiMNCRsRVYfxG/8AVVcXbeOFnDV1eYSFERec3CIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgLlHiHjDi9dZavy7MdMZWb+Yd1XVyo/jtgyyzj85Ezo8GvMfj3b/VauDtrJr5Z+Jrum/h81GP0r4F4vJs9+zjOQSbdwG/q3f/Eqm+itvgtlI7bcvpS21z61uIzMG24G45X/AI+6VWuew0+ns9dxNge/WkLWn95p+6fqFtxeW1qf5Zc0c1Yu1yIivZm/0bqWbSmpquTYSYd/DsRj9qM9/qO6tLWEr9Gakg1lime0YXLta29Ez7pcRu14+JH9fVUlBBNasRV68Tpp5XBjI2jdzifJXVqKL9D+CkeCzdhtjJWdmwxd+QlwdsPg0efqsPGcPizx4eSNxbpMfMf6bOHvaKzr2aPK6DxuefHn9Mye1Y+aTns04XhsgH7XJv0Dv4So9n8/PjqM2BxWGlwOOedp/GafaLG377/T4Ba3SUWppMmf0YFp1poBk8H7m38e/T8VadfIcSPBEV/SNW4PN3OGk/TfZeVy/UeC1jrrNSO27ct4/ftbXyujkyxuPLP66Kw0tqS5ivFxwx4yuLtH9fjntLg4/vM26td8VK6fDmpZvyZW/BPhdPx7P9nuTAzEDvuR91vz6qUPyPEGNhbR0RVrE/tGUHb8CFW+thrTxIn6qjsRwvP6pvQQ7/8AD03+ambfU+LnkrWuGJ7zzc1v8RHSJ/MmseOu53bX40m+MlZxI1XVxdKDwdKYgtlkaByicj7g29N/L03UW4qas/STUxqVX743HExRAfdc/wDad/QKV8I7EOQ0VnNP0bLamZk8R7Zf2iHNAa76H8FUeTxd3DZKfHZCF0VqA7PafP4j1B9V6PA8Ji4aPBxxqK/3r3mfmZV5slrUi3yxERF6LCbA9wrc4I45leXMais+7XrQ+CHH/mefoAqmiilnljggY580jgxjB3Lidgru1fXk0Dwdr4StG4z3XCKzM0dA53vPJ+YHKqM87iKR3lpwRqZvPsqIum1Jqlz9nOlyFwnbz993/lddVoG1akNdv3Yo2sHyA2XOnBzBnK60bce3eDHs8Un+M9G/1K6SWTjLeaKx7NHCx0m3yIiLG1CIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIgLR6twMWpdM3cW/o6WPeN37rx1afxW8RTEzE7hExuNSoTgtbiw2rsrhsg0Q3ZmhjA/oeaNzuZnz67rfcadIOvY6PUdOPexTHJZa0dXRfvf8J/JYPGHRksU41Ximua9pb7V4e4c0j7sg/kVqNAcT70eX+ztT3nW8dcAiEs+x8Jx6Df+E9it/W0xnp/mGTcVjwrqsX6a1z3hrWuc9xDWtaNySewHxU24j6Ek0jlTZqMc/DWnbwvHUROP7B/oVvuFOBo0sZf1vlxzV8eHCuw9di0e8759QAtM5q8nPHVnrhnn5ZbTTmCx3C7TZ1PqNgfmJ28tat0LmEjoxv8AF6nyVU6h1Be1Nl5snkpOaV/RjB92Jvk1vw/mvfVOqL+rc1Jkbz9m9WwQg+7Cz0Hx9StZSpvyORq0Yur7MrIW/wDEQFGPHrz37pvfeqV7LhxVx+gOCTMlVDI8rknBzHOG55nnofjs3qoR/irrX/fbv+gz+ykXGm+yG1h9OV3bRUYBI9g7A7crfyVVrnDStq89o7us2S1Z5az2TL/FXW3++nf9Bn9lP9MZa1xI4c53FZiRk+Rr7lj+QNPbmYdh5g9FRyn/AAdzH2XruOq920ORiMBHkXDq3+qnNjjk3WOsGHLabatPSUJx2QuYq/DepTvr3IH7te3uCO4PqPIhXE8Y3jJprnZ4VPVNFnVvk8enxYfyKrbXeH+wtb5WmBtGZjNH/lf7389wtTjMncw2RhyGPndBahO7Xj+R9QfRTanPEWr0n2c1v4dprbs8bVWxRtTVLcL4bMLiySN42LSF4q1NaR1tbaDra3rQCHI1XivfY3sQDtv9CQR8HKKaG0Xc1lmBAwOjx8JBs2PJo/dH8RU1yxy7t00i2KebVfdL+C+jTkMidS3Y/wDVari2oCOj5PN3yHb5qR8cNQVINPx4JsjX3LMrJHMB3LGNO+59NzsAo5xI1vFRjh0lpeb2anR2ZPNAdurf2Gn4eZ9VgcLdHTapz323ky+WlUkD3Ol3cZ5R2HXuB3P4LPy7nx79vaF+9R4VFqcLtMHTekofHZy3bn6+cHuNx0b9Apwvi+rBe02tNpbK1isRECIi5SIiICIiAiIgIiICIiAiIgIiICIiAiIgIiICIiAiIg8p4YrMD4ZmNfFIC1zT1BC5s4k8P59K5B9ypG6TDzu9x3fwXH9h3w9CumFjXaVbIVJKluJk1eVpa+N43DgrcOacU7VZccZI0oTRHEal9l/oxrBjbOMePDisSDm5G/uv89h5EdQpRquthNKcHbuOxt72mtclArHxA8kucHbAjuAAVEde8KrWBfJkMOx9rGdXOjHV8A+PqPiq25ncgZzu5Adwzc8oJ+C3xjpkmL0npvbJOW1I5bw/KsHhNp+S/qVmcst8PF4sOmknf0aXhvQfTckqN6Px2LyuqadPNWxVoPJL3Odyh5HZm/lv6q3+IeA1TNh4sRpalWZgGxjnhqvDZX/Ag7bj5b7rrNk6+H237ow4+nOpzVmaOotU5HKe94c0pEQPkwdGrTLNu4jJ415Zex1qs4dxLC5qwOZvqr66iNR2UW3M7l+lkUrkuPv1r0B2lrytlaR6grG5merV6RRyWHhkEb5XHs2NpcfyUyiInfRbnFrE/b2KxWtMZGZ68lcMscg3LW92n5A8wKqAEEbjqFc/CqLW+Nc2hLh3HAyv3d7b+rMQPcsB6kfDZRvi7hsHiNTRnESQsmnaXWqkXaI+Tvhv6LNivy28Lv8ADTmpzV8RtuFDsbltK6h03krYrxzlspJeGHkIAJBPToWr5qviHjcJhhpfQwENZg5Jrsff48p7lx83H6Kp/rtv0O3Toppojh3ktWzsmLHVcW0+/Zc3723kz1Km+OkTN7T0RXLaaxSsdWv0Xo29q/LtrV2uZVYQbFg9mN+HqSuocTiqmExkGPoxNjrwNDWtHc/E+pXng8Hj9O4yPH42BsUDB9XH1J8ytosGfPOWfw14cXJH5ERFQuEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERB8IBGx7KudW8IsPqB8lvHEY287cuLG7xyH4t8vmFY6Lul7UndZc2pFo1Lk/UGgtQ6ce723HvfAO08AL2H+31XnhNc6j04Gsx2UlbA3tBL+sZ+B7fRdZOaHtLXNBaehB6ghRfL8PNL5rd1nFRMlP+0g/Vu/LotdeLiY1khlnhprO6Sqyjx2yrGhmRw9SyPN0Tiwn6HcKa6P1jpjXLp4rGIqVLsRBENhrHF4Pm07dfTZa29wIxMpJo5W1X9A9jZP7LRy8Bck14dXzdYkdnOY5hH4bpM8PaPLOv6mPGrPmjax9RS6S0riZshcx2PHIPcibCznkd5NaNvNV3Lxygrs5cXphkJ8ueRoH4NC/H+BWasSB1vPV3kdnHneR/zLa0eA1BhBvZmeb1bFGGfmSUrGCsee2/6m05ZnyxpBM1xZ1XmGujZbZQgd0LKreV23+Y7laDC6WzmpbO2Ooz2C47umfuG9fMuK6IxXC7SWIIdHjRYkHZ9lxeR/T8lL4oY4IwyKNjGDs1oACTxVKRrHCI4e1uuSVT6T4LUqL47eoZhcnGxFZnSIH4+bv5K14oY68LYomNZGwBrWtGwAHovVFkyZLZJ3aWilK0jVRERcOxERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERARFENV6rzOm7Mb62lrWVoFm756sw5mO37Fm2/1QS9FXVXiXlbrA6DQGfc3zJa0D8yvWhxbwU2ZbhspWvYfJOcGiG9Dygk9uo37oLARF8QfUWNVu1bsfiVbEU7ASC6N4cAR8lkoCIiAtdSzmMyN63RqXIprVNwZYia73oz8V65J12PHzOxzYHWw39WJ3EM3+O3VUfw90/JneK2oMtmsp4WVoWmudWoyljJj6+pYNgNvxQX4iIgIvxJIyGNz3uDWNBc5x7AKu9T8ZNM4TCyWsfdjyFs7eDA0OaH9ep5iNtkFjooTpziNQzmiLOqLFWWlUrc3igkPO7R122UupW4b9GC5XfzwWI2yxu223a4bj8igyEX4kkZEwve4NY0blzjsAEjljlbzRva9p82kEIP2i+dup7L41zXtDmkEHsR1CD9IijeudTfohpG7mhGyV8AaGMcdg5znAAfmgkiKC6U4lVNStja/D5Si7wXSyzT1y2BnKN3e/wD+FVuidbaxyOu81cxr35rGte8GvPbETQ0uPIW83QHp5BB0YiwsXYt2sbBPep+x2XsBkr84f4Z9OYd1moCKu9Z8XcRovUUWIu0rUrnRiSSWLbZgPbp5qeU7kF+jBbrP54J42yRuHm1w3BQZCIvw8F7C0EtJBAcO4QfXOawFziAANyT5BRPVmtI8Lo+3nsOyvlRWLQ5sc45QN9iSRv29FRuR1JqHhnxWnjyeStZKi9wM0c0hcJq7z+6TsHDrt/ZRmlhpMzhMjbx+VfSp2srHUhoucWslLzuC7Y7e6D6IL4bxu0w3BVbkjpZbkkIklqVWGR0J8w49h9VvtDcQsbryC3Lj6tqAVnNa7xwNiSPIglc0YMXdL39TVGajq42WvBJWkHIJRc2cWljPn6roLgtp9mD4d05izaxkP9ZkPmQfu/kgsVERAREQEREBERBqstmYMYPAB8W/JDLLWrD70xY3cgKkbP8ApC3XYOSqzBvhz+5ZuesbTv35fvb7eSsPX8jINW6GlL+Q/ab28/8ACYzuPkVVOI1/DjeIOVztnSkt61lLRhovhG3uMPKQzcdSfd3KD305mNeas1LgtWZV0kOCrThj5oHiOLlB94ubzdRv0JK23HTHQfpfpHIxO5bE8zYXP8uVr2lp/wC4qP6t1a/Rs+qtG1aolo5MCWGMv603StBe3b4E9vVb7XlGzbh4XYeQObM4Rh4f94ENj33+PRBfEYIjaCdzsOq/a+AAAAdh0UR1phNR5NjJsJqj7GiijPjAwhwPnzc3cdEEUzfD/I4PWzNTabztPD0JZA+7XsPLIid/eO3Y7j5dVY+Iz2Kz0cr8VkK9xsLuSR0Dw4Ndt2VIaZ0RBn8bf1NrjO3clia8rxVLpHtbO1p/9QDvsT0AHdWDw+1po/LWJ8Hpik6kK7fE8MweGHDfYn5/NBYKLymmjrQSTTPDIo2lznuOwDQOpUera6wVjT8udfbbXxbXuYyxP7gl5TsS0dyN+3qgxuJdqapoLJvhx099z2CMwwPLXAE/e3b16fBVJwozOhNKWDYymTsR6gmiInfZhcxkO56sHmT07lTe7qvO6qoWL2Oc/Tml4WF8uWsM/XzMH/6mH7v+YquJK+D1jnKOjdMQSVK9t3tNzKX4ybFrlHNuC7r6/VB0fj8lSytOO5j7UVmtJ1bLE4OafqvaYyCF5iaHSBpLWk7AnboFhYPC0dPYitisfE2KvAzla3zPqT8Seqz3OIYSBzEDcAeaCAU+JWMynD7K5u/AajqfPWt1nO59pdtuUHzB3VT69szScEdHGSGoWzE7ycu0reXm2a3+EDoforXkq6Kl4Y23+xAYWfmlmhadpDLv1Hrz83RY2rtGYC9ofBRXZo8HUxb45micghjdt3Mdv3P9UER0Xj6Gq+EmR0npjJO9sMrXWHXo+TlDiC7lDd9x02Vw6WxFjA6aoYu1cNyarEIzMW7bgdvoB0UK0JqDReW1hkmaVxUrJnwj2i4yHkicGnoPr+as5BW2odYjB61fgdVtpjTuUrOdXnII5dh7zJPXf1WJwix7Ja+oM1SEtbHZC29mOZ4hcGQtJAIaSduvqsPjHjcRkNS6RbnbAgxjpZm2JC/k2byg9/LqNlFdB53EaIw2qM9XyZ+zJ5XQ4qi+TeV5aTs4t8t+n0QbPMYTUuS4ifoznta3K1KzCZaL4Y+T2oA+9H0IAcPiVbml9NVNKYZuMpz2ZomuLi+xJzuJPf5D4KitXVtXWsFojIZrK1Wme3GyF9fds7HSHcPL/l6dlKLkmU0vxe09iMZqTI36173rdS3YMojb5nr690F0KuuJuKhsw1snltRMxmJx7mysj8DxQ+wHe6Xt/aA/dVirlzjbrc6kzjsRQe84/GSEPLerZJOxd9OyCwNPOj1dkH4fLa/ObhsMM3sNCt4LDECOkjwNwOv3d/qpnJw20VHtM7CVYQzYczXuYOh6b7Eb/Vcy8ONJZzVWdezCXvYTXAdNa5y0saT0226k9OymvEXTWob+p8Np9mqrGdv2OkkAbytrAbDncG9AO53PXog6UADQAOw6BfVh42p9n4yrTMrpTBEyPxH9XO2G25XvM2R8D2xP5JC0hriN9jt0KCg/9JHFsa7C5VrNnu567neoHUKfcPtY6fj4fYVtrPY+OaGqyOVslhrHNcOmxBO6oXilLrFupG4bUmR9ufGRJXbFsGEO6Aho7EqX6O/0frdyOG5qa06rGTuakXV5H8Tuw3QdCUchTylRtqjais13/dkieHNP1CxMxqPDafbEcvka9MTHlj8Z4bzH4L2xGIpYLFwY3HwiGrA3lYwden91WnH/ABEuR0TVswV3SyVbTdy1u7mtcNvw32QY+vdKQZXiPp/UrrWLOKgEZtmzZY0FjXcwOxPvAg+SqzK3NOVcPqjT8V51iY5FtvGS1Gbsk6bEdO2w/wDCtutwt0hgdJQZHI4SzlLUMDHzMYXSPkcR1AZvt3KwW378dE3amJxmhsFCOVtu9Wa6w8nyYzbogrfGaezWU4eSY3H6GlfbfI6eXKzt5HFo6gM5tie2ymmkdVcVr1OhRx+m6sFKLkiE1iu6NoY3od93fmAnCzGaxz2qY8/fzV+fAwSS+DJPM4Cz3a3Zm/bzV97bdkH5Zzcg59ufYc23bdftEQEREBERAREQUxxJyT5+MOi8Tt+qhmbKTv3LnbfyC12R0jqzWPFO1NXnlw2IxMhgq2GM5OQEe94TfMnfqVJ+JGgs5ntUYTP6cnrw3aPRzpjsAQd2n4+i9chpjiJqasaOW1FjsZSc3lk+zInmSXp1BLtth8kFN6k0vTj1BkMpp4OvYnAujOQtWbIc6xLzbu2Pmfkpxxgz8dhmgtQUHvYJJTYjJ7hp5Dt/Rbmt/o+aeirGKbJ5KTmHv7PDGud6kKm9aaYzGnNZVNNzWrFytE9v2d4m5Bje7yHl16HZB1/DJ4sEcn7zQ78QoTxZxWVy2gLkGIfN47C174Yd952A9WdOv0UzqsdHUhY7o5sbQR8dlodX29VVKULtK46pdnc4iUWJOTlG3QjsCgp6bVOocVSpag1bBDjqdCPlxOCiHIbEwbyte5u+4a3v18+wUh4HaQvVGXdWZdjmW8l/6LHDY8hPMX/U9vgozb4N681lln5PU2TqwTP8i8yco9GhvQD6rdR8C83UEctTWtpliLbw/vBo27eaC3dQ4r7c07kMX4nhm3A+IP8AQkbbqqdDcGblaeKXWNtt6vRcRRoNlc+EdfvEH+W3zVmaTxuZxOEZUzmW+1LjXE+0cnKeU7bD47eq3yDSajyuJwmGLsnE2SvIWwR1hGJDM4/dY1n7R+Cp/C3I8DquHUsFmzffZyDMNerZKu2OxUc77vhcpLQ0DpsPJbnjdqKjhX4axDefHn6EptU4PDL2ODvdJd5dNuig2knwGVmYx1PNan1A5zrXheAY6day7f33E/eI9UErq4LUWrM/qTO4HVVqnkaOVlqRRSHmgdG3sNvL8CrNwT85idMzWtVW4LFyJr5pXVmcrWMA32Hqeh6qG8FcFqLCUM03P0n1n2rfjtLyOZziPePyVnXK0d2lPVmG8U8bo3j4OGxQUXwY09LqGzc1DkZJ34yG8+WjTe4+H4xO5l5exI7fNWjr6vLY0w6OHAQ5xzpmNdTl6btJ2LgfIj1Ww0tpyppPT1bDU3vfDBvs9/dxJ3J/NbaUuZG5zG8zgCQ3tuduyCtMvmpeGGGoHH6XpQYyadkLoorJMoc7z+77x+ZVmg7gHtv5FUJPqO5xd1viMLDip6eMxln2i7z9TzMPYkdB22Cv1BztxiysEfFbERZ3GSW8PWh3bAwkGfm3326jz2WRp3gvHqDE5rI38f8AZE14k4yo9znGo3fcF3Xc79tiruv4DFZPI0shdpRTWqRca8jxuWE99vwWzQU5xD0/DU01oTCX3m34WUr1nuALRI3lId26jopLpvhVh9M6tn1DWtXJ5ntcyKOd/OIge/U9T06dSvPiVJ/9Z0TAB7zs3G/fy2DXf3VhIC5x4jaXoaIZmLFHU8bIsq9vj4fka6WVpcHEB3UtA777Lo5V3xG4cV9TaatQYmlUiykkzJRM9uznbH3hzd+oQQjhLwx5PD1jLZmgikDpaFRrzzBvXlMjhtv8gpZwVrU3aZvXxGx2UlvTMt2HdZHkO6b+YHwVgYbHtxOEo45uxFWBkO47HlaB/RQDL8FMJkMnNcpZHI4z2iQyTQ1ZdmOJ79PJBttJ68ZqfWWpMPExngYyRrYZG9TIB7riT2+8OnwUh1Fm2aews2RdUsWyzZrIKzC98jidgAPmtfpDQmE0VWlixUT/ABZtjLPK7me/b4+nwUnQc7UeGOutT5ybWGSnr0MmJxNXrXGc4IHVoOx90DtssrNcX9e6MyTaeo8DQJ7h7A5rJR6tduQr/Wvy2FxudpmplKUNuuevJKzcb+vwQazRWrautNOQ5epG6IOJZJE87ljx3G/mpEQCNj1CwcTh8fgqLaOLqRVazSSI4xsNz3Wegr3VHFnHaYyc+NkwuXs2YSBvHBtG7pv7rt+o+iqrV+qdU8V6RxuP0fJHVrv8cSuDi9uwP7Ttm9vJdJSNi5S6RrCGjckgdAoXrLX+nMFpe3IzJVpJp4XtrxV3hzpHEEdNv5oKp4OaTyepcJddLqfL46lWn8EVacxZ72256+XfyC6IqwCtVigEj3iNoaHyO5nHYdyfMqvOB+Elw/DmCWdnLNelfZO/flOwbv8AQbqykBERAREQEREBEXxB9RVdHqTN6S1UTnLct7TWRtyV4LbmgGjK15aGvIA907d1OBVsN1M60cna9l9m/wDtPd8IHf73bft8UG5WHYxdC1dr3bFSGW1W38GV7AXR79+U+SVMnQv7eyXq9jmbzt8GUP3bvtv0PbfotHPqDHZnBZOSvmxi4a1l1V15z2s8N7HAO+/06ndvX6IJQixTarQRw+LajHiDZjnPA8Tpv09enXovObLY2tUitz5CrHWmLWxTPma1jyewDidiT8EGcixm3qklx9RlmF1qNoe6EPBe0HpuW9wF51srjrzmtq3q07nc3KIpmuJ5Ts7sfIoM1FD9BX711momXrsto1c1NBC6TbdkYbGQ3oB0HMVtfYLzb9/ITZKwI3N5YKjC3w4wB97tuXHv8EHtk9OYXNTwzZPF1LksO4jdPEHloPzWfBBFWhbDBEyOJvRrGNDWgfABV9oWbN6s4XYjJS5qyzJvMj3TN5dnlszgGuHL2IbspzBlaM8ngtuVnWA8xviZM1zhIBuW7eoHkgzkWijyWPpW8vZtahrOhjkZ4kUs0bW0vdA5Sd+nMRze96rNbmcW+5DTZkqhtTxiWGETtL5Gbb8zW77kbeYQbBFrGZ/DyNjczLUXNla58bhYYQ9rfvEdeoHn6L2lymPgnrQSXqzJrQJgjdM0OmAG55R3dsOvRB7QVa9YP8CCOLnJc7kYG7n1O3mvdY1e7VtulbWtQzOhd4cojeHFjvR23Y/AqM6+h1A/HVJNN5I1cg2wA2N3KY5xyucWu3BPXl8kEvRQepqlmrtBZC3Qty47J14XtsMZt4lWdoPQtO/TcfUKWtkhoVoIrFvqdo2yTvAdI7b6An5IPzcxVG/ZqWLVWOWapIZIHuG5jcRtuPos1YM2WxteiLs1+rHUJDRO+ZoYTvttzb7d+i8znsOJHRnK0Q9srYXNNhu4kd1DO/3iOw7oNkiwGZjGSiYx5Go8VyBMWztPhHbcc3Xp09V9+18aMezIe31fYn7clnxm+G7c7DZ2+x3KDORRDX+Xlq8PM1kcTf8ADs1YiWTQOa4sc1w3HmPgQpDipHz4alLK4ukkrxuc7zLi0blBnIq84f3Mre1Lq1l7L2rdfH5B1SvDKG7NaOu/QAk+SksUc7NV355MlY9kiqxOFZxaImlxfu7tv2aPNBvkWujzeKmghniydKSKd4jhkZO0tkdv91pB6n4BY4u1IczkZZc5DyQV4/GqOlYBV2Lj4jvNvMCO/T3UG5RYDMvjZIqsrMhUdHcPLWe2ZpbOdt9mHf3jsD2Xq3IU32BXZbgdOeYCMSAu907O6d+h7+iDJUQscL9GW8n9oy4CqbBdznYFrSfi0dPyW+ZnsPIWBmVouL5zWZtYaeaYd4x16v8A4e6/c2RouNiuMhBHNHE57x4jeaJoO3OR5AHzKDMjjbGxrGNDWNADWgbABftRmpnqOMqYGk/Lfar8i90EN0Pa7xi1jnOeS3pt7u3TzW3ZmsVKbXh5Om/2Tf2nlnafB2/f6+79UGei8a9iK1BHPBIyWGRoeyRhDmuaRuCCO4XsgIiICIiAvi+ogiFCLDawwOZxMpbZgdbnjnZykFpMjiCN/wAQVptLw5zB185gczXkytfF096Uu277sLg/aM79OYcvL9VZCIKixVw2tUaByZpMo031bUTYa8JbFAXN9yM+jtum3b0Wtyc8TeFWucY8OF77UtOEBjPMQ6wHNI9QQd1d6IK9wwnra7+0L3OcdZxEEVCYuJYwjYyM28nHYH4hqimpI5maZ1HZdDLHibeery4+J7CS73mmWVv8L3B7h+PmrtRBAM5eij4qadfFzSO+zrh5GNO7iQxzB6bnldtutBXyHtk+gso2lHj6DLliIV68Za2s0s5WMf06O36eit5EED4bTxyu1UGHc/bszxuCN2lkYB6+W7XfgpflbdejirVm1IIoI4nF7zvsBss1EFd8E543cL8ZV32sVnSsmjIIcxxle4b7+oIKjt+97bj6NqPDjFVKOqoDNBHDs5gEg55JT5bk77j6q5kQVhSp1NSat4hY73ZIrsNdjeZpDSRAG77/AAcserj8pHW0VqX7OnOTpH7KuQt7eEQ6LxCPQPDHb+itdEEFyVlkGrG4Spi4YnnEyEXHx7uewb/qoviD7xBUQw1mD2DhZFOf11aWSOVrmHmY4RObsenTZxaPmrpRBAsFMw8XtUsY52xqVf2SAXNBDvhv1C3uocpTo3sLBYmDJZrg8NuxO+zXDy+YUgRBWGvdP3sHatar03W8R1iF0GWptB/XxOG3iAD9tvf5Lc2Y7FbihXv5Fkj8a/HeDTl2JZBMX++D6OcNtj8NlNkQUlrCtadpniHbbHKMTemqexMdu4SzNc0SPY3yB2aPjy/BSXiT7GdGYzdrC2fIU3OIYTzNDmkk7dfuqyEQV4/wf8eYiB1+wCwkMPKXeNzbb9t9uqjWDysGO0nK2LFR3QdSyNhdLCTFU5pfcmcO4aPLZXQiCmtSS8un+JlR5eZ5ZY5YmeGQXtMUQ3aB3G4I3/FWpgntfp7HOadwase3l+yFsUQV3oqOTD671fjr0b4pr132+q4tPJLERtu13bcHoQphEQzLZC24gV/AiaX+W7TIXfgCFsnNa8bOAI9D1X6QUSPBH+jo5rY3CT2gjlEbubxPG37bb7+anVGfHZHijm6+7JY7OGrMcwsPLIOaQuHofdez/mU8RBW+nMXlodM5HARx+FdwhsQYyzJGWtdztPhPafgHOaV90TDhstpzT1O3HYhy+E5OetIXMfFYY3lcXDzB6n0IKsdEEF0E6hZyOrHwsY5/209+/IQeUMYGnr8Wv7LS6entYuRtCpa+09Mz46WStNNCWz0WNB2Y87buaTuBv191WoiCkdMyNqaY4Y27AfFBVt2I55HMO0bnMlDQ703J2UtfVmxnEmdlWFz8dqSqHPdGwBkU0fRzifUsP1KsFauli5K+TtXbF6Wy6UkRMc0NbCwnflG3fr5nqg2YADQANgOwX1EQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREH/9k=" alt="國立臺灣師範大學校徽">
+  <div>
+    <div class="uni">國立臺灣師範大學　National Taiwan Normal University</div>
+    <div class="course">115 學年度第一學期　教育與社會科學研究法</div>
+    <div class="staff">MAXQDA 新手上路・學生用互動 SOP</div>
+  </div>
+  <div class="spacer"></div>
+  <a class="lk" href="index.html">🧩 W9 學習單</a><a class="lk" href="readings.html">📚 讀本整理</a>
+  <button class="themebtn" id="themebtn">🌙 深色</button>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <span class="badge">第一次使用者・v1</span>
+  <h1>MAXQDA 新手上路</h1>
+  <p>從安裝到「編出第一組碼、撈出同碼段落」，共 25 個小步驟。每一步都有<strong>檢查點</strong>（做完該看到什麼）和<strong>卡住時</strong>的處理。勾選紀錄只存在這台裝置的瀏覽器，不會上傳。</p>
+  <div class="herostats">
+    <div class="hstat"><b>9</b><span>個階段</span></div>
+    <div class="hstat"><b>25</b><span>個小步驟</span></div>
+    <div class="hstat"><b>10</b><span>段以上編碼</span></div>
+    <div class="hstat"><b>14</b><span>天試用期</span></div>
+    <div class="hstat"><b>0</b><span>資料上傳</span></div>
+  </div>
+</div></header>
+
+<nav class="tabs"><div class="inner">
+  <button data-tab="start" class="on">① 開始之前</button>
+  <button data-tab="steps">② 逐步 SOP</button>
+  <button data-tab="help">③ 卡關速查</button>
+  <button data-tab="more">④ 論文與附錄</button>
+</div></nav>
+
+<div class="progbar"><div class="inner">
+  <span class="pg">步驟完成 <b id="pgs">0 / 25</b></span>
+  <span class="bar"><i id="pgbar"></i></span>
+  <span class="pgnote" id="pgnote"></span>
+  <span class="spacer"></span>
+  <button class="chip" id="reset">清除本頁紀錄</button>
+</div></div>
+
+<main>
+<section class="tabsec on" id="tab-start">
+<h2 class="sec">開始之前</h2>
+<div class="warnbox"><b>先讀這三行</b><ul class="wl"><li>用法：照順序做，每一步做完對照「✔ 檢查點」；看不到檢查點描述的畫面，就停下來查「✘ 卡住時」，不要硬往下。</li><li>選單名稱以英文介面的通用說法寫成；MAXQDA 各版本（含 Windows／Mac）位置略有差異，請以你自己看到的畫面為準。找不到時，在右鍵選單或功能搜尋裡找同名字眼。</li><li>資料紅線：只用本機版、資料留在自己電腦。AI Assist、TeamCloud 等雲端功能一律不開；原始可識別的逐字稿不得上傳任何外部服務。</li></ul></div>
+<h3 class="sub">先知道三件事</h3>
+<div class="three">
+<div class="card"><span class="no3">1</span><b>MAXQDA 是什麼：</b><p>質性資料的「整理與編碼工具」。它幫你管理逐字稿、碼與證據段落；「這段在說什麼、碼要叫什麼、要歸成哪一組」是你決定的——分析發生在你做決定的那一刻，不是軟體做的。</p></div>
+<div class="card"><span class="no3">2</span><b>一個專案＝一個檔案：</b><p>你匯入的文件、建的碼、寫的 memo 全都存在同一個專案檔裡（副檔名以 .mx 開頭）。軟體會自動存，但仍要自己定期備份（步驟 3-4）。</p></div>
+<div class="card"><span class="no3">3</span><b>對應 Neuman 第 15 章：</b><p>開放編碼＝步驟 5；主軸編碼（把碼歸成組）＝步驟 6；memo＝步驟 7；選擇編碼（找核心主題）＝步驟 8 撈出同碼段落後再想。</p></div>
+</div>
+<h3 class="sub">四個視窗</h3>
+<div class="wins">
+<div class="win"><b>Document System（文件系統）</b><p>你匯入的逐字稿清單</p><span>步驟 4</span></div>
+<div class="win"><b>Code System（代碼系統）</b><p>所有碼，可分層</p><span>步驟 5、6</span></div>
+<div class="win"><b>Document Browser（文件瀏覽器）</b><p>打開逐字稿全文，在這裡反白、編碼</p><span>步驟 5</span></div>
+<div class="win"><b>Retrieved Segments（檢索段落）</b><p>把同一個碼的所有段落集中顯示</p><span>步驟 8</span></div>
+</div>
+<h3 class="sub">全部流程一眼看完</h3>
+<ol class="flow">
+<li><a href="#s1-1" data-jump="1-1"><span class="fn">1</span>安裝與啟動試用版<small data-phase="1"></small></a></li>
+<li><a href="#s2-1" data-jump="2-1"><span class="fn">2</span>準備你的逐字稿<small data-phase="2"></small></a></li>
+<li><a href="#s3-1" data-jump="3-1"><span class="fn">3</span>建立專案<small data-phase="3"></small></a></li>
+<li><a href="#s4-1" data-jump="4-1"><span class="fn">4</span>匯入逐字稿<small data-phase="4"></small></a></li>
+<li><a href="#s5-1" data-jump="5-1"><span class="fn">5</span>第一次編碼：開放編碼<small data-phase="5"></small></a></li>
+<li><a href="#s6-1" data-jump="6-1"><span class="fn">6</span>整理代碼：改名、歸組、合併<small data-phase="6"></small></a></li>
+<li><a href="#s7-1" data-jump="7-1"><span class="fn">7</span>寫 Memo（你的分析筆記）<small data-phase="7"></small></a></li>
+<li><a href="#s8-1" data-jump="8-1"><span class="fn">8</span>啟用與檢索：把同碼的段落撈出來<small data-phase="8"></small></a></li>
+<li><a href="#s9-1" data-jump="9-1"><span class="fn">9</span>儲存、備份與匯出（試用期結束前一定要做）<small data-phase="9"></small></a></li>
+<li><a href="#more" data-tabgo="more"><span class="fn">10</span>跟同學比碼（課堂進行）</a></li>
+</ol>
+<div style="margin-top:18px"><button class="bigbtn" data-jump="1-1">開始第一步 →</button></div>
+</section>
+
+<section class="tabsec" id="tab-steps">
+<h2 class="sec">逐步 SOP</h2>
+<p class="secsub">點步驟標題展開。照順序做：先勾動作，再對照檢查點；看到了就按「我看到了」。沒看到就展開「卡住時」。</p>
+<div class="phnav"><a href="#ph1" data-ph="1">1. 安裝與啟動試用版</a><a href="#ph2" data-ph="2">2. 準備你的逐字稿</a><a href="#ph3" data-ph="3">3. 建立專案</a><a href="#ph4" data-ph="4">4. 匯入逐字稿</a><a href="#ph5" data-ph="5">5. 第一次編碼</a><a href="#ph6" data-ph="6">6. 整理代碼</a><a href="#ph7" data-ph="7">7. 寫 Memo</a><a href="#ph8" data-ph="8">8. 啟用與檢索</a><a href="#ph9" data-ph="9">9. 儲存、備份與匯出</a></div>
+<div class="phase" id="ph1">
+<h3 class="phh"><span class="phno">1</span>安裝與啟動試用版<small class="phc" data-phase="1"></small></h3>
+<details class="step" id="s1-1" data-step="1-1">
+<summary><span class="sid">1-1</span><span class="stt">下載與安裝</span><span class="sct" data-act="1-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="1-1.0"><span><b>到 MAXQDA 官網的 Free Trial 頁面，選你的系統（Windows 或 Mac），下載安裝檔。</b></span></label></li>
+<li><label><input type="checkbox" data-a="1-1.1"><span><b>執行安裝檔，一路按下一步；</b>安裝語言可選，之後也能在設定裡改。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="1-1"><span><b>✔ 檢查點</b>　安裝完成後，桌面或應用程式資料夾裡有 MAXQDA 圖示。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（2）</summary><ul><li>網路太慢下不來：跟助教拿 USB 安裝檔，或兩人一機先做。</li><li>學校電腦沒有安裝權限：改用自己的筆電。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="1-1">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s1-2" data-step="1-2">
+<summary><span class="sid">1-2</span><span class="stt">啟用試用並記下到期日</span><span class="sct" data-act="1-2"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="1-2.0"><span><b>第一次開啟，選「試用」（Trial／Start free trial），</b>依畫面填入 email 取得試用授權。</span></label></li>
+<li><label><input type="checkbox" data-a="1-2.1"><span><b>把「啟用日 ＋ 14 天」寫在下面的框。</b>試用期到期後不能再開專案編輯。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="1-2"><span><b>✔ 檢查點</b>　軟體進到歡迎畫面或空白工作區，不再跳出要你輸入授權碼。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>啟用卡住：先確認有連網、email 沒打錯；收不到信先看垃圾郵件匣。</li></ul></details>
+<div class="tip">💡 11/3 啟用的話，約 11/17 到期。課後練習請在到期前做完並匯出（步驟 9）。</div>
+<div class="snav"><button class="nbtn" data-next="1-2">下一步 →</button></div>
+</div>
+</details>
+<div class="fldbox"><p class="fh">我的試用到期日<span>例如 11/17</span></p><textarea class="fin" data-k="expire" rows="1" placeholder="在這裡寫…"></textarea></div>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="1.0"><span>MAXQDA 可以正常開啟</span></label></li><li><label><input type="checkbox" data-d="1.1"><span>已記下試用到期日</span></label></li><li><label><input type="checkbox" data-d="1.2"><span>已確認 AI Assist／雲端功能沒有開（設定裡若有這類選項，保持關閉）</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph2">
+<h3 class="phh"><span class="phno">2</span>準備你的逐字稿<small class="phc" data-phase="2"></small></h3>
+<details class="step" id="s2-1" data-step="2-1">
+<summary><span class="sid">2-1</span><span class="stt">檢查檔案格式</span><span class="sct" data-act="2-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="2-1.0"><span><b>用 Word 開啟（或用 PDF 閱讀器開啟）你的逐字稿。</b></span></label></li>
+<li><label><input type="checkbox" data-a="2-1.1"><span><b>用滑鼠在文字上拖曳反白，</b>看看能不能「選到字」。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="2-1"><span><b>✔ 檢查點</b>　Word 檔（.docx）可正常反白；PDF 也能反白文字。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>PDF 反白不了＝掃描檔或圖片轉出的，MAXQDA 無法對它做文字編碼。解法：請原作者提供 Word 檔，或用輸入法／系統的文字辨識功能轉成文字再貼進 Word。</li></ul></details>
+<div class="tip">💡 最穩的做法是整理成 .docx 再匯入。</div>
+<div class="snav"><button class="nbtn" data-next="2-1">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s2-2" data-step="2-2">
+<summary><span class="sid">2-2</span><span class="stt">去識別化與命名</span><span class="sct" data-act="2-2"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="2-2.0"><span><b>把受訪者姓名、學校、地名等可辨識資訊改成代號</b>（例如「受訪者 A」「某國中」）。</span></label></li>
+<li><label><input type="checkbox" data-a="2-2.1"><span><b>檔名改成沒有真名的版本，</b>例如「W4-訪談-A.docx」。</span></label></li>
+<li><label><input type="checkbox" data-a="2-2.2"><span><b>放到一個固定資料夾，</b>例如「研究法/MAXQDA」。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="2-2"><span><b>✔ 檢查點</b>　檔案內容與檔名都找不到可以直接認出本人的資訊。</span></label></div>
+<div class="tip">💡 逐字稿定稿後再匯入。編碼之後如果再改全文，編碼段落的位置可能跑掉。</div>
+<div class="snav"><button class="nbtn" data-next="2-2">下一步 →</button></div>
+</div>
+</details>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="2.0"><span>逐字稿是 Word 檔，或 PDF 能反白選字</span></label></li><li><label><input type="checkbox" data-d="2.1"><span>已去識別化、檔名已改</span></label></li><li><label><input type="checkbox" data-d="2.2"><span>檔案放在固定資料夾</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph3">
+<h3 class="phh"><span class="phno">3</span>建立專案<small class="phc" data-phase="3"></small></h3>
+<details class="step" id="s3-1" data-step="3-1">
+<summary><span class="sid">3-1</span><span class="stt">新建專案</span><span class="sct" data-act="3-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="3-1.0"><span><b>在歡迎畫面或選單選「新專案」（New Project）。</b></span></label></li>
+<li><label><input type="checkbox" data-a="3-1.1"><span><b>命名：</b>用「課程-姓名縮寫-日期」，例如 RM115-LC-1103。</span></label></li>
+<li><label><input type="checkbox" data-a="3-1.2"><span><b>存放位置：</b>選一個你找得到的資料夾，不要放在桌面一堆檔案裡。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="3-1"><span><b>✔ 檢查點</b>　畫面上出現四個區塊：左上文件、左下代碼、中間（或右側）空白、下方空白。</span></label></div>
+<div class="snav"><button class="nbtn" data-next="3-1">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s3-2" data-step="3-2">
+<summary><span class="sid">3-2</span><span class="stt">認識四個視窗</span><span class="sct" data-act="3-2"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="3-2.0"><span><b>左上：Document System（文件）；左下：Code System（代碼）。</b></span></label></li>
+<li><label><input type="checkbox" data-a="3-2.1"><span><b>中間大區：Document Browser，</b>打開文件後在這裡閱讀、反白。</span></label></li>
+<li><label><input type="checkbox" data-a="3-2.2"><span><b>下方：Retrieved Segments，</b>現在是空的，步驟 8 才會用。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="3-2"><span><b>✔ 檢查點</b>　你能指出四個視窗各在哪裡。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>視窗不見或被關掉：到「視窗」或「Window／View」選單，找類似 Reset layout／顯示視窗 的選項。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="3-2">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s3-3" data-step="3-3">
+<summary><span class="sid">3-3</span><span class="stt">確認專案存在哪裡</span><span class="sct" data-act="3-3"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="3-3.0"><span><b>用檔案總管（Windows）或 Finder（Mac）找到剛才存放的資料夾。</b></span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="3-3"><span><b>✔ 檢查點</b>　資料夾裡看得到以 .mx 開頭副檔名的專案檔。</span></label></div>
+<div class="snav"><button class="nbtn" data-next="3-3">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s3-4" data-step="3-4">
+<summary><span class="sid">3-4</span><span class="stt">做第一次備份</span><span class="sct" data-act="3-4"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="3-4.0"><span><b>在 File 選單找 Backup（備份）或「另存新檔／複製專案」類的選項，</b>備份到另一個資料夾或雲端硬碟。</span></label></li>
+<li><label><input type="checkbox" data-a="3-4.1"><span><b>之後每次練習結束前再備份一次，</b>檔名加日期。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="3-4"><span><b>✔ 檢查點</b>　備份資料夾裡有一個跟專案同名、日期不同的檔案。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>找不到備份選項：直接在檔案總管把專案檔複製一份、檔名加日期，等同備份（關閉 MAXQDA 後再複製最保險）。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="3-4">下一步 →</button></div>
+</div>
+</details>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="3.0"><span>專案已建立並命名</span></label></li><li><label><input type="checkbox" data-d="3.1"><span>能指出四個視窗</span></label></li><li><label><input type="checkbox" data-d="3.2"><span>已做第一次備份</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph4">
+<h3 class="phh"><span class="phno">4</span>匯入逐字稿<small class="phc" data-phase="4"></small></h3>
+<details class="step" id="s4-1" data-step="4-1">
+<summary><span class="sid">4-1</span><span class="stt">匯入</span><span class="sct" data-act="4-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="4-1.0"><span><b>到 Import 分頁（或 Home 的 Import Documents），</b>選 Documents／Text Documents。</span></label></li>
+<li><label><input type="checkbox" data-a="4-1.1"><span><b>在檔案視窗選你的 .docx（或可選字的 PDF），</b>按開啟。</span></label></li>
+<li><label><input type="checkbox" data-a="4-1.2"><span><b>備用做法：</b>直接把檔案拖進 Document System 視窗。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="4-1"><span><b>✔ 檢查點</b>　Document System 的「Documents」底下出現你的檔名。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（2）</summary><ul><li>檔名出現但打開是空白：PDF 可能是掃描檔，回步驟 2-1。</li><li>中文變亂碼：改用 Word 檔重新匯入；或把文字貼到新的 Word 檔存成 .docx 再試。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="4-1">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s4-2" data-step="4-2">
+<summary><span class="sid">4-2</span><span class="stt">打開文件</span><span class="sct" data-act="4-2"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="4-2.0"><span><b>在 Document System 對你的文件按兩下。</b></span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="4-2"><span><b>✔ 檢查點</b>　Document Browser 顯示完整逐字稿，可以上下捲動。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>看不到全文：確認是雙擊檔名，而不是只點選。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="4-2">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s4-3" data-step="4-3">
+<summary><span class="sid">4-3</span><span class="stt">先讀一遍，不動手</span><span class="sct" data-act="4-3"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="4-3.0"><span><b>從頭讀完，</b>用 5 分鐘想：這份訪談在講哪幾件事？</span></label></li>
+<li><label><input type="checkbox" data-a="4-3.1"><span><b>把想到的 3 件事，用一個名詞片語寫在下面。</b>這三件事通常就是你的第一批碼。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="4-3"><span><b>✔ 檢查點</b>　你心裡有 3 個初步的方向，不一定對，但可以開工了。</span></label></div>
+<div class="snav"><button class="nbtn" data-next="4-3">下一步 →</button></div>
+</div>
+</details>
+<div class="fldbox"><p class="fh">我先想到的三件事<span>例如：被比較的壓力／想放棄但沒說／靠同儕撐住</span></p><textarea class="fin" data-k="first3" rows="3" placeholder="在這裡寫…"></textarea></div>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="4.0"><span>逐字稿已匯入</span></label></li><li><label><input type="checkbox" data-d="4.1"><span>能在 Document Browser 打開並捲動</span></label></li><li><label><input type="checkbox" data-d="4.2"><span>已寫下三個初步方向</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph5">
+<h3 class="phh"><span class="phno">5</span>第一次編碼：開放編碼<small class="phc" data-phase="5"></small></h3>
+<p class="phintro">編碼＝「把一段文字，貼上一個你取的名字」。目標：編至少 10 段，碼名盡量用受訪者自己的話。</p>
+<details class="step" id="s5-1" data-step="5-1">
+<summary><span class="sid">5-1</span><span class="stt">建立第一個碼</span><span class="sct" data-act="5-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="5-1.0"><span><b>在 Code System 視窗的空白處按右鍵，</b>選 New Code（新增代碼）。</span></label></li>
+<li><label><input type="checkbox" data-a="5-1.1"><span><b>輸入名稱：</b>用一個名詞片語，例如「怕被比較」。按 Enter。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="5-1"><span><b>✔ 檢查點</b>　Code System 出現一個帶顏色的新碼。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>找不到右鍵選單：改在 Codes 分頁找 New Code 按鈕。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="5-1">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s5-2" data-step="5-2">
+<summary><span class="sid">5-2</span><span class="stt">把一段文字貼上這個碼</span><span class="sct" data-act="5-2"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="5-2.0"><span><b>在 Document Browser 用滑鼠反白一段話</b>（一句到幾句，講完一件事就好）。</span></label></li>
+<li><label><input type="checkbox" data-a="5-2.1"><span><b>把反白的文字拖到 Code System 的「怕被比較」上放開。</b></span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="5-2"><span><b>✔ 檢查點</b>　文字旁邊的編碼欄（右側或左側的色條）出現一條帶碼名的線，這就是編碼。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（2）</summary><ul><li>拖不上去：先確認文字真的處於反白狀態；放開前滑鼠要停在碼名上。</li><li>拖錯碼：在編碼欄那條線上按右鍵，選刪除該編碼，再重拖。這只刪這段的編碼，文字和碼本身都不會消失。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="5-2">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s5-3" data-step="5-3">
+<summary><span class="sid">5-3</span><span class="stt">用受訪者的原話當碼名（in-vivo）</span><span class="sct" data-act="5-3"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="5-3.0"><span><b>反白一小段最有味道的原話</b>（例如「沒有地圖的感覺」）。</span></label></li>
+<li><label><input type="checkbox" data-a="5-3.1"><span><b>在反白上按右鍵，找 In-Vivo Coding（以原話建碼）；</b>沒有的話，手動新增碼並打同一句話。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="5-3"><span><b>✔ 檢查點</b>　Code System 多了一個名稱是那句原話的碼，該段已被編碼。</span></label></div>
+<div class="tip">💡 原話當碼名的好處：不會太早用你自己的理論語言蓋掉受訪者的說法。</div>
+<div class="snav"><button class="nbtn" data-next="5-3">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s5-4" data-step="5-4">
+<summary><span class="sid">5-4</span><span class="stt">重複使用已有的碼</span><span class="sct" data-act="5-4"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="5-4.0"><span><b>再找下一段，若意思接近就拖到既有的碼；</b>若是新的事，回 5-1 新建。</span></label></li>
+<li><label><input type="checkbox" data-a="5-4.1"><span><b>重複直到至少編 10 段、有 4–6 個碼。</b></span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="5-4"><span><b>✔ 檢查點</b>　編碼欄有至少 10 條線；Code System 的碼名旁會顯示各自的段落數。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>不知道要不要新建：先建，之後在步驟 6 再併；寧可多建、不要為了省事硬塞。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="5-4">下一步 →</button></div>
+</div>
+</details>
+<div class="fldbox"><p class="fh">我的前三個碼與各自一段證據<span>碼名 ／ 該段在說什麼（一句話）</span></p><textarea class="fin" data-k="codes3" rows="5" placeholder="在這裡寫…"></textarea></div>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="5.0"><span>至少編了 10 段</span></label></li><li><label><input type="checkbox" data-d="5.1"><span>建了 4–6 個碼</span></label></li><li><label><input type="checkbox" data-d="5.2"><span>至少 1 個碼用原話命名</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph6">
+<h3 class="phh"><span class="phno">6</span>整理代碼：改名、歸組、合併<small class="phc" data-phase="6"></small></h3>
+<details class="step" id="s6-1" data-step="6-1">
+<summary><span class="sid">6-1</span><span class="stt">改碼名</span><span class="sct" data-act="6-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="6-1.0"><span><b>在 Code System 對某個碼按右鍵，</b>選 Rename（或點一下碼名再按 F2）。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="6-1"><span><b>✔ 檢查點</b>　碼名更新，段落仍連在該碼上。</span></label></div>
+<div class="snav"><button class="nbtn" data-next="6-1">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s6-2" data-step="6-2">
+<summary><span class="sid">6-2</span><span class="stt">歸成群組（主軸編碼的雛形）</span><span class="sct" data-act="6-2"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="6-2.0"><span><b>新增一個上層碼，</b>名稱用「這幾個碼共同在講什麼」，例如「壓力的來源」。</span></label></li>
+<li><label><input type="checkbox" data-a="6-2.1"><span><b>把相關的碼用滑鼠拖進這個上層碼底下。</b></span></label></li>
+<li><label><input type="checkbox" data-a="6-2.2"><span><b>目標：2–3 個群組。</b></span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="6-2"><span><b>✔ 檢查點</b>　Code System 變成有層級的樹狀，子碼縮排在上層碼下。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>拖進去後碼不見：點上層碼旁的小三角展開。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="6-2">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s6-3" data-step="6-3">
+<summary><span class="sid">6-3</span><span class="stt">合併意思相同的碼</span><span class="sct" data-act="6-3"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="6-3.0"><span><b>找兩個其實同一件事的碼，</b>把其中一個拖到另一個上，或對它按右鍵選 Merge Codes（合併）。</span></label></li>
+<li><label><input type="checkbox" data-a="6-3.1"><span><b>合併前先想：</b>兩個碼的段落放在一起，還講得通嗎？</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="6-3"><span><b>✔ 檢查點</b>　只剩一個碼，段落數是兩者相加。</span></label></div>
+<div class="tip">💡 ⚠ 不要用「刪除代碼」代替合併：刪掉一個碼，掛在它底下的編碼也一起沒了。不確定時，先備份（步驟 3-4）再動。</div>
+<div class="snav"><button class="nbtn" data-next="6-3">下一步 →</button></div>
+</div>
+</details>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="6.0"><span>至少改過 1 個碼名</span></label></li><li><label><input type="checkbox" data-d="6.1"><span>建了 2–3 個群組</span></label></li><li><label><input type="checkbox" data-d="6.2"><span>做過一次合併或確認不需合併</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph7">
+<h3 class="phh"><span class="phno">7</span>寫 Memo（你的分析筆記）<small class="phc" data-phase="7"></small></h3>
+<p class="phintro">Memo 是研究者的思考紀錄。正式研究裡它是證據鏈的一部分，不是可有可無的附註。</p>
+<details class="step" id="s7-1" data-step="7-1">
+<summary><span class="sid">7-1</span><span class="stt">在編碼段落上加 memo</span><span class="sct" data-act="7-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="7-1.0"><span><b>在編碼欄或段落上按右鍵，</b>選 Insert Memo（或點 memo 圖示）。</span></label></li>
+<li><label><input type="checkbox" data-a="7-1.1"><span><b>在視窗裡寫三句話：</b>這段讓我想到什麼？它跟我的研究問題有什麼關係？我接下來想追問什麼？</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="7-1"><span><b>✔ 檢查點</b>　該段旁出現 memo 小圖示；滑鼠移上去可看到內容。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>找不到入口：memo 也能在文件或碼上新增（對文件名稱或碼名按右鍵找 Memo）。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="7-1">下一步 →</button></div>
+</div>
+</details>
+<div class="fldbox"><p class="fh">我的第一則 memo（先在這裡打草稿）<span>三句話：想到什麼／和研究問題的關係／想追問什麼</span></p><textarea class="fin" data-k="memo1" rows="5" placeholder="在這裡寫…"></textarea></div>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="7.0"><span>至少寫 1 則 memo</span></label></li><li><label><input type="checkbox" data-d="7.1"><span>memo 內容有「接下來想追問什麼」</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph8">
+<h3 class="phh"><span class="phno">8</span>啟用與檢索：把同碼的段落撈出來<small class="phc" data-phase="8"></small></h3>
+<p class="phintro">這一步最容易卡。MAXQDA 只會撈出「你同時啟用了的文件」與「啟用了的碼」。</p>
+<details class="step" id="s8-1" data-step="8-1">
+<summary><span class="sid">8-1</span><span class="stt">啟用文件</span><span class="sct" data-act="8-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="8-1.0"><span><b>在 Document System 對你的文件啟用</b>（通常是按右鍵選 Activate，或點文件名旁的啟用圖示，啟用後圖示會變色）。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="8-1"><span><b>✔ 檢查點</b>　文件名旁出現「已啟用」的標示。</span></label></div>
+<div class="snav"><button class="nbtn" data-next="8-1">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s8-2" data-step="8-2">
+<summary><span class="sid">8-2</span><span class="stt">啟用一個碼</span><span class="sct" data-act="8-2"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="8-2.0"><span><b>在 Code System 對你想看的碼做同樣的啟用動作</b>（一次先只啟用一個）。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="8-2"><span><b>✔ 檢查點</b>　碼名旁出現「已啟用」的標示。</span></label></div>
+<div class="snav"><button class="nbtn" data-next="8-2">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s8-3" data-step="8-3">
+<summary><span class="sid">8-3</span><span class="stt">看 Retrieved Segments</span><span class="sct" data-act="8-3"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="8-3.0"><span><b>看下方的 Retrieved Segments 視窗。</b></span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="8-3"><span><b>✔ 檢查點</b>　列出所有掛在那個碼上的段落，各自標示來自哪份文件。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（2）</summary><ul><li>視窗是空的：九成是「文件或碼沒有同時啟用」。兩個都檢查啟用標示；其次是該碼其實還沒有編碼過任何段落。</li><li>出現太多段落：把上一次啟用的碼取消啟用再重做。</li></ul></details>
+<div class="snav"><button class="nbtn" data-next="8-3">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s8-4" data-step="8-4">
+<summary><span class="sid">8-4</span><span class="stt">讀出來，回答一句話</span><span class="sct" data-act="8-4"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="8-4.0"><span><b>把這個碼的所有段落讀過一遍，</b>問自己：這些段落真的在講同一件事嗎？</span></label></li>
+<li><label><input type="checkbox" data-a="8-4.1"><span><b>寫下結論：</b>這個碼的名字要不要改？要不要拆成兩個？</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="8-4"><span><b>✔ 檢查點</b>　你能用一句話說出「這個碼在講什麼」，並決定改名、拆分或保留。</span></label></div>
+<div class="snav"><button class="nbtn" data-next="8-4">下一步 →</button></div>
+</div>
+</details>
+<div class="fldbox"><p class="fh">我撈出的碼與一句話結論<span>碼名 ／ 段落共通點 ／ 要不要改名或拆分</span></p><textarea class="fin" data-k="retr" rows="3" placeholder="在這裡寫…"></textarea></div>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="8.0"><span>成功撈出至少一個碼的所有段落</span></label></li><li><label><input type="checkbox" data-d="8.1"><span>能說出為什麼 Retrieved Segments 會是空的（啟用）</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph9">
+<h3 class="phh"><span class="phno">9</span>儲存、備份與匯出（試用期結束前一定要做）<small class="phc" data-phase="9"></small></h3>
+<details class="step" id="s9-1" data-step="9-1">
+<summary><span class="sid">9-1</span><span class="stt">備份專案</span><span class="sct" data-act="9-1"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="9-1.0"><span><b>照步驟 3-4 再備份一次，</b>檔名加上今天日期。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="9-1"><span><b>✔ 檢查點</b>　備份資料夾有今天日期的新檔案。</span></label></div>
+<div class="snav"><button class="nbtn" data-next="9-1">下一步 →</button></div>
+</div>
+</details>
+<details class="step" id="s9-2" data-step="9-2">
+<summary><span class="sid">9-2</span><span class="stt">匯出成果留存</span><span class="sct" data-act="9-2"></span><span class="sok">✔</span></summary>
+<div class="sbody">
+<ol class="acts">
+<li><label><input type="checkbox" data-a="9-2.0"><span><b>截圖：</b>Code System 的樹狀圖（含段落數）、Retrieved Segments 的畫面各一張。</span></label></li>
+<li><label><input type="checkbox" data-a="9-2.1"><span><b>在 Retrieved Segments 視窗找匯出（Export）圖示，</b>匯出成 Word 或 Excel；有的版本也能匯出代碼清單。</span></label></li>
+<li><label><input type="checkbox" data-a="9-2.2"><span><b>全部放進同一個資料夾：</b>「W9-MAXQDA-成果」。</span></label></li>
+</ol>
+<div class="chk"><label><input type="checkbox" data-c="9-2"><span><b>✔ 檢查點</b>　資料夾裡至少有：2 張截圖、1 份匯出檔、備份專案檔。</span></label></div>
+<details class="stuck"><summary>✘ 沒看到？卡住時（1）</summary><ul><li>匯出鈕找不到：只做截圖也可以，W13 討論用得到的是「碼表與證據段落」。</li></ul></details>
+<div class="tip">💡 W13（12/1）會帶這些成果來討論；試用期到期後軟體可能無法再開專案，所以現在就要匯出。</div>
+<div class="snav"><button class="nbtn" data-next="9-2">完成，看成果收尾 →</button></div>
+</div>
+</details>
+<div class="phdone"><b>本階段完成檢核</b><ul><li><label><input type="checkbox" data-d="9.0"><span>備份了專案</span></label></li><li><label><input type="checkbox" data-d="9.1"><span>截圖兩張</span></label></li><li><label><input type="checkbox" data-d="9.2"><span>匯出至少一份檔案</span></label></li></ul></div>
+</div>
+<div class="phase" id="ph10"><h3 class="phh"><span class="phno">10</span>跟同學比碼（課堂進行）</h3>
+<ol class="acts plain"><li><b>兩人交換看碼表：</b>全班都在談「學習壓力」，兩份稿裡都出現的現象，你們取的碼名一樣嗎？</li><li><b>不一樣的各說一句：</b>「我看到的是……」。</li><li><b>想一件事：</b>同一個主題、不同的碼——編碼是詮釋，不是標準答案。這就是第三章要交代「研究者角色」的原因。</li></ol>
+<div class="note">只在課堂上互看，不拍照外傳、不上傳任何外部 AI。</div>
+</div>
+</section>
+
+<section class="tabsec" id="tab-help">
+<h2 class="sec">卡關速查</h2>
+<p class="secsub">打幾個關鍵字，或點下面的標籤。每一條都可以跳回對應的步驟。</p>
+<input class="srch" id="hq" type="search" placeholder="搜尋：例如 空白、PDF、亂碼、刪除…" aria-label="搜尋卡關問題">
+<div class="filters" id="hf"><button class="chip on" data-hf="all">全部</button><button class="chip" data-hf="1">步驟 1</button><button class="chip" data-hf="2">步驟 2</button><button class="chip" data-hf="3">步驟 3</button><button class="chip" data-hf="4">步驟 4</button><button class="chip" data-hf="5">步驟 5</button><button class="chip" data-hf="6">步驟 6</button><button class="chip" data-hf="7">步驟 7</button><button class="chip" data-hf="8">步驟 8</button><button class="chip" data-hf="9">步驟 9</button></div>
+<div class="cnt" id="hcnt"></div>
+<div id="hlist">
+<div class="hitem" data-ph="8"><b>最常見：Retrieved Segments 空白</b><p>原因：文件或碼沒有啟用，或碼還沒編過任何段落　做法：步驟 8-1、8-2 重新檢查啟用標示</p><a href="#s8-3" data-jump="8-3">到步驟 8-3 →</a></div>
+<div class="hitem" data-ph="2"><b>最常見：PDF 反白不了</b><p>原因：掃描檔／圖片 PDF　做法：改用 Word 檔，或請原作者提供文字版</p><a href="#s2-1" data-jump="2-1">到步驟 2-1 →</a></div>
+<div class="hitem" data-ph="4"><b>最常見：匯入後中文亂碼</b><p>原因：檔案編碼或格式問題　做法：轉存成 .docx 再匯入</p><a href="#s4-1" data-jump="4-1">到步驟 4-1 →</a></div>
+<div class="hitem" data-ph="6"><b>最常見：碼越建越多，亂成一團</b><p>原因：一開始每段都新建　做法：先看是否可併；用上層碼歸組（步驟 6）</p><a href="#s6-2" data-jump="6-2">到步驟 6-2 →</a></div>
+<div class="hitem" data-ph="5"><b>最常見：拖曳沒反應</b><p>原因：文字沒處於反白狀態　做法：重新反白，停在碼名上再放開</p><a href="#s5-2" data-jump="5-2">到步驟 5-2 →</a></div>
+<div class="hitem" data-ph="3"><b>最常見：不小心刪了碼</b><p>原因：刪除碼會連帶刪除該碼的編碼　做法：立刻關閉不存檔，用步驟 3-4 的備份還原</p><a href="#s3-4" data-jump="3-4">到步驟 3-4 →</a></div>
+<div class="hitem" data-ph="3"><b>最常見：找不到某個選單</b><p>原因：版本差異　做法：先試右鍵選單、功能搜尋，再問助教</p><a href="#s3-2" data-jump="3-2">到步驟 3-2 →</a></div>
+<div class="hitem" data-ph="1"><b>1-1　下載與安裝</b><p>網路太慢下不來：跟助教拿 USB 安裝檔，或兩人一機先做。</p><a href="#s1-1" data-jump="1-1">到步驟 1-1 →</a></div>
+<div class="hitem" data-ph="1"><b>1-1　下載與安裝</b><p>學校電腦沒有安裝權限：改用自己的筆電。</p><a href="#s1-1" data-jump="1-1">到步驟 1-1 →</a></div>
+<div class="hitem" data-ph="1"><b>1-2　啟用試用並記下到期日</b><p>啟用卡住：先確認有連網、email 沒打錯；收不到信先看垃圾郵件匣。</p><a href="#s1-2" data-jump="1-2">到步驟 1-2 →</a></div>
+<div class="hitem" data-ph="2"><b>2-1　檢查檔案格式</b><p>PDF 反白不了＝掃描檔或圖片轉出的，MAXQDA 無法對它做文字編碼。解法：請原作者提供 Word 檔，或用輸入法／系統的文字辨識功能轉成文字再貼進 Word。</p><a href="#s2-1" data-jump="2-1">到步驟 2-1 →</a></div>
+<div class="hitem" data-ph="3"><b>3-2　認識四個視窗</b><p>視窗不見或被關掉：到「視窗」或「Window／View」選單，找類似 Reset layout／顯示視窗 的選項。</p><a href="#s3-2" data-jump="3-2">到步驟 3-2 →</a></div>
+<div class="hitem" data-ph="3"><b>3-4　做第一次備份</b><p>找不到備份選項：直接在檔案總管把專案檔複製一份、檔名加日期，等同備份（關閉 MAXQDA 後再複製最保險）。</p><a href="#s3-4" data-jump="3-4">到步驟 3-4 →</a></div>
+<div class="hitem" data-ph="4"><b>4-1　匯入</b><p>檔名出現但打開是空白：PDF 可能是掃描檔，回步驟 2-1。</p><a href="#s4-1" data-jump="4-1">到步驟 4-1 →</a></div>
+<div class="hitem" data-ph="4"><b>4-1　匯入</b><p>中文變亂碼：改用 Word 檔重新匯入；或把文字貼到新的 Word 檔存成 .docx 再試。</p><a href="#s4-1" data-jump="4-1">到步驟 4-1 →</a></div>
+<div class="hitem" data-ph="4"><b>4-2　打開文件</b><p>看不到全文：確認是雙擊檔名，而不是只點選。</p><a href="#s4-2" data-jump="4-2">到步驟 4-2 →</a></div>
+<div class="hitem" data-ph="5"><b>5-1　建立第一個碼</b><p>找不到右鍵選單：改在 Codes 分頁找 New Code 按鈕。</p><a href="#s5-1" data-jump="5-1">到步驟 5-1 →</a></div>
+<div class="hitem" data-ph="5"><b>5-2　把一段文字貼上這個碼</b><p>拖不上去：先確認文字真的處於反白狀態；放開前滑鼠要停在碼名上。</p><a href="#s5-2" data-jump="5-2">到步驟 5-2 →</a></div>
+<div class="hitem" data-ph="5"><b>5-2　把一段文字貼上這個碼</b><p>拖錯碼：在編碼欄那條線上按右鍵，選刪除該編碼，再重拖。這只刪這段的編碼，文字和碼本身都不會消失。</p><a href="#s5-2" data-jump="5-2">到步驟 5-2 →</a></div>
+<div class="hitem" data-ph="5"><b>5-4　重複使用已有的碼</b><p>不知道要不要新建：先建，之後在步驟 6 再併；寧可多建、不要為了省事硬塞。</p><a href="#s5-4" data-jump="5-4">到步驟 5-4 →</a></div>
+<div class="hitem" data-ph="6"><b>6-2　歸成群組（主軸編碼的雛形）</b><p>拖進去後碼不見：點上層碼旁的小三角展開。</p><a href="#s6-2" data-jump="6-2">到步驟 6-2 →</a></div>
+<div class="hitem" data-ph="7"><b>7-1　在編碼段落上加 memo</b><p>找不到入口：memo 也能在文件或碼上新增（對文件名稱或碼名按右鍵找 Memo）。</p><a href="#s7-1" data-jump="7-1">到步驟 7-1 →</a></div>
+<div class="hitem" data-ph="8"><b>8-3　看 Retrieved Segments</b><p>視窗是空的：九成是「文件或碼沒有同時啟用」。兩個都檢查啟用標示；其次是該碼其實還沒有編碼過任何段落。</p><a href="#s8-3" data-jump="8-3">到步驟 8-3 →</a></div>
+<div class="hitem" data-ph="8"><b>8-3　看 Retrieved Segments</b><p>出現太多段落：把上一次啟用的碼取消啟用再重做。</p><a href="#s8-3" data-jump="8-3">到步驟 8-3 →</a></div>
+<div class="hitem" data-ph="9"><b>9-2　匯出成果留存</b><p>匯出鈕找不到：只做截圖也可以，W13 討論用得到的是「碼表與證據段落」。</p><a href="#s9-2" data-jump="9-2">到步驟 9-2 →</a></div>
+</div>
+</section>
+
+<section class="tabsec" id="tab-more">
+<h2 class="sec">論文與附錄</h2>
+<h3 class="sub">第三章「資料分析」怎麼寫這一段</h3>
+<p class="secsub">不要只寫「使用 MAXQDA 進行分析」。至少交代三件事：怎麼處理資料、怎麼編、證據怎麼留下。</p>
+<div class="tmpl"><div class="tmplh"><span>可改寫的參考句型（請依你的研究改寫，不要照抄）</span><button class="cpy" data-copy="ch3">複製</button></div><pre id="ch3">本研究逐字稿經去識別化後，匯入 MAXQDA［版本］進行質性資料管理與編碼。資料僅存於研究者本機，未使用雲端或生成式 AI 功能。
+
+編碼依 Neuman（2014）的三階段進行：先以開放編碼逐段命名，碼名盡量沿用受訪者原話；再依概念相近性歸組為主軸編碼；最後回到研究問題，檢視各組碼的核心主題。
+
+分析過程中以 memo 記錄編碼理由與疑問，並以檢索段落功能回檢各碼是否一致，作為分析可回溯的證據。</pre></div>
+<div class="note">軟體只是工具。論文要交代的是「你怎麼決定碼與歸組」，這個決定記在 memo 裡。</div>
+<h3 class="sub">試用期內的練習時間表</h3>
+<div class="tw"><table><thead><tr><th>時間</th><th>做什麼</th><th>約需</th></tr></thead><tbody><tr><td>11/3 課堂</td><td>步驟 1–8 第一輪（用自己 W4 逐字稿）</td><td>課堂 45 分</td></tr><tr><td>11/4–11/10</td><td>把逐字稿編到至少 20 段、2 則 memo（選做）</td><td>1 小時</td></tr><tr><td>11/11–11/15</td><td>步驟 9：備份、截圖、匯出</td><td>30 分</td></tr><tr><td>11/17 前</td><td>試用到期前最後確認：成果資料夾完整</td><td>10 分</td></tr><tr><td>12/1（W13）</td><td>帶成果討論已編碼的專案與分析深化（不現場操作）</td><td>課堂</td></tr></tbody></table></div>
+<h3 class="sub">中英詞彙對照</h3>
+<div class="tw"><table><thead><tr><th>英文</th><th>中文</th><th>一句話</th></tr></thead><tbody><tr><td>Project</td><td>專案</td><td>一個檔案裝全部</td></tr><tr><td>Document System</td><td>文件系統</td><td>逐字稿清單</td></tr><tr><td>Code System</td><td>代碼系統</td><td>碼的樹狀清單</td></tr><tr><td>Document Browser</td><td>文件瀏覽器</td><td>閱讀並反白編碼的地方</td></tr><tr><td>Retrieved Segments</td><td>檢索段落</td><td>撈出同碼的段落</td></tr><tr><td>Code / Coding</td><td>代碼／編碼</td><td>替一段文字貼上名字</td></tr><tr><td>In-vivo code</td><td>原話碼</td><td>以受訪者自己的話命名</td></tr><tr><td>Memo</td><td>備忘錄</td><td>研究者的分析筆記</td></tr><tr><td>Activate</td><td>啟用</td><td>告訴軟體要撈哪些文件、哪些碼</td></tr></tbody></table></div>
+</section>
+
+</main>
+
+<footer>國立臺灣師範大學｜115 學年度第一學期　教育與社會科學研究法<br>選單名稱依 MAXQDA 官方 Getting Started 流程以英文通用名稱撰寫，各版本略有差異，請以自己的畫面為準。資料紅線：只用本機版，不開 AI Assist／TeamCloud，逐字稿須先去識別化。</footer>
+
+<script>
+var META={"steps": ["1-1", "1-2", "2-1", "2-2", "3-1", "3-2", "3-3", "3-4", "4-1", "4-2", "4-3", "5-1", "5-2", "5-3", "5-4", "6-1", "6-2", "6-3", "7-1", "8-1", "8-2", "8-3", "8-4", "9-1", "9-2"], "phases": {"1": ["1-1", "1-2"], "2": ["2-1", "2-2"], "3": ["3-1", "3-2", "3-3", "3-4"], "4": ["4-1", "4-2", "4-3"], "5": ["5-1", "5-2", "5-3", "5-4"], "6": ["6-1", "6-2", "6-3"], "7": ["7-1"], "8": ["8-1", "8-2", "8-3", "8-4"], "9": ["9-1", "9-2"]}, "acts": {"1-1": 2, "1-2": 2, "2-1": 2, "2-2": 3, "3-1": 3, "3-2": 3, "3-3": 1, "3-4": 2, "4-1": 3, "4-2": 1, "4-3": 2, "5-1": 2, "5-2": 2, "5-3": 2, "5-4": 2, "6-1": 1, "6-2": 3, "6-3": 2, "7-1": 2, "8-1": 1, "8-2": 1, "8-3": 1, "8-4": 2, "9-1": 1, "9-2": 3}};
+
+(function(){
+  var LS=(function(){var on=false;
+    try{var k='__p__';localStorage.setItem(k,'1');localStorage.removeItem(k);on=true;}catch(e){}
+    return{on:on,
+      get:function(k){if(!on)return null;try{return localStorage.getItem(k);}catch(e){return null;}},
+      set:function(k,v){if(!on)return;try{localStorage.setItem(k,v);}catch(e){}},
+      del:function(k){if(!on)return;try{localStorage.removeItem(k);}catch(e){}}};})();
+  var root=document.documentElement,th=LS.get('rm115-theme');
+  if(th)root.setAttribute('data-theme',th);
+  else if(window.matchMedia&&matchMedia('(prefers-color-scheme:dark)').matches)root.setAttribute('data-theme','dark');
+
+  var KEY='rm115-mxsop';
+  var S={a:{},c:{},d:{},f:{}};
+  try{var raw=JSON.parse(LS.get(KEY)||'{}');for(var k in S)if(raw[k])S[k]=raw[k];}catch(e){}
+  function save(){LS.set(KEY,JSON.stringify(S));}
+  var $$=function(s,r){return [].slice.call((r||document).querySelectorAll(s));};
+  var $=function(s){return document.querySelector(s);};
+
+  function paint(){
+    var done=0;
+    META.steps.forEach(function(id){
+      var st=document.getElementById('s'+id);if(!st)return;
+      var n=0,t=META.acts[id];
+      for(var i=0;i<t;i++)if(S.a[id+'.'+i])n++;
+      var c=!!S.c[id];if(c)done++;
+      st.classList.toggle('sdone',c);
+      var ct=$('[data-act="'+id+'"]');if(ct)ct.textContent=n+' / '+t;
+    });
+    $$('[data-a]').forEach(function(b){b.checked=!!S.a[b.getAttribute('data-a')];});
+    $$('[data-c]').forEach(function(b){b.checked=!!S.c[b.getAttribute('data-c')];});
+    $$('[data-d]').forEach(function(b){b.checked=!!S.d[b.getAttribute('data-d')];});
+    $$('[data-phase]').forEach(function(el){
+      var ids=META.phases[el.getAttribute('data-phase')]||[];
+      var n=ids.filter(function(i){return S.c[i];}).length;
+      el.textContent=n+' / '+ids.length;
+      var a=el.closest('a');if(a)a.classList.toggle('fdone',n===ids.length);
+    });
+    $$('.fin').forEach(function(t){
+      var v=S.f[t.getAttribute('data-k')]||'';
+      if(document.activeElement!==t&&t.value!==v)t.value=v;
+      grow(t);
+    });
+    var tot=META.steps.length;
+    $('#pgs').textContent=done+' / '+tot;
+    $('#pgbar').style.width=(100*done/tot)+'%';
+    $('#pgnote').textContent=LS.on?'':'這個瀏覽器封鎖了網站資料，勾選不會被記住（其他功能不受影響）。';
+    $('#reset').disabled=!LS.on;
+  }
+  function grow(t){t.style.height='auto';t.style.height=(t.scrollHeight+2)+'px';}
+
+  function go(tab){
+    $$('.tabsec').forEach(function(s){s.classList.toggle('on','tab-'+tab===s.id);});
+    $$('nav.tabs button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-tab')===tab);});
+  }
+  function jump(id,openIt){
+    go('steps');
+    var st=document.getElementById('s'+id);if(!st)return;
+    if(openIt!==false)st.open=true;
+    setTimeout(function(){st.scrollIntoView({behavior:'smooth',block:'start'});},30);
+    if(history.replaceState)history.replaceState(null,'','#s'+id);
+  }
+  function fb(txt,done){var t=document.createElement('textarea');t.value=txt;t.style.cssText='position:fixed;left:-9999px';
+    document.body.appendChild(t);t.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(t);}
+
+  document.addEventListener('click',function(e){
+    var t=e.target,c=function(s){return t.closest&&t.closest(s);},x;
+    if(x=c('#themebtn')){var d=root.getAttribute('data-theme')==='dark';
+      root.setAttribute('data-theme',d?'light':'dark');LS.set('rm115-theme',d?'light':'dark');
+      x.textContent=d?'🌙 深色':'☀️ 淺色';return;}
+    if(x=c('nav.tabs button')){go(x.getAttribute('data-tab'));window.scrollTo({top:0,behavior:'smooth'});return;}
+    if(x=c('[data-tabgo]')){e.preventDefault();go(x.getAttribute('data-tabgo'));window.scrollTo({top:0});return;}
+    if(x=c('[data-jump]')){e.preventDefault();jump(x.getAttribute('data-jump'));return;}
+    if(x=c('.phnav a[data-ph]')){e.preventDefault();var p=document.getElementById('ph'+x.getAttribute('data-ph'));
+      if(p)p.scrollIntoView({behavior:'smooth'});return;}
+    if(x=c('[data-next]')){var id=x.getAttribute('data-next'),i=META.steps.indexOf(id);
+      var cur=document.getElementById('s'+id);if(cur)cur.open=false;
+      if(i>=0&&i<META.steps.length-1)jump(META.steps[i+1]);
+      else{var p=document.getElementById('ph10');if(p)p.scrollIntoView({behavior:'smooth'});}return;}
+    if(x=c('[data-hf]')){$$('[data-hf]').forEach(function(b){b.classList.toggle('on',b===x);});filt();return;}
+    if(x=c('#reset')){if(!confirm('清除這台裝置上的勾選與填寫紀錄？'))return;
+      S={a:{},c:{},d:{},f:{}};LS.del(KEY);paint();return;}
+    if(x=c('.cpy')){var el=document.getElementById(x.getAttribute('data-copy'));if(!el)return;
+      var ok=function(){var o=x.textContent;x.textContent='已複製';x.classList.add('ok');
+        setTimeout(function(){x.textContent=o;x.classList.remove('ok');},1400);};
+      if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(el.textContent).then(ok,function(){fb(el.textContent,ok);});
+      else fb(el.textContent,ok);return;}
+  });
+
+  document.addEventListener('change',function(e){
+    var b=e.target;if(!b||!b.matches)return;var k;
+    if(k=b.getAttribute('data-a')){S.a[k]=b.checked;}
+    else if(k=b.getAttribute('data-c')){S.c[k]=b.checked;
+      if(b.checked){var i=META.steps.indexOf(k),cur=document.getElementById('s'+k);
+        if(cur)cur.open=false;
+        if(i>=0&&i<META.steps.length-1){var nx=document.getElementById('s'+META.steps[i+1]);if(nx)nx.open=true;}}}
+    else if(k=b.getAttribute('data-d')){S.d[k]=b.checked;}
+    else return;
+    save();paint();
+  });
+  document.addEventListener('input',function(e){
+    var t=e.target;if(t&&t.matches&&t.matches('.fin')){S.f[t.getAttribute('data-k')]=t.value;grow(t);save();}
+    if(t&&t.id==='hq')filt();
+  });
+
+  function filt(){
+    var q=(($('#hq')||{}).value||'').trim().toLowerCase();
+    var a=$('[data-hf].on'),f=a?a.getAttribute('data-hf'):'all',n=0;
+    $$('.hitem').forEach(function(it){
+      var ok=(f==='all'||it.getAttribute('data-ph')===f)&&(!q||it.textContent.toLowerCase().indexOf(q)>=0);
+      it.classList.toggle('hide',!ok);if(ok)n++;});
+    var c=$('#hcnt');if(c)c.textContent='符合 '+n+' 條';
+  }
+
+  function route(){
+    var h=(location.hash||'').replace('#','');
+    var m=/^s(\d+-\d+)$/.exec(h);
+    if(m)jump(m[1]);
+    else if(['start','steps','help','more'].indexOf(h)>=0)go(h);
+  }
+  var busy=false;
+  function hydrate(){if(busy)return;busy=true;try{paint();filt();}finally{busy=false;}}
+  hydrate();route();
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){hydrate();route();});
+  window.addEventListener('load',hydrate);
+  window.addEventListener('hashchange',route);
+  if(window.MutationObserver){var mt=null;
+    var mo=new MutationObserver(function(){if(busy)return;clearTimeout(mt);mt=setTimeout(hydrate,60);});
+    mo.observe(document.body,{childList:true,subtree:true});
+    setTimeout(function(){mo.disconnect();hydrate();},8000);}
+})();
+
+</script>
+</body>
+</html>
